@@ -1,14 +1,16 @@
 <?php
+$_creds = file_get_contents(dirname(__FILE__).'/instagram_credentials');
+$creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
-$username = 'yordanoweb';
-$password = 'XPcom01.*';
+$username = $creds[0];
+$password = $creds[1];
 $recip='alberto_dreyes';
 $debug = true;
 $truncatedDebug = false;
 $captionText = '';
-$ig = new \InstagramAPI\Instagram($debug, $trunactedDebug);
+$ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
     $ig->setUser($username, $password);
     $ig->login();
@@ -18,7 +20,7 @@ try {
 }
 try {
 	$uId = $ig->getUsernameId($recip);
-    $ig->directMessage($uId, "Ayer no pude loguearme porque deje el movil en casa y me pedia chequear codigo enviado por SMS...");
+    $ig->directMessage($uId, "Esto fue corrigiendo una variable que se fue indefinida...");
 } catch (\Exception $e) {
     echo 'Something went wrong trying to post to '.$recip.': '.$e->getMessage()."\n";
 }
