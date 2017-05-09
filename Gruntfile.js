@@ -37,6 +37,24 @@ module.exports = function(grunt) {
       config.wdir + '/css/sweetalert.css');
   });
 
+  grunt.registerTask('copy-fawesome', function(){
+    var _c = grunt.file.copy;
+    _c(config.nmods + '/font-awesome/css/font-awesome.min.css', 
+      config.wdir + '/css/font-awesome.min.css');
+    _c(config.nmods + '/font-awesome/fonts/FontAwesome.otf', 
+      config.wdir + '/fonts/FontAwesome.otf');
+    _c(config.nmods + '/font-awesome/fonts/fontawesome-webfont.eot', 
+      config.wdir + '/fonts/fontawesome-webfont.eot');
+    _c(config.nmods + '/font-awesome/fonts/fontawesome-webfont.svg', 
+      config.wdir + '/fonts/fontawesome-webfont.svg');
+    _c(config.nmods + '/font-awesome/fonts/fontawesome-webfont.ttf', 
+      config.wdir + '/fonts/fontawesome-webfont.ttf');
+    _c(config.nmods + '/font-awesome/fonts/fontawesome-webfont.woff', 
+      config.wdir + '/fonts/fontawesome-webfont.woff');
+    _c(config.nmods + '/font-awesome/fonts/fontawesome-webfont.woff2', 
+      config.wdir + '/fonts/fontawesome-webfont.woff2');
+  });
+
   grunt.registerTask('copy-lodash', function(){
     var _c = grunt.file.copy;
     _c(config.nmods + '/lodash/lodash.min.js', 
