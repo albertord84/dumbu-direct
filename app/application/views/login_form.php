@@ -17,7 +17,7 @@ $this->load->helper('url');
 	<div id="login-overlay" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title" id="myModalLabel">Login to your Instagram</h4>
+        <h4 class="modal-title" id="myModalLabel">Login to your Instagram <i class="fa fa-instagram" aria-hidden="true"></i></h4>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -40,7 +40,7 @@ $this->load->helper('url');
             </div>
           </div>
           <div class="col-xs-12 col-sm-6">
-            <p class="lead">Sign up, <span class="text-success text-uppercase"><b>It's free!</b></span></p>
+            <p class="lead text-center">Sign up, <span class="text-success text-uppercase"><b>Try for free!</b></span></p>
             <ul class="list-unstyled" style="line-height: 2">
               <li><span class="fa fa-check text-success"></span> Send direct messages to other users!</li>
               <li><span class="fa fa-check text-success"></span> Post to possible customers!</li>
