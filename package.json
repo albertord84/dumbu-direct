@@ -5,11 +5,12 @@
   "author": "Yordano Pascual Rivera",
   "license": "ISC",
   "devDependencies": {
-  	"angular": "^1.6.3",
+    "angular": "^1.6.3",
     "angular-cookies": "^1.6.3",
     "angular-resource": "^1.6.3",
     "bootstrap": "^3.3.7",
     "countup.js": "^1.8.2",
+    "font-awesome": "^4.7.0",
     "grunt": "^1.0.1",
     "grunt-contrib-concat": "^1.0.1",
     "instagram-private-api": "^0.5.16",
