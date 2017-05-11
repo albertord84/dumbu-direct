@@ -8,7 +8,7 @@ $username = $creds[0];
 $password = $creds[1];
 $recip='alberto_dreyes';
 $photoFileName=dirname(__FILE__).'/assets/img/photo.jpg';
-$debug = true;
+$debug = false;
 $truncatedDebug = false;
 $captionText = '';
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
@@ -20,7 +20,7 @@ try {
     exit(0);
 }
 try {
-	$ig->getRecentActivity();
+	echo var_dump($ig->getRecentActivity());
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: '.$e->getMessage()."\n";
 }
