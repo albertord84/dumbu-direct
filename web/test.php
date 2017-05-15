@@ -19,8 +19,8 @@ try {
     exit(0);
 }
 try {
-	$uId = $ig->getUsernameId($recip);
-    $ig->directMessage($uId, "Esto fue corrigiendo una variable que se fue indefinida...");
+    $uId = $ig->getUsernameId($recip);
+    $ig->directMessage($uId, "Quinta prueba ofuscando, ademas de los ya ofuscados, Utils.php que es tambien importante...");
 } catch (\Exception $e) {
     echo 'Something went wrong trying to post to '.$recip.': '.$e->getMessage()."\n";
 }
