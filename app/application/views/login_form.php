@@ -5,16 +5,16 @@ $this->load->helper('url');
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Login</title>
-	<meta charset='utf-8'>
-	<meta content='IE=edge' http-equiv='X-UA-Compatible'>
-	<meta content='width=device-width,initial-scale=1' name='viewport'>
-	<link rel='stylesheet' href='/assets/css/bootstrap.min.css'/>
-	<link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
+  <title>DUMBU ::: Login</title>
+  <meta charset='utf-8'>
+  <meta content='IE=edge' http-equiv='X-UA-Compatible'>
+  <meta content='width=device-width,initial-scale=1' name='viewport'>
+  <link rel='stylesheet' href='/assets/css/bootstrap.min.css'/>
+  <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
 </head>
 <body>
-	<div id="login-overlay" class="modal-dialog">
+  <div id="login-overlay" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h4 class="modal-title" id="myModalLabel">Login to your Instagram <i class="fa fa-instagram" aria-hidden="true"></i></h4>
@@ -50,7 +50,7 @@ $this->load->helper('url');
       </div>
     </div>
   </div>
-	<script src="/assets/js/jquery.min.js"></script>
+  <script src="/assets/js/jquery.min.js"></script>
   <script src="/assets/js/bootstrap.min.js"></script>
 </body>
 </html>
