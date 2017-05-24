@@ -12,11 +12,17 @@ class Search extends CI_Controller {
    * Typeahead espera JSON con comillas no con comillas simples...
    */
   public function users($query) {
-    if ($query == 'johndoe') {
+    if (preg_match("/$query/", 'johndoe') == 1) {
       echo "[ { \"name\": \"John Doe\" }, { \"name\": \"Jenny Doe\" } ]";
+      return;
     }
-    else {
-      echo "[ { \"name\": \"John Doe 2\" }, { \"name\": \"Jenny Doe 2\" } ]";
+    if (preg_match("/$query/", 'abcdefg') == 1) {
+      echo "[ " . 
+        "{ \"name\": \"Arlen\" }, { \"name\": \"Bell\" }, " . 
+        "{ \"name\": \"Carl\" }, { \"name\": \"Dan\" }, " . 
+        "{ \"name\": \"Erskine\" }, { \"name\": \"Fabian\" }, " . 
+        "{ \"name\": \"Gary\" }, { \"name\": \"Gus\" } " . 
+      " ]";
     }
   }
 
