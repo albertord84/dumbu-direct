@@ -86,4 +86,12 @@ module.exports = function(grunt) {
       config.wdir + '/css/bootstrap-theme.min.css');
   });
 
+  grunt.registerTask('copy-typeahead', function(){
+    var _c = grunt.file.copy;
+    _c('bower_components/typeahead.js/dist/typeahead.bundle.min.js', 
+      config.wdir + '/js/typeahead.min.js');
+    _c('bower_components/handlebars.js/handlebars.min.js', 
+      config.wdir + '/js/handlebars.min.js');
+  });
+
 };
