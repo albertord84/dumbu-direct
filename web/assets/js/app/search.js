@@ -20,7 +20,8 @@ function _MainController($scope, $resource, $log) {
   $('#ref-prof').typeahead(null, {
     name: 'ig-profs',
     display: 'name',
-    source: igUsers
+    source: igUsers,
+    minLength: 3
   });
 
 }
