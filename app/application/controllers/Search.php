@@ -62,9 +62,9 @@ class Search extends CI_Controller {
 
     if ($query == 'johndoe') {
       echo "[ " . 
-        "{ \"name\": \"John Doe\" }, { \"name\": \"Johnny Doe\" }, " . 
-        "{ \"name\": \"Johnson Doe\" }, { \"name\": \"Johnna Doe\" }, " . 
-        "{ \"name\": \"Johns Doe\" }, { \"name\": \"Johnky Doe\" } " . 
+        "{ \"username\": \"John Doe\" }, { \"username\": \"Johnny Doe\" }, " . 
+        "{ \"username\": \"Johnson Doe\" }, { \"username\": \"Johnna Doe\" }, " . 
+        "{ \"username\": \"Johns Doe\" }, { \"username\": \"Johnky Doe\" } " . 
       " ]";
       return;
     }
@@ -80,9 +80,19 @@ class Search extends CI_Controller {
     }
 
     $ig->setUser($this->igCreds['username'], $this->igCreds['password']);
-    $ig->login();
+    try {
+      $ig->login();
+    }
+    catch (\Exception $ex) {
+      die('Error while logging to Inst@g: ' . $ex->getMessage());
+    }
 
-    echo "OK";
+    try {
+      echo json_encode($ig->searchUsers($query)->users);
+      return;
+    } catch (Exception $e) {
+      die('Error while getting profiles list: ' . $ex->getMessage());
+    }
   }
 
   // Posibles metodos de la API a usar aqui:

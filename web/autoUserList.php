@@ -36,7 +36,7 @@ try {
 }
 
 try {
- 	echo json_encode($ig->searchUsers('yordano'));
+ 	echo json_encode($ig->searchUsers('yordano')->users);
 } catch (\Exception $e) {
   echo 'Something went wrong trying to get users list: '.$e->getMessage()."\n";
   exit(1);

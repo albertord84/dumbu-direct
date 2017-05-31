@@ -8,18 +8,20 @@ angular.module('DumbuDirectSearch', [ 'ngResource' ])
 function _MainController($scope, $resource, $log) {
   
   var igUsers = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
-    prefetch: 'users/johndoe',
+    prefetch: '/index.php/users/johndoe',
     remote: {
-      url: 'users/%QUERY',
+      url: '/index.php/users/%QUERY',
       wildcard: '%QUERY'
     }
   });
 
   $('#ref-prof').typeahead(null, {
     name: 'ig-profs',
-    display: 'name',
+    hint: true,
+    highlight: true,
+    display: 'username',
     source: igUsers,
     minLength: 3
   });
