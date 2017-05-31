@@ -30,18 +30,23 @@ class Search extends CI_Controller {
 
   private function loadIgCreds() {
 
-    $igCredsFile = dirname(__FILE__) . '/../config/instagram_credentials';
+    try {
+      $igCredsFile = dirname(__FILE__) . '/../config/instagram_credentials';
 
-    if (!file_exists($igCredsFile)) {
-      show_error('Access credentials file, was not found', 500);
-      return;
+      if (!file_exists($igCredsFile)) {
+        show_error('Access credentials file, was not found', 500);
+        return;
+      }
+
+      $_creds = file_get_contents($igCredsFile);
+      $creds = explode(':', $_creds);
+
+      $this->igCreds['username'] = $creds[0];
+      $this->igCreds['password'] = $creds[1];
+
+    } catch (Exception $ex) {
+      die('Error while getting Inst@g credentials: ' . $ex->getMessage());
     }
-
-    $_creds = file_get_contents($igCredsFile);
-    $creds = explode(':', $_creds);
-
-    $this->igCreds['username'] = $creds[0];
-    $this->igCreds['password'] = $creds[1];
 
   }
 
