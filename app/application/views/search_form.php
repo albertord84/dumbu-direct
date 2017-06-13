@@ -16,7 +16,7 @@ $this->load->helper('url');
 </head>
 <body data-ng-controller="MainController">
 	<div class="container" style="margin-top: 8%;">
-    <div class="col-md-6 col-md-offset-3">     
+    <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">     
       <div class="row">
         <div id="logo" class="text-center">
           <h1>DUMBU</h1>
@@ -26,7 +26,7 @@ $this->load->helper('url');
           <div class="form-group">
             <div class="input-group">
               <input id="ref-prof" class="form-control" type="text" name="search" 
-                     placeholder="Reference profile..." class="typeahead" 
+                     placeholder="Select reference profiles..." class="typeahead" 
                      required />
               <span class="input-group-btn">
                 <button class="btn btn-success" type="submit">
@@ -36,7 +36,28 @@ $this->load->helper('url');
             </div>
           </div>
         </form>
-      </div>            
+      </div>
+      <div class="row selected-profs">
+        <div class="col-xs-12 col-sm-6 col-md-6"
+             data-ng-repeat="profile in selectedProfs">
+          <div class="card">
+            <div class="text-center">
+              <img class="card-img-top img-circle" 
+                   data-ng-src="{{profile.profPic}}"
+                   alt="Profile photo">
+            </div>
+            <div class="card-block">
+              <h4 class="card-title" data-ng-bind="profile.username"></h4>
+              <div class="card-text text-muted" data-ng-bind="profile.fullName">
+              </div>
+            </div>
+            <div class="card-footer">
+              <span class="float-right" data-ng-bind="profile.byline"></span>
+              <span><i class=""></i></span>
+            </div>
+          </div>       
+        </div>
+      </div>
     </div>
   </div>
   <script src="/assets/js/jquery.min.js"></script>
