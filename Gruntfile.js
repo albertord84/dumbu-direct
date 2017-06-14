@@ -31,10 +31,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('copy-swal', function(){
     var _c = grunt.file.copy;
-    _c(config.nmods + '/sweetalert/dist/sweetalert.min.js', 
+    _c(config.nmods + '/sweetalert2/dist/sweetalert2.min.js', 
       config.wdir + '/js/sweetalert.min.js');
-    _c(config.nmods + '/sweetalert/dist/sweetalert.css', 
+    _c(config.nmods + '/sweetalert2/dist/sweetalert2.css', 
       config.wdir + '/css/sweetalert.css');
+    _c(config.nmods + '/sweetalert2/dist/core.min.js', 
+      config.wdir + '/js/core.min.js');
   });
 
   grunt.registerTask('copy-fawesome', function(){

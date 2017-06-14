@@ -12,6 +12,7 @@ $this->load->helper('url');
 	<link rel='stylesheet' href='/assets/css/bootstrap.min.css'/>
 	<link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/sweetalert.css">
   <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
 </head>
 <body data-ng-controller="MainController">
@@ -42,18 +43,22 @@ $this->load->helper('url');
       <div class="row selected-profs">
         <div data-ng-repeat="profile in selectedProfs">
           <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-              <div class="text-center">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <button type="button" class="close" 
+                        data-ng-click="removeSelectedProfile($event)"
+                        aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
                 <img class="card-img-top" alt="Profile photo" 
                      data-ng-src="{{profile.profPic}}">
               </div>
-              <div class="card-block text-center">
-                <h4 class="card-title" data-ng-bind="profile.username"></h4>
-                <div class="card-text text-muted" 
+              <div class="panel-body text-center">
+                <h4 class="" data-ng-bind="profile.username"></h4>
+                <div class="text-muted" 
                      data-ng-bind="profile.fullName | cutFullName">
                 </div>
               </div>
-              <div class="card-footer text-center">
+              <div class="panel-footer text-center text-muted small">
                 <span data-ng-bind="profile.byline"></span>
               </div>
             </div>
@@ -68,6 +73,8 @@ $this->load->helper('url');
   <script src="/assets/js/bootstrap.min.js"></script>
   <script src="/assets/js/typeahead.min.js"></script>
   <script src="/assets/js/handlebars.min.js"></script>
+  <script src="/assets/js/sweetalert.min.js"></script>
+  <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
   <script src="/assets/js/app/search.js"></script>
 </body>
 </html>
