@@ -15,41 +15,42 @@ $this->load->helper('url');
   <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
 </head>
 <body data-ng-controller="MainController">
-	<div class="container" style="margin-top: 8%;">
-    <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">     
+	<div class="container">
+    <div class="col-xs-12 col-sm-12 col-md-12">     
       <div class="row">
-        <div id="logo" class="text-center">
-          <h1>DUMBU</h1>
-          <p>Get more real followers</p>
-        </div>
-        <form role="form" id="search-form">
-          <div class="form-group">
-            <div class="input-group">
-              <input id="ref-prof" class="form-control" type="text" name="search" 
-                     placeholder="Select reference profiles..." class="typeahead" 
-                     required />
-              <span class="input-group-btn">
-                <button class="btn btn-success" type="submit">
-                  <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
-                </button>
-              </span>
-            </div>
+        <div class="form-container">
+          <div id="logo" class="text-center">
+            <h1>DUMBU</h1>
+            <p>Get more real followers</p>
           </div>
-        </form>
+          <form role="form" id="search-form">
+            <div class="form-group">
+              <div class="input-group">
+                <input id="ref-prof" class="form-control" type="text" name="search" 
+                       placeholder="Select reference profiles..." class="typeahead" 
+                       required />
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="submit">
+                    <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
       <div class="row selected-profs">
         <div data-ng-repeat="profile in selectedProfs">
-          <div class="col-xs-12 col-sm-6">
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
             <div class="card">
               <div class="text-center">
-                <img class="card-img-top" 
-                     data-ng-src="{{profile.profPic}}"
-                     alt="Profile photo">
+                <img class="card-img-top" alt="Profile photo" 
+                     data-ng-src="{{profile.profPic}}">
               </div>
               <div class="card-block text-center">
                 <h4 class="card-title" data-ng-bind="profile.username"></h4>
                 <div class="card-text text-muted" 
-                     data-ng-bind="profile.fullName">
+                     data-ng-bind="profile.fullName | cutFullName">
                 </div>
               </div>
               <div class="card-footer text-center">
@@ -57,7 +58,6 @@ $this->load->helper('url');
               </div>
             </div>
           </div>
-          <div class="clearfix visible-sm" ng-if="($index + 1) % 2 == 0"></div>
         </div>
       </div>
     </div>

@@ -48,6 +48,15 @@
         if (console) console.log($scope.selectedProfs.length + " profiles selected");
     };
 
+    AppDumbu.filter('cutFullName', function() {
+        return function(name) {
+            if (new String(name).length > 25)
+                return new String(name).substring(0, 23) + '...';
+            else
+                return name;
+        };
+    });
+
     AppDumbu.controller('MainController', [ 
         '$scope', '$resource', '$log', 
         AppDumbu.MainController 

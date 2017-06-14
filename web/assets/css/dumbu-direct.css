@@ -1,3 +1,6 @@
+body .container {
+  margin-top: 5%;
+}
 
 #logo {
   color: #666;
@@ -5,11 +8,11 @@
 }
 
 #logo h1 {
-    font-size: 60px;
-    text-shadow: 1px 2px 3px #999;
-    font-family: Roboto, sans-serif;
-    font-weight: 700;
-    letter-spacing: -1px;
+  font-size: 60px;
+  text-shadow: 1px 2px 3px #999;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
 #logo p{
@@ -18,7 +21,9 @@
 }
 
 #search-form {
-  max-width: 800px;
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 #search-form >.form-group >.input-group > .form-control {
@@ -80,9 +85,9 @@
   background-color: #fff;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-border-radius: 8px;
-     -moz-border-radius: 8px;
-          border-radius: 8px;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
   -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
      -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
           box-shadow: 0 5px 10px rgba(0,0,0,.2);
@@ -123,6 +128,7 @@
   box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
   margin-bottom: 10px;
   max-width: 270px;
+  max-height: 300px;
   border-radius: 5px;
   margin-left: auto;
   margin-right: auto;
