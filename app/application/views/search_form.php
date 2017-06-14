@@ -42,24 +42,23 @@ $this->load->helper('url');
           <div class="col-xs-12 col-sm-6">
             <div class="card">
               <div class="text-center">
-                <img class="card-img-top img-circle" 
+                <img class="card-img-top" 
                      data-ng-src="{{profile.profPic}}"
                      alt="Profile photo">
               </div>
-              <div class="card-block">
+              <div class="card-block text-center">
                 <h4 class="card-title" data-ng-bind="profile.username"></h4>
                 <div class="card-text text-muted" 
                      data-ng-bind="profile.fullName">
                 </div>
               </div>
-              <div class="card-footer">
-                <span class="float-right" data-ng-bind="profile.byline"></span>
-                <span><i class=""></i></span>
+              <div class="card-footer text-center">
+                <span data-ng-bind="profile.byline"></span>
               </div>
             </div>
-            <div class="clearfix visible-xs" ng-if="($index + 1) % 1 == 0"></div>
-            <div class="clearfix visible-sm" ng-if="($index + 1) % 6 == 0"></div>
           </div>
+          <div class="clearfix visible-xs" ng-if="($index + 1) % 1 == 0"></div>
+          <div class="clearfix visible-sm" ng-if="($index + 1) % 2 == 0"></div>
         </div>
       </div>
     </div>
