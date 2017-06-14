@@ -57,7 +57,6 @@ $this->load->helper('url');
               </div>
             </div>
           </div>
-          <div class="clearfix visible-xs" ng-if="($index + 1) % 1 == 0"></div>
           <div class="clearfix visible-sm" ng-if="($index + 1) % 2 == 0"></div>
         </div>
       </div>
