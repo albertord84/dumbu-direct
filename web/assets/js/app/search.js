@@ -65,15 +65,28 @@
     };
 
     AppDumbu.selectProfile = function _selectProfile($scope, profile) {
+        if (!_.isUndefined(alreadySelected)) {
+          swal({
+              title: 'Already choosen',
+              text: 'You have already choosen this profile. Choose a different one.',
+              type: 'info',
+              confirmButtonText: 'OK'
+          });
+          return;
+        }
         if ($scope.selectedProfs.length > 4) {
           swal({
-              title: 'Error',
+              title: 'Profile count reached',
               text: 'You can not choose more than 5 profiles',
               type: 'error',
               confirmButtonText: 'OK'
           });
           return;
         }
+        var alreadySelected = _.find($scope.selectedProfs, function _findAlreadySelected(_profile)
+        { 
+            return _profile.pk == profile.pk; 
+        });
         if (console) console.log("selected profile " + profile.username);
         $scope.selectedProfs.push({
             "pk": profile.pk,
