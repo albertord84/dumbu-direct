@@ -13,12 +13,6 @@
             profPic:"http://ig-s-d-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-19/s150x150/14294715_1775264632730839_1178654801_a.jpg",
             username:"gatorade"
         },{
-            byline:"10.5k followers",
-            fullName:"dimples girl 🌙",
-            pk:"1479545165",
-            profPic:"http://ig-s-a-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-19/s150x150/18722597_132383467327192_1643081473282015232_a.jpg",
-            username:"danadelirium"
-        },{
             byline:"142k followers",
             fullName:"IBM",
             pk:"589638973",
