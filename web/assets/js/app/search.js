@@ -1,7 +1,6 @@
 'use strict';
 
-(function(){
-
+//(function(){
 
     var AppDumbu = angular.module('DumbuDirectSearch', [ 'ngResource' ]);
 
@@ -65,10 +64,15 @@
     };
 
     AppDumbu.selectProfile = function _selectProfile($scope, profile) {
+        var alreadySelected = _.find($scope.selectedProfs, function _findAlreadySelected(_profile)
+        { 
+            return _profile.pk == profile.pk; 
+        });
         if (!_.isUndefined(alreadySelected)) {
           swal({
               title: 'Already choosen',
-              text: 'You have already choosen this profile. Choose a different one.',
+              html: 'You have already choosen this profile.<br>' + 
+                'Choose a different one.',
               type: 'info',
               confirmButtonText: 'OK'
           });
@@ -83,10 +87,6 @@
           });
           return;
         }
-        var alreadySelected = _.find($scope.selectedProfs, function _findAlreadySelected(_profile)
-        { 
-            return _profile.pk == profile.pk; 
-        });
         if (console) console.log("selected profile " + profile.username);
         $scope.selectedProfs.push({
             "pk": profile.pk,
@@ -103,13 +103,22 @@
         var selectedProfile = angular.element($event.target)
             .scope().profile;
         
-        // Eliminar del modelo de datos en el cliente
-        _.remove($scope.selectedProfs, function(profile){
-            return profile.pk == selectedProfile.pk;
-        });
+        if (console) console.log('removing profile ' + selectedProfile.pk);
 
-        // Eliminar tambien de la lista creada en el servidor
-        // ...
+        var panelParent = $($event.target).parents('.panel').parent();
+        
+        // Dar efecto de que se borro el perfil
+        $(panelParent).fadeOut(800, function _afterFadeRemovedProfile(){
+            // Eliminar del modelo de datos en el cliente
+            _.remove($scope.selectedProfs, function(profile){
+                return profile.pk == selectedProfile.pk;
+            });
+
+            // Eliminar tambien de la lista creada en el servidor
+            // ...
+
+            if (console) console.log('profile ' + selectedProfile.pk + ' has been removed from list');
+        });
     };
 
     AppDumbu.filter('cutFullName', function() {
@@ -129,4 +138,4 @@
         AppDumbu.MainController 
     ]);
     
-})();
+//})();
