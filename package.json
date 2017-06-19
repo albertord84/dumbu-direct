@@ -6,8 +6,9 @@
   "license": "ISC",
   "devDependencies": {
     "angular": "^1.6.3",
-    "angular-cookies": "^1.6.3",
+    "angular-cookies": "^1.6.4",
     "angular-resource": "^1.6.3",
+    "angular-sanitize": "^1.6.4",
     "bootstrap": "^3.3.7",
     "countup.js": "^1.8.2",
     "font-awesome": "^4.7.0",
