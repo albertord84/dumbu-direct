@@ -17,15 +17,15 @@ $this->load->helper('url');
 </head>
 <body data-ng-controller="MainController">
 	<div class="container">
-    <div class="compose-direct pull-right bg-white"
-         data-ng-if="selectedProfs.length != 0">
-      <a class="btn btn-default btn-lg" href role="button" 
-         data-ng-click="composeDirect()">
-        <span class="glyphicon glyphicon-pencil"></span>
-      </a>
-    </div>
     <div class="col-xs-12 col-sm-12 col-md-12">     
       <div class="row">
+        <div class="compose-direct bg-white"
+             data-ng-if="selectedProfs.length != 0">
+          <a class="btn btn-default btn-lg" href role="button" 
+             data-ng-click="composeDirect()">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </div>
         <div class="form-container">
           <div id="logo" class="text-center">
             <h1>DUMBU</h1>

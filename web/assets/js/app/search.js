@@ -60,7 +60,7 @@
                 AppDumbu.selectProfile($scope, datum);
             }
         });
-        
+
     };
 
     AppDumbu.selectProfile = function _selectProfile($scope, profile) {
