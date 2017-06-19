@@ -53,5 +53,6 @@ $route['default_controller'] = 'search';
 $route['404_override'] = 'errors';
 $route['login'] = 'login';
 $route['search'] = 'search';
+$route['compose'] = 'compose';
 $route['users/(:any)'] = 'search/users/$1';
 $route['translate_uri_dashes'] = FALSE;
