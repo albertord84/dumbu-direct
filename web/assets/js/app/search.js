@@ -135,11 +135,43 @@
         $cookies.put('pks', pks);
         $log.log($cookies.get('pks'));
         // Redirigir hacia la pagina de componer el direct message
-
+        var frm = AppDumbu.getRedirForm({
+            action: '/index.php/compose',
+            method: 'post',
+            inputs: {
+                pks: pks
+            }
+        });
+        frm.submit();
     };
 
     AppDumbu.getRedirForm = function _getRedirForm(options) {
-        
+        var uid = _.uniqueId('frm_');
+        var frm = document.createElement('FORM');
+        $(frm).attr('id', uid);
+        if (_.isPlainObject(options)) {
+            if (!_.has(options, 'inputs')) {
+                $(frm).attr(options)
+            }
+            else {
+                var inputs = _.keys(options.inputs);
+                for (var i = 0; i < inputs.length; i++) {
+                    var inputName = inputs[i];
+                    var inp = document.createElement('input');
+                    $(inp).attr('type', 'hidden');
+                    $(inp).attr('name', inputName);
+                    $(inp).attr('value', options.inputs[ inputName ]);
+                    $(frm).append(inp);
+                }
+                var attrs = _.keys(options);
+                for (var i = 0; i < attrs.length; i++) {
+                    var v = _.get(options, attrs[i]);
+                    $(frm).attr(attrs[i], v);
+                }
+            }
+        }
+        $(document.body).append(frm);
+        return $(frm);
     };
 
     AppDumbu.filter('cutFullName', function() {
