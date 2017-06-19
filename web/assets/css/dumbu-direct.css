@@ -136,3 +136,14 @@ body .container {
   background-color: transparent;
 }
 
+.compose-direct {
+  top: 10px;
+  right: 10px;
+  float: right;
+  position: fixed;
+}
+
+.bg-white {
+  background: none;
+  background-color: white;
+}

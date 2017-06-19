@@ -6,6 +6,8 @@
 
     AppDumbu.MainController = function _MainController($scope, $resource, $log) {
 
+        AppDumbu.mainCtrlScope = $scope;
+
         $scope.selectedProfs = [{
             byline:"1.0m followers",
             fullName:"Gatorade",
@@ -28,6 +30,10 @@
 
         $scope.removeSelectedProfile = function _removeSelectedProfile($event) {
             AppDumbu.removeSelectedProfile($event, $scope);
+        };
+
+        $scope.composeDirect = function _composeDirect() {
+            AppDumbu.composeDirect($scope);
         };
         
         var igUsers = new Bloodhound({
@@ -107,12 +113,17 @@
             _.remove($scope.selectedProfs, function(profile){
                 return profile.pk == selectedProfile.pk;
             });
+            $scope.$digest();
 
             // Eliminar tambien de la lista creada en el servidor
             // ...
 
             if (console) console.log('profile ' + selectedProfile.pk + ' has been removed from list');
         });
+    };
+
+    AppDumbu.composeDirect = function _composeDirect($scope) {
+
     };
 
     AppDumbu.filter('cutFullName', function() {
