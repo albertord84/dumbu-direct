@@ -21,6 +21,10 @@ $this->load->helper('url');
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+            <div id="logo" class="text-center">
+              <h1>DUMBU</h1>
+              <p><a href="/index.php/search"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;</a>Appeal the attention of previously selected profiles...</p>
+            </div>
             <div class="span4 well">
               <form accept-charset="UTF-8" action="" method="POST">
                 <div class="row">
@@ -50,6 +54,7 @@ $this->load->helper('url');
   <script src="/assets/js/bootstrap.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
+  <script src="/assets/js/jquery.pulsate.min.js"></script>
   <script src="/assets/js/app/compose.js"></script>
 </body>
 </html>
