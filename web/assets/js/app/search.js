@@ -2,9 +2,11 @@
 
 //(function(){
 
-    var AppDumbu = angular.module('DumbuDirectSearch', [ 'ngResource' ]);
+    var AppDumbu = angular.module('DumbuDirectSearch', [ 
+        'ngResource', 'ngCookies'
+    ]);
 
-    AppDumbu.MainController = function _MainController($scope, $resource, $log) {
+    AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies) {
 
         AppDumbu.mainCtrlScope = $scope;
 
@@ -33,7 +35,7 @@
         };
 
         $scope.composeDirect = function _composeDirect() {
-            AppDumbu.composeDirect($scope);
+            AppDumbu.composeDirect($scope, $cookies, $log);
         };
         
         var igUsers = new Bloodhound({
@@ -122,8 +124,22 @@
         });
     };
 
-    AppDumbu.composeDirect = function _composeDirect($scope) {
+    AppDumbu.composeDirect = function _composeDirect($scope, $cookies, $log) {
+        // Salvar ids de los perfiles seleccionados
+        var pks = [];
+        for(var i = 0; i < $scope.selectedProfs.length; i++){
+            var profile = $scope.selectedProfs[i];
+            pks.push(profile.pk);
+        };
+        var pks = pks.join();
+        $cookies.put('pks', pks);
+        $log.log($cookies.get('pks'));
+        // Redirigir hacia la pagina de componer el direct message
 
+    };
+
+    AppDumbu.getRedirForm = function _getRedirForm(options) {
+        
     };
 
     AppDumbu.filter('cutFullName', function() {
@@ -139,7 +155,7 @@
     });
 
     AppDumbu.controller('MainController', [ 
-        '$scope', '$resource', '$log', 
+        '$scope', '$resource', '$log', '$cookies', 
         AppDumbu.MainController 
     ]);
     
