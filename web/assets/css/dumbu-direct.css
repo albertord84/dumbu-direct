@@ -152,3 +152,8 @@ body .container {
 .pos-fixed {
   position: fixed;
 }
+
+#logo p a, #logo p a:hover, #logo p a:link {
+  color: inherit;
+  text-decoration: none;
+}
