@@ -21,8 +21,12 @@ $this->load->helper('url');
       <div class="row">
         <div class="compose-direct bg-white"
              data-ng-if="selectedProfs.length != 0">
-          <a class="btn btn-default btn-lg" href role="button" 
+          <a class="btn btn-default btn-lg hidden-xs" href role="button" 
              data-ng-click="composeDirect()">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <a class="btn btn-default btn-xs hidden-sm hidden-md hidden-lg" 
+             href role="button" data-ng-click="composeDirect()">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
         </div>
