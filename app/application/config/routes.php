@@ -52,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'search';
 $route['404_override'] = 'errors';
 $route['login'] = 'login';
+$route['auth/user'] = 'login/auth';
 $route['search'] = 'search';
 $route['compose'] = 'compose';
 $route['users/(:any)'] = 'search/users/$1';

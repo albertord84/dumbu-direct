@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->helper('url');
 ?>
 <!DOCTYPE html>
-<html>
+<html data-ng-app="DumbuDirectLogin">
 <head>
   <title>DUMBU ::: Login</title>
   <meta charset='utf-8'>
@@ -12,8 +12,10 @@ $this->load->helper('url');
   <link rel='stylesheet' href='/assets/css/bootstrap.min.css'/>
   <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/sweetalert.css">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
 </head>
-<body>
+<body data-ng-controller="MainController">
   <div id="login-overlay" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header text-center">
@@ -52,5 +54,10 @@ $this->load->helper('url');
   </div>
   <script src="/assets/js/jquery.min.js"></script>
   <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/angular.js"></script>
+  <script src="/assets/js/lodash.min.js"></script>
+  <script src="/assets/js/sweetalert.min.js"></script>
+  <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
+  <script src="/assets/js/app/login.js"></script> <!-- required by sweetalert -->
 </body>
 </html>
