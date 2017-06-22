@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->helper('url');
+$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="DumbuDirectLogin">
@@ -13,7 +14,7 @@ $this->load->helper('url');
   <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/sweetalert.css">
-  <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo $uuid; ?>">
 </head>
 <body data-ng-controller="MainController">
   <div id="login-overlay" class="modal-dialog">
@@ -26,18 +27,27 @@ $this->load->helper('url');
           <div class="col-xs-12 col-sm-6">
             <div class="well">
               <form id="loginForm" method="POST" action="/login/" novalidate="novalidate">
-                <div class="form-group">
-                  <label for="username" class="control-label">Username</label>
-                  <input type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
-                  <span class="help-block"></span>
-                </div>
-                <div class="form-group">
-                  <label for="password" class="control-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" value="" required="" title="Please enter your password">
-                  <span class="help-block"></span>
-                </div>
-                <div id="loginErrorMsg" class="alert alert-error hide">Username/password incorrect!</div>
-                <button type="submit" class="btn btn-success btn-block">Log in</button>
+                <fieldset data-ng-disabled="authenticating">
+                  <div class="form-group">
+                    <label for="username" class="control-label">Username</label>
+                    <input type="text" class="form-control" id="username"
+                           name="username" value="" required="" autocomplete="off"
+                           data-ng-model="username" title="Please enter you username"
+                           placeholder="example@gmail.com">
+                    <span class="help-block"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="control-label">Password</label>
+                    <input type="password" class="form-control" id="password"
+                           name="password" value="" required="" autocomplete="off"
+                           data-ng-model="password" title="Please enter your password">
+                    <span class="help-block"></span>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-block"
+                          data-ng-click="auth()"
+                          data-ng-disabled="!password || !username">Log in</button>
+                  <div class="alert alert-error" data-ng-if="loginError"></div>
+                </fieldset>
               </form>
             </div>
           </div>
@@ -58,6 +68,7 @@ $this->load->helper('url');
   <script src="/assets/js/lodash.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
-  <script src="/assets/js/app/login.js"></script> <!-- required by sweetalert -->
+  <script src="/assets/js/app/login.js?<?php echo $uuid; ?>"></script> <!-- required by sweetalert -->
+  <script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>
