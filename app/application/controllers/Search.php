@@ -4,16 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Search extends CI_Controller {
 
   private $igCreds = array(
-    'username' => '', 
+    'username' => '',
     'password' => ''
   );
 
   private $netProxy = '';
 
   private function useProxy() {
-    
+
     $netProxyFile = dirname(__FILE__) . '/../config/net_proxy';
-    
+
     if (file_exists($netProxyFile)) {
       $_netProxy = file_get_contents($netProxyFile);
       if (empty($_netProxy) || trim($_netProxy)=='') {
@@ -24,7 +24,7 @@ class Search extends CI_Controller {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -52,24 +52,33 @@ class Search extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('search_form');
+    $this->load->library('session');
+    $user_id = array_key_exists('user_id', $this->session->userdata());
+    $data['session'] = $this->session;
+
+		if (!$user_id) {
+			$this->load->view('login_form', $data);
+			return;
+		}
+
+		$this->load->view('search_form', $data);
 	}
 
   /**
    * Typeahead espera JSON con comillas no con comillas simples...
    */
   public function users($query) {
-    
+
     // Para el acceso a la API de Instagram
     set_time_limit(0);
     date_default_timezone_set('UTC');
     require __DIR__.'/../../../vendor/autoload.php';
 
     if ($query == 'johndoe') {
-      echo "[ " . 
-        "{ \"username\": \"John Doe\" }, { \"username\": \"Johnny Doe\" }, " . 
-        "{ \"username\": \"Johnson Doe\" }, { \"username\": \"Johnna Doe\" }, " . 
-        "{ \"username\": \"Johns Doe\" }, { \"username\": \"Johnky Doe\" } " . 
+      echo "[ " .
+        "{ \"username\": \"John Doe\" }, { \"username\": \"Johnny Doe\" }, " .
+        "{ \"username\": \"Johnson Doe\" }, { \"username\": \"Johnna Doe\" }, " .
+        "{ \"username\": \"Johns Doe\" }, { \"username\": \"Johnky Doe\" } " .
       " ]";
       return;
     }
