@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->helper('url');
+$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="DumbuDirectSearch">
@@ -13,19 +14,26 @@ $this->load->helper('url');
 	<link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/sweetalert.css">
-  <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo $uuid; ?>">
 </head>
 <body data-ng-controller="MainController">
-	<div class="container">
-    <div class="col-xs-12 col-sm-12 col-md-12">     
+	<div id="search-container" class="container">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav navbar-right">
+	        <li><a href data-ng-click="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+	      </ul>
+			</div>
+		</nav>
+    <div class="col-xs-12 col-sm-12 col-md-12">
       <div class="row">
         <div class="compose-direct bg-white"
              data-ng-if="selectedProfs.length != 0">
-          <a class="btn btn-default btn-lg hidden-xs" href role="button" 
+          <a class="btn btn-default btn-lg hidden-xs" href role="button"
              data-ng-click="composeDirect()">
-            <span class="glyphicon glyphicon-pencil"></span>
+            <i class="fa fa-paper-plane" aria-hidden="true"></i>
           </a>
-          <a class="btn btn-default btn-xs hidden-sm hidden-md hidden-lg" 
+          <a class="btn btn-default btn-xs hidden-sm hidden-md hidden-lg"
              href role="button" data-ng-click="composeDirect()">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
@@ -38,8 +46,8 @@ $this->load->helper('url');
           <form role="form" id="search-form">
             <div class="form-group">
               <div class="input-group">
-                <input id="ref-prof" class="form-control" type="text" name="search" 
-                       placeholder="Select reference profiles..." class="typeahead" 
+                <input id="ref-prof" class="form-control" type="text" name="search"
+                       placeholder="Select reference profiles..." class="typeahead"
                        required />
                 <span class="input-group-btn">
                   <button class="btn btn-success" type="submit">
@@ -56,16 +64,16 @@ $this->load->helper('url');
           <div class="col-xs-10 col-xs-offset-1 col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1">
             <div class="panel panel-default">
               <div class="panel-heading text-center">
-                <button type="button" class="close" 
+                <button type="button" class="close"
                         data-ng-click="removeSelectedProfile($event)"
                         aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <img class="card-img-top" alt="Profile photo" 
+                <img class="card-img-top" alt="Profile photo"
                      data-ng-src="{{profile.profPic}}">
               </div>
               <div class="panel-body text-center">
                 <h4 class="" data-ng-bind="profile.username"></h4>
-                <div class="text-muted" 
+                <div class="text-muted"
                      data-ng-bind="profile.fullName | cutFullName">
                 </div>
               </div>
@@ -86,6 +94,7 @@ $this->load->helper('url');
   <script src="/assets/js/handlebars.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
-  <script src="/assets/js/app/search.js"></script>
+  <script src="/assets/js/app/search.js?<?php echo $uuid; ?>"></script>
+	<script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>
