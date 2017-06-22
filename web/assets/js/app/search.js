@@ -2,7 +2,7 @@
 
 //(function(){
 
-    var AppDumbu = angular.module('DumbuDirectSearch', [ 
+    var AppDumbu = angular.module('DumbuDirectSearch', [
         'ngResource', 'ngCookies'
     ]);
 
@@ -37,7 +37,11 @@
         $scope.composeDirect = function _composeDirect() {
             AppDumbu.composeDirect($scope, $cookies, $log);
         };
-        
+
+        $scope.logout = function _logout() {
+            document.location.href = '/index.php/logout';
+        };
+
         var igUsers = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -47,7 +51,7 @@
                 wildcard: '%QUERY'
             }
         });
-        
+
         $('#ref-prof').typeahead(null, {
             name: 'ig-profs',
             hint: true,
@@ -67,13 +71,13 @@
 
     AppDumbu.selectProfile = function _selectProfile($scope, profile) {
         var alreadySelected = _.find($scope.selectedProfs, function _findAlreadySelected(_profile)
-        { 
-            return _profile.pk == profile.pk; 
+        {
+            return _profile.pk == profile.pk;
         });
         if (!_.isUndefined(alreadySelected)) {
           swal({
               title: 'Already choosen',
-              html: 'You have already choosen this profile.<br>' + 
+              html: 'You have already choosen this profile.<br>' +
                 'Choose a different one.',
               type: 'info',
               confirmButtonText: 'OK'
@@ -104,11 +108,11 @@
     AppDumbu.removeSelectedProfile = function _removeSelectedProfile($event, $scope) {
         var selectedProfile = angular.element($event.target)
             .scope().profile;
-        
+
         if (console) console.log('removing profile ' + selectedProfile.pk);
 
         var panelParent = $($event.target).parents('.panel').parent();
-        
+
         // Dar efecto de que se borro el perfil
         $(panelParent).fadeOut(800, function _afterFadeRemovedProfile(){
             // Eliminar del modelo de datos en el cliente
@@ -186,9 +190,9 @@
         };
     });
 
-    AppDumbu.controller('MainController', [ 
-        '$scope', '$resource', '$log', '$cookies', 
-        AppDumbu.MainController 
+    AppDumbu.controller('MainController', [
+        '$scope', '$resource', '$log', '$cookies',
+        AppDumbu.MainController
     ]);
-    
+
 //})();
