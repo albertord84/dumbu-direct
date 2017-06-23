@@ -25,11 +25,11 @@
           password: $scope.password
         }).then(function _afterSendCreds(response){
           if (response.data.status == 'OK') {
-            setTimeout(function _wait2Secs(){
+            setTimeout(function _wait(){
               $scope.authenticating = false;
               $scope.$digest();
-              document.location.href = '/index.php/search';
-            }, 2000);
+              $('#loginForm').attr('action', '/index.php/search').submit();
+            }, 1000);
           }
           else {
             $scope.authenticating = false;
