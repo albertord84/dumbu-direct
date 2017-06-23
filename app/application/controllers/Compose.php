@@ -53,20 +53,15 @@ class Compose extends CI_Controller {
   public function index()
   {
     // Get the selected profile ids
-    $pks = !array_key_exists('pks', $_POST) ? NULL : $_POST['pks'];
+    $pks = !isset($_POST['pks']) ? NULL : $_POST['pks'];
     if ($pks == NULL) {
-      show_error('You must select some profile references first...', 500);
+      $this->load->view('login_form', array('session' => $this->session->userdata()));
       return;
     }
-    // For now, store the selected pks in the session...
-    // Later on, will be stored in the DB
-    $this->load->library('session');
     $this->session->set_userdata('pks', $pks);
-    // Save to an external file the session data
-    // to be accesible from the cron task
-    $s_id = $this->session->userdata('session_id');
-    echo var_dump($this->session);
-    $this->load->view('compose');
+    $user_id = $this->session->userdata('user_id');
+    $data['session'] = $this->session->userdata();
+    $this->load->view('compose', $data);
   }
 
 }

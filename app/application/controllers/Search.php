@@ -10,6 +10,19 @@ class Search extends CI_Controller {
 
   private $netProxy = '';
 
+  public function index()
+	{
+    $user_id = $this->session->userdata('user_id');
+		$data['session'] = $this->session->userdata();
+
+		if ($user_id == NULL) {
+			$this->load->view('login_form', $data);
+			return;
+		}
+
+		$this->load->view('search_form', $data);
+	}
+
   private function useProxy() {
 
     $netProxyFile = dirname(__FILE__) . '/../config/net_proxy';
@@ -50,20 +63,7 @@ class Search extends CI_Controller {
 
   }
 
-	public function index()
-	{
-    $user_id = array_key_exists('user_id', $this->session->userdata());
-    $data['session'] = $this->session;
-
-		if (!$user_id) {
-			$this->load->view('login_form', $data);
-			return;
-		}
-
-		$this->load->view('search_form', $data);
-	}
-
-  /**
+	/**
    * Typeahead espera JSON con comillas no con comillas simples...
    */
   public function users($query) {

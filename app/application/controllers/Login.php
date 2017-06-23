@@ -5,10 +5,10 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-    $user_id = array_key_exists('user_id', $this->session->userdata());
-		$data['session'] = $this->session;
+    $user_id = $this->session->userdata('user_id');
+		$data['session'] = $this->session->userdata();
 
-		if ($user_id) {
+		if ($user_id != NULL) {
 			$this->load->view('search_form', $data);
 			return;
 		}
@@ -16,18 +16,8 @@ class Login extends CI_Controller {
 		$this->load->view('login_form', $data);
 	}
 
-	public function auth() {
-		$this->session->sess_destroy();
-
-		$postData = json_decode(file_get_contents('php://input'), true);
-		$username = !array_key_exists('username', $postData) ? NULL : $postData['username'];
-		$password = !array_key_exists('password', $postData) ? NULL : $postData['password'];
-
-		if ($username == NULL || $password == NULL) {
-			show_error('You have not provided the credentials (Username and Password)', 500);
-			return;
-		}
-
+	private function authInstagram($user, $pass, &$account_id)
+	{
 		// Para el acceso a la API de Instagram
     set_time_limit(0);
     date_default_timezone_set('UTC');
@@ -42,20 +32,45 @@ class Login extends CI_Controller {
       $ig->client->setProxy($this->netProxy);
     }
 
-    $ig->setUser($username, $password);
-		$resp = NULL;
-    try {
-      $resp = $ig->login();
+		$ig->setUser($user, $pass);
 
-			$this->session->set_userdata('user_id', $ig->account_id);
+		$response = $ig->login();
+		$account_id = $ig->account_id;
+
+		// Cerrar la sesion en Instagram porque la API
+		// la deja siempre abierta
+		$ig->logout();
+
+		return $response;
+	}
+
+	private function postVar($varName)
+	{
+		$postData = json_decode(file_get_contents('php://input'), true);
+		return isset($postData[ $varName ]) ? $postData[ $varName ] : NULL;
+	}
+
+	public function auth()
+	{
+		$username = $this->postVar('username');
+		$password = $this->postVar('password');
+
+		if ($username == NULL || $password == NULL) {
+			show_error('You have not provided the credentials (Username and Password)', 500);
+			return;
+		}
+
+		$resp = NULL;
+		$account_id = NULL;
+    try {
+      $resp = $this->authInstagram($username, $password, $account_id);
+			$this->session->set_userdata('user_id', $account_id);
 
 			$r = array('status' => 'OK', 'response' => $resp,
-			  'pk' => $ig->account_id, 'session' => $this->session);
+			  'username' => $username, 'pk' => $account_id,
+				'session' => $this->session->userdata()
+			);
 			echo json_encode($r);
-
-			// Cerrar aqui la sesion porque la API la deja siempre
-			// abierta
-			$ig->logout();
 
 			return;
     }
@@ -67,13 +82,13 @@ class Login extends CI_Controller {
 	}
 
 	public function logout() {
-    $user_id = array_key_exists('user_id', $this->session->userdata());
+    $user_id = $this->session->userdata('user_id');
 
-		if ($user_id) {
+		if ($user_id != NULL) {
 			$this->session->sess_destroy();
 		}
 
-		$data['session'] = $this->session;
+		$data['session'] = $this->session->userdata();
 		$this->load->view('login_form', $data);
 	}
 
@@ -82,7 +97,7 @@ class Login extends CI_Controller {
 		if (file_exists($netProxyFile)) {
 			$_netProxy = file_get_contents($netProxyFile);
 			if (empty($_netProxy) || trim($_netProxy)=='') {
-				return false;
+				  return false;
 			}
 			else {
 				$this->netProxy = $_netProxy;
