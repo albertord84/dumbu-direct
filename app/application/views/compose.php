@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$this->load->helper('url');
+$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="DumbuDirectMessage">
@@ -14,10 +14,10 @@ $this->load->helper('url');
   <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/sweetalert.css">
-  <link rel="stylesheet" href="/assets/css/dumbu-direct.css">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo $uuid; ?>">
 </head>
 <body data-ng-controller="MainController">
-  <div class="container">
+  <div id="compose-container" class="container">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <ul class="nav navbar-nav navbar-right">
@@ -59,7 +59,7 @@ $this->load->helper('url');
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
   <script src="/assets/js/jquery.pulsate.min.js"></script>
-  <script src="/assets/js/app/compose.js"></script>
+  <script src="/assets/js/app/compose.js?<?php echo $uuid; ?>"></script>
   <script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>

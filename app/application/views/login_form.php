@@ -70,7 +70,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <script src="/assets/js/lodash.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
-  <script src="/assets/js/app/login.js?<?php echo $uuid; ?>"></script> <!-- required by sweetalert -->
+  <script src="/assets/js/app/login.js?<?php echo $uuid; ?>"></script>
   <script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>
