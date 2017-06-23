@@ -52,7 +52,6 @@ class Search extends CI_Controller {
 
 	public function index()
 	{
-    $this->load->library('session');
     $user_id = array_key_exists('user_id', $this->session->userdata());
     $data['session'] = $this->session;
 

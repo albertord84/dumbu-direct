@@ -5,7 +5,6 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->library('session');
     $user_id = array_key_exists('user_id', $this->session->userdata());
 		$data['session'] = $this->session;
 
@@ -18,7 +17,6 @@ class Login extends CI_Controller {
 	}
 
 	public function auth() {
-		$this->load->library('session');
 		$this->session->sess_destroy();
 
 		$postData = json_decode(file_get_contents('php://input'), true);
@@ -49,7 +47,6 @@ class Login extends CI_Controller {
     try {
       $resp = $ig->login();
 
-			$this->load->library('session');
 			$this->session->set_userdata('user_id', $ig->account_id);
 
 			$r = array('status' => 'OK', 'response' => $resp,
@@ -70,7 +67,6 @@ class Login extends CI_Controller {
 	}
 
 	public function logout() {
-		$this->load->library('session');
     $user_id = array_key_exists('user_id', $this->session->userdata());
 
 		if ($user_id) {

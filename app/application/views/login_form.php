@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$this->load->helper('url');
 $uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
