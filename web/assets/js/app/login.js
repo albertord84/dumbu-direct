@@ -19,6 +19,7 @@
     };
 
     AppDumbu.auth = function _auth($scope, $http, $log) {
+        AppDumbu.showLoadingOverlay();
         $scope.authenticating = true;
         $http.post('/index.php/auth', {
           username: $scope.username,
@@ -38,6 +39,7 @@
               'error');
           }
           $log.log(response.data);
+          AppDumbu.hideLoadingOverlay();
         }).catch(function _someError(response){
           setTimeout(function _wait2Secs(){
             $scope.authenticating = false;
@@ -46,7 +48,22 @@
             'Something is wrong with the server',
             'error');
           $log.log(response.data);
+          AppDumbu.hideLoadingOverlay();
         });
+    };
+
+    AppDumbu.showLoadingOverlay = function _loadingOverlay()
+    {
+        // Tomado de http://jsfiddle.net/eys3d/741/
+        var over = '<div id="loading-overlay">' +
+            '<i id="loading-element" class="fa fa-hourglass" aria-hidden="true"></i>' +
+            '</div>';
+        $(over).appendTo('body');
+    };
+
+    AppDumbu.hideLoadingOverlay = function _hideLoadingOverlay()
+    {
+        $('#loading-overlay').remove();
     };
 
     AppDumbu.controller('MainController', [

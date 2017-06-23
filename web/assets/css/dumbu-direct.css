@@ -2,7 +2,7 @@ body .container {
   margin-top: 5%;
 }
 
-#search-container {
+#search-container, #compose-container {
   margin-top: 10px;
 }
 
@@ -164,4 +164,25 @@ body .container {
 #logo p a, #logo p a:hover, #logo p a:link {
   color: inherit;
   text-decoration: none;
+}
+
+#loading-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #868686;
+    opacity: 0.6;
+    filter: alpha(opacity=30);
+}
+
+#loading-element {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -50px 0 0 -50px;
+    font-size: 100px;
 }
