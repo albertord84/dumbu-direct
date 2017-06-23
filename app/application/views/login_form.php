@@ -26,7 +26,9 @@ $uuid = substr(md5(date('ds')), 0, 10);
         <div class="row">
           <div class="col-xs-12 col-sm-6">
             <div class="well">
-              <form id="loginForm" method="POST" action="/login/" novalidate="novalidate">
+              <form id="loginForm" method="POST"
+                    action="/index.php/<?php echo $uuid; ?>"
+                    novalidate="novalidate">
                 <fieldset data-ng-disabled="authenticating">
                   <div class="form-group">
                     <label for="username" class="control-label">Username</label>
