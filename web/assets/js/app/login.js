@@ -56,7 +56,7 @@
     {
         // Tomado de http://jsfiddle.net/eys3d/741/
         var over = '<div id="loading-overlay">' +
-            '<i id="loading-element" class="fa fa-hourglass" aria-hidden="true"></i>' +
+            '<img id="loading-element" src="/assets/img/loading.gif" />' +
             '</div>';
         $(over).appendTo('body');
     };
