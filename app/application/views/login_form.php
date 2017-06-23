@@ -10,6 +10,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <meta charset='utf-8'>
   <meta content='IE=edge' http-equiv='X-UA-Compatible'>
   <meta content='width=device-width,initial-scale=1' name='viewport'>
+  <link rel="icon" type="image/png" href="/assets/img/icon.png">
   <link rel='stylesheet' href='/assets/css/bootstrap.min.css'/>
   <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
