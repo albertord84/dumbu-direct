@@ -45,7 +45,6 @@ class SendDirects extends Command
         $recip='alberto_dreyes';
         $debug = false;
         $truncatedDebug = false;
-        $captionText = '';
         set_time_limit(0);
         date_default_timezone_set('UTC');
         try {
@@ -89,15 +88,31 @@ class SendDirects extends Command
             echo "$date -- Something went wrong trying to login: $m\n";
             exit(0);
         }
+        $uId = NULL;
         try {
             $uId = $ig->getUsernameId($recip);
-            $ig->directMessage($uId, "Sigo enviando cada 5min... Lo del Proxy es sencillo... Solo hay que poner un archivo en la raiz del directorio web, que se llame net_proxy. Sin extension .txt ni nada, solo que se llame asi... Debe contener nada mas esto: ip.del.proxy.com:puerto. Si ese archivo existe en ese directorio, las peticiones se haran a traves de ese proxy. Si no existe el archivo, se haran sin usar proxy...");
-            echo "$date -- Mensaje enviado a $recip\n";
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to get the username id of $recip: $m\n";
+            exit(0);
+        }
+        try {
+            $msg = "$date -- Mensaje automatizado...";
+            $ig->directMessage($uId, $msg);
+            echo "$date -- Mensaje enviado a $recip: $msg\n";
+            exit(0);
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to send the message to $recip: $m\n";
+            exit(0);
+        }
+        try {
             $ig->logout();
             exit(0);
         } catch (\Exception $e) {
             $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to post to $recip: $m\n";
+            echo "$date -- Something went wrong trying to logout: $m\n";
+            exit(0);
         }
     }
 }
