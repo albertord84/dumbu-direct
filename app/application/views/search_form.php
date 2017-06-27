@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="DumbuDirectSearch">
@@ -14,7 +13,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
 	<link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/sweetalert.css">
-  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo $uuid; ?>">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo d_guid(); ?>">
 </head>
 <body data-ng-controller="MainController">
 	<div id="search-container" class="container">
@@ -94,7 +93,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <script src="/assets/js/handlebars.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
-  <script src="/assets/js/app/search.js?<?php echo $uuid; ?>"></script>
+  <script src="/assets/js/app/search.js?<?php echo d_guid(); ?>"></script>
 	<script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>

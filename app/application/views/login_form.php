@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="DumbuDirectLogin">
@@ -14,7 +13,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <link rel='stylesheet' href='/assets/css/bootstrap-theme.min.css'/>
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/css/sweetalert.css">
-  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo $uuid; ?>">
+  <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo d_guid(); ?>">
 </head>
 <body data-ng-controller="MainController">
   <div id="login-overlay" class="modal-dialog">
@@ -27,7 +26,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
           <div class="col-xs-12 col-sm-6">
             <div class="well">
               <form id="loginForm" method="POST"
-                    action="/index.php/<?php echo $uuid; ?>"
+                    action="/index.php/<?php echo d_guid(); ?>"
                     novalidate="novalidate">
                 <fieldset data-ng-disabled="authenticating">
                   <div class="form-group">
@@ -70,8 +69,8 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <script src="/assets/js/lodash.min.js"></script>
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
-  <script src="/assets/js/app/login.js?<?php echo $uuid; ?>"></script>
+  <script src="/assets/js/app/login.js?<?php echo d_guid(); ?>"></script>
   <script>d_Session = <?php echo json_encode($session); ?>;</script>
-  <img src="/assets/img/loading.gif" class="hidden" />
+  <img src="/assets/img/loading.gif?<?php echo d_guid(); ?>" class="hidden" />
 </body>
 </html>
