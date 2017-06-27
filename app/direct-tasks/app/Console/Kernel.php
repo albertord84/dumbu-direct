@@ -24,8 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $outputLog = '/tmp/test.log';
         $schedule->command('sendirects:all')
-            ->everyThirtyMinutes();
+            ->everyFiveMinutes()
+            ->appendOutputTo($outputLog);
     }
 
     /**
