@@ -97,9 +97,9 @@ class SendDirects extends Command
             exit(0);
         }
         try {
-            $msg = "$date -- Mensaje automatizado...";
-            $ig->directMessage($uId, $msg);
-            echo "$date -- Mensaje enviado a $recip: $msg\n";
+            $msg = "Mensaje automatizado...";
+            $ig->directMessage($uId, "$date -- $msg");
+            echo "$date -- Mensaje enviado a $recip: \"$msg\"\n";
             exit(0);
         } catch (\Exception $e) {
             $m = $e->getMessage();
