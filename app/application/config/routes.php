@@ -56,5 +56,6 @@ $route['auth'] = 'login/auth';
 $route['logout'] = 'login/logout';
 $route['search'] = 'search';
 $route['compose'] = 'compose';
+$route['directs'] = 'directs';
 $route['users/(:any)'] = 'search/users/$1';
 $route['translate_uri_dashes'] = FALSE;
