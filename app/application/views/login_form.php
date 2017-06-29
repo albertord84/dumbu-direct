@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                            data-ng-model="password" title="Please enter your password">
                     <span class="help-block"></span>
                   </div>
-                  <button type="submit" class="btn btn-success btn-block"
+                  <button type="button" class="btn btn-success btn-block"
                           data-ng-click="auth()"
                           data-ng-disabled="!password || !username">Log in</button>
                   <div class="alert alert-error" data-ng-if="loginError"></div>
