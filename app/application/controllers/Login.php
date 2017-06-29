@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Login extends MY_Controller {
 
 	public function index()
 	{
@@ -44,12 +44,6 @@ class Login extends CI_Controller {
 		return $response;
 	}
 
-	private function postVar($varName)
-	{
-		$postData = json_decode(file_get_contents('php://input'), true);
-		return isset($postData[ $varName ]) ? $postData[ $varName ] : NULL;
-	}
-
 	public function auth()
 	{
 		$username = $this->postVar('username');
@@ -90,21 +84,6 @@ class Login extends CI_Controller {
 
 		$data['session'] = $this->session->userdata();
 		$this->load->view('login_form', $data);
-	}
-
-	private function useProxy() {
-		$netProxyFile = dirname(__FILE__) . '/../config/net_proxy';
-		if (file_exists($netProxyFile)) {
-			$_netProxy = file_get_contents($netProxyFile);
-			if (empty($_netProxy) || trim($_netProxy)=='') {
-				  return false;
-			}
-			else {
-				$this->netProxy = $_netProxy;
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
