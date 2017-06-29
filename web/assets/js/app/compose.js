@@ -2,7 +2,7 @@
 
 //(function(){
 
-    var AppDumbu = angular.module('DumbuDirectMessage', [ 
+    var AppDumbu = angular.module('DumbuDirectMessage', [
         'ngResource', 'ngCookies', 'ngSanitize'
     ]);
 
@@ -20,11 +20,19 @@
             onHover: false
         });
 
+        $scope.startDirects = function _startDirects() {
+            AppDumbu.startDirects($scope, $log);
+        };
+
     };
 
-    AppDumbu.controller('MainController', [ 
-        '$scope', '$resource', '$log', 
-        AppDumbu.MainController 
+    AppDumbu.startDirects = function _startDirects($scope, $log) {
+        $scope.processing = true;
+    };
+
+    AppDumbu.controller('MainController', [
+        '$scope', '$resource', '$log',
+        AppDumbu.MainController
     ]);
-    
+
 //})();

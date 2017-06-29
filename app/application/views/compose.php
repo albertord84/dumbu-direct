@@ -33,20 +33,23 @@ $uuid = substr(md5(date('ds')), 0, 10);
         </div>
         <div class="span4 well">
           <form accept-charset="UTF-8" action="" method="POST">
-            <div class="row">
-              <div class="col-xs-12">
-                <textarea class="form-control input-lg"
-                  id="new_message" name="new_message"
-                  placeholder="Type in your direct message..."
-                  rows="5"></textarea>
+            <fieldset data-ng-disabled="processing">
+              <div class="row">
+                <div class="col-xs-12">
+                  <textarea class="form-control input-lg"
+                    id="new_message" name="new_message"
+                    placeholder="Type in your direct message..."
+                    rows="5"></textarea>
+                </div>
+              </div><br>
+              <div class="row text-center">
+                <div class="col-xs-12">
+                  <button class="btn btn-info btn-lg btn-block"
+                          type="submit"
+                          data-ng-click="startDirects()">Post Direct Message</button>
+                </div>
               </div>
-            </div><br>
-            <div class="row text-center">
-              <div class="col-xs-12">
-                <button class="btn btn-info btn-lg btn-block"
-                        type="submit">Post Direct Message</button>
-              </div>
-            </div>
+            </fieldset>
           </form>
         </div>
       </div>
