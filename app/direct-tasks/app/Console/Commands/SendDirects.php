@@ -32,7 +32,7 @@ class SendDirects extends Command
 
     private function d_guid()
     {
-	return 'd_' . strtolower( sprintf('%04X%04X%04X%04X%04X',
+	     return 'd_' . strtolower( sprintf('%04X%04X%04X%04X%04X',
             mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535),
             mt_rand(16384, 20479), mt_rand(32768, 49151)) );
     }
@@ -45,7 +45,7 @@ class SendDirects extends Command
     public function handle()
     {
         $date = `date "+%F %r"`;
-	$date = trim($date);
+	      $date = trim($date);
         $creds = array();
         $username = NULL;
         $password = NULL;
@@ -56,11 +56,11 @@ class SendDirects extends Command
         set_time_limit(0);
         date_default_timezone_set('UTC');
         try {
-          require_once __DIR__.'/../../../../../vendor/autoload.php';
+            require_once __DIR__.'/../../../../../vendor/autoload.php';
         } catch (\Exception $e) {
-          $m = $e->getMessage();
-          echo "$date -- Something went wrong trying to include Instagram library dependencies: $m\n";
-          exit(0);
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to include Instagram library dependencies: $m\n";
+            exit(0);
         }
         try {
             $instag_creds_file = __DIR__.'/../../../../../web/instagram_credentials';
@@ -105,14 +105,14 @@ class SendDirects extends Command
             exit(0);
         }
         try {
-            $msg = "Mensaje automatizado... Prueba de envio %d de %d...";
-	    $c = 5;
-	    for($i = 0; $i < $c; $i++) {
-		$g = $this->d_guid();
-		$m = "$date -- $g / " . sprintf($msg, $i + 1, $c);
+            $msg = "Cantidad aumentada a 10, JAJAJAJA... Prueba de envio %d de %d...";
+	          $c = 10;
+	          for($i = 0; $i < $c; $i++) {
+		            $g = $this->d_guid();
+		            $m = "$date -- $g / " . sprintf($msg, $i + 1, $c);
                 $ig->directMessage($uId, $m);
                 echo "$date -- Mensaje enviado a $recip: \"$m\"\n";
-	    }
+	          }
             exit(0);
         } catch (\Exception $e) {
             $m = $e->getMessage();
