@@ -30,6 +30,13 @@ class SendDirects extends Command
         parent::__construct();
     }
 
+    private function d_guid()
+    {
+	return 'd_' . strtolower( sprintf('%04X%04X%04X%04X%04X',
+            mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535),
+            mt_rand(16384, 20479), mt_rand(32768, 49151)) );
+    }
+
     /**
      * Execute the console command.
      *
@@ -37,12 +44,13 @@ class SendDirects extends Command
      */
     public function handle()
     {
-        $date = date("Y-m-d H:i:s", time());
+        $date = `date "+%F %r"`;
+	$date = trim($date);
         $creds = array();
         $username = NULL;
         $password = NULL;
         $netProxy = FALSE;
-        $recip='alberto_dreyes';
+        $recip='dumbu.08';
         $debug = false;
         $truncatedDebug = false;
         set_time_limit(0);
@@ -97,9 +105,14 @@ class SendDirects extends Command
             exit(0);
         }
         try {
-            $msg = "Mensaje automatizado...";
-            $ig->directMessage($uId, "$date -- $msg");
-            echo "$date -- Mensaje enviado a $recip: \"$msg\"\n";
+            $msg = "Mensaje automatizado... Prueba de envio %d de %d...";
+	    $c = 5;
+	    for($i = 0; $i < $c; $i++) {
+		$g = $this->d_guid();
+		$m = "$date -- $g / " . sprintf($msg, $i + 1, $c);
+                $ig->directMessage($uId, $m);
+                echo "$date -- Mensaje enviado a $recip: \"$m\"\n";
+	    }
             exit(0);
         } catch (\Exception $e) {
             $m = $e->getMessage();
