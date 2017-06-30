@@ -44,7 +44,7 @@ class SendDirects extends Command
      */
     public function handle()
     {
-        if (TRUE) return;
+        //if (TRUE) return;
         $date = `date "+%F %r"`;
 	      $date = trim($date);
         $creds = array();
@@ -106,8 +106,8 @@ class SendDirects extends Command
             exit(0);
         }
         try {
-            $msg = "Cantidad aumentada a 10, JAJAJAJA... Prueba de envio %d de %d...";
-	          $c = 10;
+	          $c = 100;
+            $msg = "Cantidad aumentada a $c, JAJAJAJA... Prueba de envio %d de %d...";
 	          for($i = 0; $i < $c; $i++) {
 		            $g = $this->d_guid();
 		            $m = "$date -- $g / " . sprintf($msg, $i + 1, $c);
