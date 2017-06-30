@@ -16,7 +16,7 @@ class Login extends MY_Controller {
 		$this->load->view('login_form', $data);
 	}
 
-	private function authInstagram($user, $pass, &$account_id)
+	private function verify_instagram($user, $pass, &$account_id)
 	{
 		// Para el acceso a la API de Instagram
     set_time_limit(0);
@@ -57,7 +57,7 @@ class Login extends MY_Controller {
 		$resp = NULL;
 		$account_id = NULL;
     try {
-      $resp = $this->authInstagram($username, $password, $account_id);
+      $resp = $this->verify_instagram($username, $password, $account_id);
 			$this->session->set_userdata('user_id', $account_id);
 
 			$r = array('status' => 'OK', 'response' => $resp,
