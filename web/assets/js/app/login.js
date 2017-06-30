@@ -2,19 +2,44 @@
 
 //(function(){
 
-    var AppDumbu = angular.module('DumbuDirectLogin', [
+    var AppDumbu = angular.module('DumbuDirectLogin',
+    [
         'ngResource', 'ngCookies'
     ]);
 
-    AppDumbu.MainController = function _MainController($scope, $log, $service) {
+    AppDumbu.MainController = function _MainController($scope, $log, $service)
+    {
 
         AppDumbu.scope = $scope;
 
+        $scope.validMail = false;
         $scope.authenticating = false;
 
-        $scope.auth = function _auth() {
+        $scope.auth = function _auth()
+        {
             $service.auth($scope);
         };
+
+        $scope.inputKeypress = function _inputKeypress($event)
+        {
+            if ($event.keyCode === 13 && $scope.loginForm.$valid)
+            {
+                $scope.auth();
+            }
+        };
+
+        $scope.$watch('loginForm', function _watchLoginForm(newVal, oldVal)
+        {
+            if (_.has(newVal, 'username.newValidator')) return;
+            if (_.has(newVal, 'username.$validators.email'))
+            {
+                $scope.loginForm.username.newValidator = true;
+                $scope.loginForm.username.$validators.email = function _newValidator(val)
+                {
+                    return $service.validMail(val);
+                }
+            }
+        });
 
     };
 
@@ -32,7 +57,8 @@
         $('#loading-overlay').remove();
     };
 
-    AppDumbu.controller('MainController', [
+    AppDumbu.controller('MainController',
+    [
         '$scope', '$log', 'LoginService',
         AppDumbu.MainController
     ]);

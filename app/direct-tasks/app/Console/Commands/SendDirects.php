@@ -44,6 +44,7 @@ class SendDirects extends Command
      */
     public function handle()
     {
+        if (TRUE) return;
         $date = `date "+%F %r"`;
 	      $date = trim($date);
         $creds = array();

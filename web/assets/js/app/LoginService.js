@@ -3,6 +3,7 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
   function _LoginService($http, $log)
   {
     var self = {
+
       auth: function _auth($scope) {
         AppDumbu.showLoadingOverlay();
         $scope.authenticating = true;
@@ -35,7 +36,16 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
           $log.log(response.data);
           AppDumbu.hideLoadingOverlay();
         });
+      },
+
+      validMail: function _validMail(mail) {
+        mail = new String(mail).toLowerCase();
+        // RegExp tomada de http://stackoverflow.com/questions/46155/
+        //   validate-email-address-in-javascript
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(mail);
       }
+
     }
     return self;
   }

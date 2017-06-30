@@ -27,27 +27,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="well">
               <form id="loginForm" method="POST"
                     action="/index.php/<?php echo d_guid(); ?>"
-                    novalidate="novalidate">
+                    novalidate="novalidate" name="loginForm">
                 <fieldset data-ng-disabled="authenticating">
                   <div class="form-group">
                     <label for="username" class="control-label">Username</label>
-                    <input type="text" class="form-control" id="username"
+                    <input type="email" class="form-control" id="username" valid-email
                            name="username" value="" required="" autocomplete="off"
                            data-ng-model="username" title="Please enter you username"
-                           placeholder="example@gmail.com">
+                           placeholder="example@gmail.com" data-ng-keypress="inputKeypress($event)">
                     <span class="help-block"></span>
                   </div>
                   <div class="form-group">
                     <label for="password" class="control-label">Password</label>
                     <input type="password" class="form-control" id="password"
                            name="password" value="" required="" autocomplete="off"
-                           data-ng-model="password" title="Please enter your password">
+                           data-ng-model="password" title="Please enter your password"
+                           data-ng-keypress="inputKeypress($event)">
                     <span class="help-block"></span>
                   </div>
                   <button type="button" class="btn btn-success btn-block"
-                          data-ng-click="auth()"
-                          data-ng-disabled="!password || !username">Log in</button>
-                  <div class="alert alert-error" data-ng-if="loginError"></div>
+                          data-ng-click="auth()" id="bt-auth"
+                          data-ng-disabled="loginForm.$invalid">Log in</button>
                 </fieldset>
               </form>
             </div>
