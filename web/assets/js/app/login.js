@@ -8,7 +8,7 @@
 
     AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies, $http) {
 
-        AppDumbu.mainCtrlScope = $scope;
+        AppDumbu.scope = $scope;
 
         $scope.authenticating = false;
 

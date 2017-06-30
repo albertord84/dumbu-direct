@@ -8,7 +8,7 @@
 
     AppDumbu.MainController = function _MainController($scope, $resource, $log) {
 
-        AppDumbu.mainCtrlScope = $scope;
+        AppDumbu.scope = $scope;
 
         $('#logo p i.fa').pulsate({
             color: '#09f',

@@ -8,7 +8,7 @@
 
     AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies) {
 
-        AppDumbu.mainCtrlScope = $scope;
+        AppDumbu.scope = $scope;
 
         $scope.selectedProfs = [{
             byline:"1.0m followers",
