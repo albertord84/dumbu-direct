@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $outputLog = '/tmp/test.log';
+        $outputLog = '/home/yordano/Projects/dumbu-direct/test.log';
         $schedule->command('sendirects:all')
             ->everyFiveMinutes()
             ->appendOutputTo($outputLog);
