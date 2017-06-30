@@ -6,7 +6,7 @@
         'ngResource', 'ngCookies', 'ngSanitize'
     ]);
 
-    AppDumbu.MainController = function _MainController($scope, $resource, $log) {
+    AppDumbu.MainController = function _MainController($scope, $log, $service) {
 
         AppDumbu.scope = $scope;
 
@@ -21,17 +21,13 @@
         });
 
         $scope.startDirects = function _startDirects() {
-            AppDumbu.startDirects($scope, $log);
+            $service.startDirects($scope);
         };
 
     };
 
-    AppDumbu.startDirects = function _startDirects($scope, $log) {
-        $scope.processing = true;
-    };
-
     AppDumbu.controller('MainController', [
-        '$scope', '$resource', '$log',
+        '$scope', '$log', 'ComposeService',
         AppDumbu.MainController
     ]);
 

@@ -63,6 +63,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
   <script src="/assets/js/jquery.pulsate.min.js"></script>
   <script src="/assets/js/app/compose.js?<?php echo d_guid(); ?>"></script>
+  <script src="/assets/js/app/ComposeService.js?<?php echo d_guid(); ?>"></script>
   <script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>
