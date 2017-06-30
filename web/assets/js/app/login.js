@@ -6,50 +6,16 @@
         'ngResource', 'ngCookies'
     ]);
 
-    AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies, $http) {
+    AppDumbu.MainController = function _MainController($scope, $log, $service) {
 
         AppDumbu.scope = $scope;
 
         $scope.authenticating = false;
 
         $scope.auth = function _auth() {
-            AppDumbu.auth($scope, $http, $log);
+            $service.auth($scope);
         };
 
-    };
-
-    AppDumbu.auth = function _auth($scope, $http, $log) {
-        AppDumbu.showLoadingOverlay();
-        $scope.authenticating = true;
-        $http.post('/index.php/auth', {
-          username: $scope.username,
-          password: $scope.password
-        }).then(function _afterSendCreds(response){
-          if (response.data.status == 'OK') {
-            setTimeout(function _wait(){
-              $scope.authenticating = false;
-              $scope.$digest();
-              $('#loginForm').attr('action', '/index.php/search').submit();
-            }, 1000);
-          }
-          else {
-            $scope.authenticating = false;
-            swal('Authentication error!',
-              'Something is wrong with the provided Instagram credentials',
-              'error');
-          }
-          $log.log(response.data);
-          AppDumbu.hideLoadingOverlay();
-        }).catch(function _someError(response){
-          setTimeout(function _wait2Secs(){
-            $scope.authenticating = false;
-          }, 2000);
-          swal('Authentication error!',
-            'Something is wrong with the server',
-            'error');
-          $log.log(response.data);
-          AppDumbu.hideLoadingOverlay();
-        });
     };
 
     AppDumbu.showLoadingOverlay = function _loadingOverlay()
@@ -67,7 +33,7 @@
     };
 
     AppDumbu.controller('MainController', [
-        '$scope', '$resource', '$log', '$cookies', '$http',
+        '$scope', '$log', 'LoginService',
         AppDumbu.MainController
     ]);
 
