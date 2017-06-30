@@ -2,7 +2,7 @@ AppDumbu.service('ComposeService', [
   '$resource', '$log', '$cookies',
   function _ComposeService($resource, $log, $cookies)
   {
-    var self {
+    var self = {
 
       startDirects: function _startDirects($scope)
       {
