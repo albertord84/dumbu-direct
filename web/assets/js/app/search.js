@@ -6,7 +6,7 @@
         'ngResource', 'ngCookies'
     ]);
 
-    AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies, $service, $location)
+    AppDumbu.MainController = function _MainController($scope, $log, $service, $location)
     {
 
         AppDumbu.scope = $scope;
@@ -80,7 +80,7 @@
     };
 
     AppDumbu.controller('MainController', [
-        '$scope', '$resource', '$log', '$cookies', 'SearchService', '$location',
+        '$scope', '$log', 'SearchService', '$location',
         AppDumbu.MainController
     ]);
 
