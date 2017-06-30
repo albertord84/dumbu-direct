@@ -94,6 +94,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="/assets/js/sweetalert.min.js"></script>
   <script src="/assets/js/core.min.js"></script> <!-- required by sweetalert -->
   <script src="/assets/js/app/search.js?<?php echo d_guid(); ?>"></script>
+  <script src="/assets/js/app/SearchService.js?<?php echo d_guid(); ?>"></script>
+  <script src="/assets/js/app/filters.js?<?php echo d_guid(); ?>"></script>
 	<script>d_Session = <?php echo json_encode($session); ?>;</script>
 </body>
 </html>

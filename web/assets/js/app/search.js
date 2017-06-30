@@ -6,7 +6,8 @@
         'ngResource', 'ngCookies'
     ]);
 
-    AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies) {
+    AppDumbu.MainController = function _MainController($scope, $resource, $log, $cookies, $service, $location)
+    {
 
         AppDumbu.scope = $scope;
 
@@ -31,15 +32,24 @@
         }];
 
         $scope.removeSelectedProfile = function _removeSelectedProfile($event) {
-            AppDumbu.removeSelectedProfile($event, $scope);
+            $service.removeSelectedProfile($event, $scope);
         };
 
         $scope.composeDirect = function _composeDirect() {
-            AppDumbu.composeDirect($scope, $cookies, $log);
+            $service.saveSelectedProfileIds($scope);
+            // Redirigir hacia la pagina de componer el direct message
+            var frm = $service.getRedirForm({
+                action: '/index.php/compose',
+                method: 'post',
+                inputs: {
+                    pks: $scope.pks
+                }
+            });
+            frm.submit();
         };
 
         $scope.logout = function _logout() {
-            document.location.href = '/index.php/logout';
+            $location.url('/index.php/logout');
         };
 
         var igUsers = new Bloodhound({
@@ -63,135 +73,14 @@
 
         $('#ref-prof').on({
             'typeahead:selected': function(e, datum) {
-                AppDumbu.selectProfile($scope, datum);
+                $service.selectProfile($scope, datum);
             }
         });
 
     };
-
-    AppDumbu.selectProfile = function _selectProfile($scope, profile) {
-        var alreadySelected = _.find($scope.selectedProfs, function _findAlreadySelected(_profile)
-        {
-            return _profile.pk == profile.pk;
-        });
-        if (!_.isUndefined(alreadySelected)) {
-          swal({
-              title: 'Already choosen',
-              html: 'You have already choosen this profile.<br>' +
-                'Choose a different one.',
-              type: 'info',
-              confirmButtonText: 'OK'
-          });
-          return;
-        }
-        if ($scope.selectedProfs.length > 4) {
-          swal({
-              title: 'Profile count reached',
-              text: 'You can not choose more than 5 profiles',
-              type: 'error',
-              confirmButtonText: 'OK'
-          });
-          return;
-        }
-        if (console) console.log("selected profile " + profile.username);
-        $scope.selectedProfs.push({
-            "pk": profile.pk,
-            "profPic": profile.profile_pic_url,
-            "username": profile.username,
-            "fullName": profile.full_name,
-            "byline": profile.byline
-        });
-        $scope.$digest();
-        if (console) console.log($scope.selectedProfs.length + " profiles selected");
-    };
-
-    AppDumbu.removeSelectedProfile = function _removeSelectedProfile($event, $scope) {
-        var selectedProfile = angular.element($event.target)
-            .scope().profile;
-
-        if (console) console.log('removing profile ' + selectedProfile.pk);
-
-        var panelParent = $($event.target).parents('.panel').parent();
-
-        // Dar efecto de que se borro el perfil
-        $(panelParent).fadeOut(800, function _afterFadeRemovedProfile(){
-            // Eliminar del modelo de datos en el cliente
-            _.remove($scope.selectedProfs, function(profile){
-                return profile.pk == selectedProfile.pk;
-            });
-            $scope.$digest();
-
-            // Eliminar tambien de la lista creada en el servidor
-            // ...
-
-            if (console) console.log('profile ' + selectedProfile.pk + ' has been removed from list');
-        });
-    };
-
-    AppDumbu.composeDirect = function _composeDirect($scope, $cookies, $log) {
-        // Salvar ids de los perfiles seleccionados
-        var pks = [];
-        for(var i = 0; i < $scope.selectedProfs.length; i++){
-            var profile = $scope.selectedProfs[i];
-            pks.push(profile.pk);
-        };
-        var pks = pks.join();
-        $cookies.put('pks', pks);
-        $log.log($cookies.get('pks'));
-        // Redirigir hacia la pagina de componer el direct message
-        var frm = AppDumbu.getRedirForm({
-            action: '/index.php/compose',
-            method: 'post',
-            inputs: {
-                pks: pks
-            }
-        });
-        frm.submit();
-    };
-
-    AppDumbu.getRedirForm = function _getRedirForm(options) {
-        var uid = _.uniqueId('frm_');
-        var frm = document.createElement('FORM');
-        $(frm).attr('id', uid);
-        if (_.isPlainObject(options)) {
-            if (!_.has(options, 'inputs')) {
-                $(frm).attr(options)
-            }
-            else {
-                var inputs = _.keys(options.inputs);
-                for (var i = 0; i < inputs.length; i++) {
-                    var inputName = inputs[i];
-                    var inp = document.createElement('input');
-                    $(inp).attr('type', 'hidden');
-                    $(inp).attr('name', inputName);
-                    $(inp).attr('value', options.inputs[ inputName ]);
-                    $(frm).append(inp);
-                }
-                var attrs = _.keys(options);
-                for (var i = 0; i < attrs.length; i++) {
-                    var v = _.get(options, attrs[i]);
-                    $(frm).attr(attrs[i], v);
-                }
-            }
-        }
-        $(document.body).append(frm);
-        return $(frm);
-    };
-
-    AppDumbu.filter('cutFullName', function() {
-        return function(name) {
-            if ("" == name) {
-                return '...';
-            }
-            if (new String(name).length > 20)
-                return new String(name).substring(0, 19) + '...';
-            else
-                return name;
-        };
-    });
 
     AppDumbu.controller('MainController', [
-        '$scope', '$resource', '$log', '$cookies',
+        '$scope', '$resource', '$log', '$cookies', 'SearchService', '$location',
         AppDumbu.MainController
     ]);
 
