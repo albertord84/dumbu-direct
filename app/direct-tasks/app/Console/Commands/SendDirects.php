@@ -45,9 +45,7 @@ class SendDirects extends Command
     public function handle()
     {
         //if (TRUE) return;
-        $date_cmd = `date "+%F %r"`;
-        $date = trim($date_cmd);
-        $creds = array();
+        $date = $this->getLocalDate();
         $username = NULL;
         $password = NULL;
         $netProxy = FALSE;
@@ -59,7 +57,7 @@ class SendDirects extends Command
         
         $ds = $this->getDirStore();
         if ($this->hasDirStruct()) {
-            echo "Existe estructura de almacen de los directs \"$ds\"...";
+            echo "Existe estructura de almacen de los directs \"$ds\"...\n";
         }
         else {
             echo "No existe estructura de almacen de los directs...\n";
@@ -67,63 +65,25 @@ class SendDirects extends Command
             $this->createDirectsStoreDir();
         }
         
-        try {
-            require_once __DIR__.'/../../../../../vendor/autoload.php';
-        } catch (\Exception $e) {
-            $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to include Instagram library dependencies: $m\n";
-            exit(0);
+        $this->getAutoloader();
+        
+        $this->getInstagCreds($username, $password);
+        
+        $this->setProxy($netProxy);
+        
+        $ig = $this->getInstagram($debug, $truncatedDebug);
+        
+        if ($netProxy) {
+            $this->setClientProxy($ig, $netProxy);
         }
         
-        try {
-            $instag_creds_file = __DIR__.'/../../../../../web/instagram_credentials';
-            $_creds = file_get_contents($instag_creds_file);
-            $creds = explode(':', $_creds);
-            $username = $creds[0];
-            $password = $creds[1];
-        } catch (\Exception $e) {
-            $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to get Instagram credentials: $m\n";
-            exit(0);
-        }
+        $this->setUserCredentials($ig, $username, $password);
         
-        try {
-            $proxy_data_file = __DIR__.'/../../../../../web/net_proxy';
-            if (file_exists($proxy_data_file)) {
-                $netProxy = file_get_contents($proxy_data_file);
-            }
-            if (empty($netProxy) || trim($netProxy)=='') {
-                $netProxy = FALSE;
-            }
-        } catch (\Exception $e) {
-            $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to get the network proxy data: $m\n";
-            exit(0);
-        }
-        
-        $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
-        if ($netProxy) $ig->client->setProxy($netProxy);
-        try {
-            $ig->setUser($username, $password);
-            $ig->login();
-        } catch (\Exception $e) {
-            $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to login: $m\n";
-            exit(0);
-        }
-        
-        $uId = NULL;
-        try {
-            $uId = $ig->getUsernameId($recip);
-        } catch (\Exception $e) {
-            $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to get the username id of $recip: $m\n";
-            exit(0);
-        }
+        $uId = $this->getUserId($ig, $recip);
         
         try {
             $c = 10;
-            $msg = "Cantidad aumentada a $c, JAJAJAJA... Prueba de envio %d de %d...";
+            $msg = "Cantidad de mensajes establecida a $c... Envio %d de %d...";
             for($i = 0; $i < $c; $i++) {
                 $g = $this->d_guid();
                 $m = "$date -- $g / " . sprintf($msg, $i + 1, $c);
@@ -147,7 +107,40 @@ class SendDirects extends Command
         }
     }
     
-    /**
+    private function getUserId($instagram, $name)
+    {
+        $date = $this->getLocalDate();
+        try {
+            $uId = $instagram->getUsernameId($name);
+            return $uId;
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to get the username id of $name: $m\n";
+            exit(0);
+        }
+
+    }
+
+    private function setUserCredentials(&$instagram, $username, $password)
+    {
+        $date = $this->getLocalDate();
+        try {
+            $instagram->setUser($username, $password);
+            $instagram->login();
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to login: $m\n";
+            exit(0);
+        }
+    }
+
+
+    private function setClientProxy(&$instagram, $netProxy)
+    {
+        $instagram->client->setProxy($netProxy);
+    }
+
+        /**
      * Devuelve verdadero o falso si esta creada la estructura de
      * directorios donde se irán guardando los directs.
      * 
@@ -218,5 +211,73 @@ class SendDirects extends Command
             $m = $e->getTraceAsString();
             echo "No se pudo crear directorio de los directs enviados: $m\n";
         }
+    }
+    
+    /**
+     * Carga el gestor de dependencias para hacer referencia a
+     * la API de Instagram.
+     */
+    private function getAutoloader()
+    {
+        $date = $this->getLocalDate();
+        try {
+            require_once __DIR__.'/../../../../../vendor/autoload.php';
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to include Instagram library dependencies: $m\n";
+            exit(0);
+        }
+    }
+    
+    /**
+     * Encuentra el archivo donde estan las credenciales de Instagram
+     * usadas para enviar directs y las establece para posterior uso
+     * en las variables pasadas como parametro.
+     */
+    private function getInstagCreds(&$username, &$password)
+    {
+        $date = $this->getLocalDate();
+        try {
+            $instag_creds_file = __DIR__.'/../../../../../web/instagram_credentials';
+            $_creds = file_get_contents($instag_creds_file);
+            $creds = explode(':', $_creds);
+            $username = $creds[0];
+            $password = $creds[1];
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to get Instagram credentials: $m\n";
+            exit(0);
+        }
+
+    }
+    
+    private function setProxy(&$netProxy)
+    {
+        $date = $this->getLocalDate();
+        try {
+            $proxy_data_file = __DIR__.'/../../../../../web/net_proxy';
+            if (file_exists($proxy_data_file)) {
+                $netProxy = file_get_contents($proxy_data_file);
+            }
+            if (empty($netProxy) || trim($netProxy)=='') {
+                $netProxy = FALSE;
+            }
+        } catch (\Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to get the network proxy data: $m\n";
+            exit(0);
+        }
+    }
+
+    private function getInstagram($debug, $truncatedDebug)
+    {
+        return new \InstagramAPI\Instagram($debug, $truncatedDebug);
+    }
+
+    private function getLocalDate()
+    {
+        $date_cmd = `date "+%F %r"`;
+        $date = trim($date_cmd);
+        return $date;
     }
 }
