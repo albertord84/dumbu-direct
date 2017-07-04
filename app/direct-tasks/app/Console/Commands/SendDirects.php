@@ -55,7 +55,7 @@ class SendDirects extends Command
         $this->handleDirectsStore();
         $this->getAutoloader();
         $this->getInstagCreds($username, $password);
-        $this->setProxy($netProxy);
+        $this->getProxy($netProxy);
         $instagram = $this->getInstagram(FALSE, FALSE);
         
         if ($netProxy) {
@@ -82,7 +82,7 @@ class SendDirects extends Command
 
     }
 
-        /**
+    /**
      * Cierra la sesión en Instagram. Es necesario hacer esto aunque
      * la API aconseja que no se haga. Si se deja la sesión abierta,
      * puede ocurrir que el usuario siga conectado desde el cliente
@@ -105,7 +105,7 @@ class SendDirects extends Command
         }
     }
 
-        /**
+    /**
      * Envia un mensaje al usuario especificado.
      * 
      * @param \InstagramAPI\Instagram $instagram Objeto de acceso a la API de Instagram
@@ -118,13 +118,16 @@ class SendDirects extends Command
     {
         $date = $this->getLocalDate();
         try {
-            $msg = "Cantidad de mensajes establecida a $count... Envio %d de %d...";
+            $msg = "Envio %d de %d...";
+            $u = $this->getUserName($instagram, $uid);
+            echo "$date -- Enviando mensaje a $u ($uid): \"$message\"\n";
             for($i = 0; $i < $count; $i++) {
                 $g = $this->d_guid();
                 $m = "$date -- $g / " . sprintf($msg, $i + 1, $count);
                 $instagram->directMessage($uid, $message);
-                echo "$date -- Mensaje enviado al usuario con id $uid: \"$message\"\n";
+                echo "$m\n";
             }
+            echo "$date -- Mensaje enviado a $u ($uid)\n";
             return;
         } catch (\Exception $e) {
             $m = $e->getMessage();
@@ -133,13 +136,39 @@ class SendDirects extends Command
         }
     }
 
+    /**
+     * Devuelve el nombre de un usuario de Instagram dado su id.
+     * 
+     * @param \InstagramAPI\Instagram $instagram Instancia del objeto de acceso a Instagram
+     * @param string $uid Id de Instagram del usuario
+     */
+    private function getUserName($instagram, $uid)
+    {
+        $date = $this->getLocalDate();
+        try {
+            $u = $instagram->getUserInfoById($uid)->user->username;
+            echo "Obtenido nombre del usuario con id $uid: $u\n";
+            return $u;
+        } catch (Exception $e) {
+            $m = $e->getMessage();
+            echo "$date -- Something went wrong trying to get the username of user with id $uid: $m\n";
+            exit(0);
+        }
+    }
 
+    /**
+     * Devuelve el id de un usuario de Instagram dado su nombre.
+     * 
+     * @param \InstagramAPI\Instagram $instagram Instancia del objeto de acceso a Instagram
+     * @param string $name Id de Instagram del usuario
+     */
     private function getUserId($instagram, $name)
     {
         $date = $this->getLocalDate();
         try {
-            $uId = $instagram->getUsernameId($name);
-            return $uId;
+            $uid = $instagram->getUsernameId($name);
+            echo "Obtenido id del usuario $name: $uid\n";
+            return $uid;
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to get the username id of $name: $m\n";
@@ -148,12 +177,21 @@ class SendDirects extends Command
 
     }
 
+    /**
+     * Inicia sesion en Instagram para el usuario dado.
+     * 
+     * @param \InstagramAPI\Instagram $instagram Instancia del objeto de acceso a Instagram
+     * @param string $username Nombre del usuario que iniciara sesion
+     * @param string $password Contraseña del usuario
+     */
     private function loginToInstagram(&$instagram, $username, $password)
     {
         $date = $this->getLocalDate();
         try {
+            echo "Iniciando sesión para el usuario: $username...\n";
             $instagram->setUser($username, $password);
             $instagram->login();
+            echo "Sesión iniciada para el usuario: $username\n";
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to login: $m\n";
@@ -161,14 +199,19 @@ class SendDirects extends Command
         }
     }
 
-
+    /**
+     * Establece el proxy para acceder a Instagram.
+     * 
+     * @param \InstagramAPI\Instagram $instagram Instancia del objeto de acceso a Instagram
+     * @param string $uid Direccion IP:Puerto del proxy
+     */
     private function setClientProxy(&$instagram, $netProxy)
     {
         echo "Usando proxy: $netProxy\n";
         $instagram->client->setProxy($netProxy);
     }
 
-        /**
+    /**
      * Devuelve verdadero o falso si esta creada la estructura de
      * directorios donde se irán guardando los directs.
      * 
@@ -209,7 +252,7 @@ class SendDirects extends Command
     }
     
     /**
-     * Create directorio donde se almacenan los directs
+     * Crea directorio donde se almacenan los directs
      */
     private function createDirectsStoreDir()
     {
@@ -274,6 +317,7 @@ class SendDirects extends Command
             $creds = explode(':', $_creds);
             $username = $creds[0];
             $password = $creds[1];
+            echo "Obtenidas las credenciales para el usuario: $username\n";
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to get Instagram credentials: $m\n";
@@ -282,7 +326,12 @@ class SendDirects extends Command
 
     }
     
-    private function setProxy(&$netProxy)
+    /**
+     * Carga desde un archivo los datos del proxy para acceder a Instagram.
+     * 
+     * @param string $netProxy Variable donde se guardaran los datos del proxy
+     */
+    private function getProxy(&$netProxy)
     {
         $date = $this->getLocalDate();
         try {
