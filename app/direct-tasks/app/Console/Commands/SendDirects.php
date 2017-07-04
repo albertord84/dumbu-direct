@@ -56,16 +56,16 @@ class SendDirects extends Command
         $this->getAutoloader();
         $this->getInstagCreds($username, $password);
         $this->setProxy($netProxy);
-        $ig = $this->getInstagram(FALSE, FALSE);
+        $instagram = $this->getInstagram(FALSE, FALSE);
         
         if ($netProxy) {
-            $this->setClientProxy($ig, $netProxy);
+            $this->setClientProxy($instagram, $netProxy);
         }
         
-        $this->loginToInstagram($ig, $username, $password);
-        $uId = $this->getUserId($ig, $recip);
-        $this->sendMessage($ig, $uId, "Hola, ¿cómo estás?", 10);
-        $this->logoutInstagram($ig);
+        $this->loginToInstagram($instagram, $username, $password);
+        $uid = $this->getUserId($instagram, $recip);
+        $this->sendMessage($instagram, $uid, "Hola, ¿cómo estás?");
+        $this->logoutInstagram($instagram);
     }
     
     private function handleDirectsStore()
@@ -94,8 +94,10 @@ class SendDirects extends Command
     {
         $date = $this->getLocalDate();
         try {
+            $u = $instagram->getSelfUserInfo()->user->username;
+            echo "Cerrando sesión para el usuario: $u...\n";
             $instagram->logout();
-            exit(0);
+            echo "Sesión cerrada para el usuario: $u\n";
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to logout: $m\n";
@@ -109,9 +111,10 @@ class SendDirects extends Command
      * @param \InstagramAPI\Instagram $instagram Objeto de acceso a la API de Instagram
      * @param string $uid Id del usuario de Instagram al que se enviara el mensaje
      * @param string $message Texto del mensaje
-     * @param int $count Cantidad de veces que se enviara el mensaje
+     * @param int $count Cantidad de veces que se enviara el mensaje.
+     * Si no se especifica, se asume que es uno.
      */
-    private function sendMessage($instagram, $uid, $message, $count)
+    private function sendMessage($instagram, $uid, $message, $count = 1)
     {
         $date = $this->getLocalDate();
         try {
@@ -122,7 +125,7 @@ class SendDirects extends Command
                 $instagram->directMessage($uid, $message);
                 echo "$date -- Mensaje enviado al usuario con id $uid: \"$message\"\n";
             }
-            exit(0);
+            return;
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to send the message to $recip: $m\n";
@@ -219,6 +222,7 @@ class SendDirects extends Command
         } catch (Exception $e) {
             $m = $e->getTraceAsString();
             echo "No se pudo crear directorio de almacen de los directs: $m\n";
+            exit(0);
         }
 
         try {
@@ -227,6 +231,7 @@ class SendDirects extends Command
         } catch (Exception $e) {
             $m = $e->getTraceAsString();
             echo "No se pudo crear directorio de los directs activos: $m\n";
+            exit(0);
         }
         
         try {
@@ -235,6 +240,7 @@ class SendDirects extends Command
         } catch (Exception $e) {
             $m = $e->getTraceAsString();
             echo "No se pudo crear directorio de los directs enviados: $m\n";
+            exit(0);
         }
     }
     
