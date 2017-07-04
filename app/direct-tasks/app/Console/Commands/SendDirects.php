@@ -44,17 +44,26 @@ class SendDirects extends Command
      */
     public function handle()
     {
-        //if (TRUE) return;
-        $date = $this->getLocalDate();
+        set_time_limit(0);
+
+        if (TRUE) return;
+
         $username = NULL;
         $password = NULL;
         $netProxy = FALSE;
+        
+        // Esto se obtendra desde un archivo externo donde estara
+        // definido el cuerpo del mensaje y su destinatario.
         $recip='dumbu.08';
-        set_time_limit(0);
         
         $this->handleDirectsStore();
         $this->getAutoloader();
+        
+        // Estas credenciales para hacer el envio, se rotaran cuando
+        // la API haya dado un error de congestion o de chequeo de
+        // identidad.
         $this->getInstagCreds($username, $password);
+        
         $this->getProxy($netProxy);
         $instagram = $this->getInstagram(FALSE, FALSE);
         
@@ -64,7 +73,11 @@ class SendDirects extends Command
         
         $this->loginToInstagram($instagram, $username, $password);
         $uid = $this->getUserId($instagram, $recip);
-        $this->sendMessage($instagram, $uid, "Hola, ¿cómo estás?");
+        
+        // Esto se sustituira por un gestor que tomara los siguientes
+        // cien mensajes que deban ser procesados de la cola
+        //$this->sendMessage($instagram, $uid, "Hola, ¿cómo estás?");
+        
         $this->logoutInstagram($instagram);
     }
     
@@ -269,7 +282,7 @@ class SendDirects extends Command
         }
 
         try {
-            mkdir($dir . '/queued');
+            mkdir($dir . '/queue');
             echo "Creado directorio de los directs que estan activos.\n";
         } catch (Exception $e) {
             $m = $e->getTraceAsString();
