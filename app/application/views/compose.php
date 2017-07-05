@@ -36,16 +36,17 @@ $uuid = substr(md5(date('ds')), 0, 10);
                             <fieldset data-ng-disabled="processing">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <textarea class="form-control input-lg"
-                                                  id="new_message" name="new_message"
-                                                  placeholder="Type in your direct message..."
-                                                  rows="5"></textarea>
+                                        <textarea class="form-control input-lg" 
+                                                  id="message" name="message" 
+                                                  placeholder="Type in your direct message..." 
+                                                  rows="5" form="formCompose"></textarea>
+                                        <input type="hidden" name="_m" id="_m" />
                                     </div>
                                 </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"
-                                                type="submit"
+                                                type="button"
                                                 data-ng-click="startDirects()">Post Direct Message</button>
                                     </div>
                                 </div>
