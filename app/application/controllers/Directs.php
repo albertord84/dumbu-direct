@@ -5,9 +5,7 @@ class Directs extends MY_Controller {
 
     public function index()
     {
-        $message = $this->postVar('new_message');
-        
-        echo $message; return;
+        $message = $this->input->post('message');
         
         $data['session'] = $this->session->userdata();
         $data['message'] = $message;
@@ -16,6 +14,7 @@ class Directs extends MY_Controller {
 
         if ($user_id != NULL) {
             $this->load->view('directs_dashboard', $data);
+            return;
         }
         
         show_error('You are trying to enter a restricted area', 500);
