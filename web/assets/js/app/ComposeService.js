@@ -8,7 +8,6 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
 
             startDirects: function _startDirects($scope)
             {
-                $scope.processing = true;
                 self.checkUserAuth($scope);
             },
             
@@ -16,12 +15,14 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
             {
                 var uid = d_Session.user_id;
                 
-                function successCallback(data)
+                function successCallback(resp)
                 {
-                    $scope.processing = false;
-                    $log.log(data);
+                    $log.log(resp.data);
                     var frm = $('#formCompose');
-                    frm.attr('action', '/index.php/ddashboard').submit();
+                    frm.attr({
+                        'action': '/index.php/ddashboard',
+                        'method': 'POST'
+                    }).submit();
                 }
                 
                 function errorCallback()
