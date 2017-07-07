@@ -15,6 +15,8 @@ class Manager {
      * @param string $timestamp Marca de tiempo para identificar de manera unica el mensaje
      * @param string $pks Lista separada por comas de ids de los perfiles destinatarios
      * @param string $message Texto del mensaje que se enviara a los destinos
+     * 
+     * @return bool Verdadero si se logra crear y poner el archivo en la cola, si no, falso.
      */
     public function add($uid, $timestamp, $pks, $message)
     {
@@ -26,6 +28,7 @@ class Manager {
         $filename = sprintf("%s/%s_%s.json", $dir, $timestamp, $uid);
         
         $data = [
+            'datetime' => $timestamp,
             'uid' => $uid,
             'pks' => $pks,
             'message' => $message
@@ -35,19 +38,28 @@ class Manager {
         fwrite($fhandle, json_encode($data));
         fclose($fhandle);
         
-        if ( !file_exists(APPPATH . "/logs/directs/$filename") )
-        
-        return TRUE;
+        if ( file_exists($filename) ) {
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
     }
     
     public function exists($uid)
     {
-        return TRUE;
+        $cmd = sprintf("find %s -name \"*%s*\" | sort | tail -n 1", 
+                APPPATH . '/logs/directs', 
+                $uid);
+        
+        $resp = trim(shell_exec($cmd));
+        
+        return file_exists($resp);
     }
     
     public function get($uid)
     {
-        $cmd = sprintf("find %s -name \"*%s*\" | tail -n 1", 
+        $cmd = sprintf("find %s -name \"*%s*\" | sort | tail -n 1", 
                 APPPATH . '/logs/directs', 
                 $uid);
         
