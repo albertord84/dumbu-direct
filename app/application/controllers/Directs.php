@@ -13,7 +13,11 @@ class Directs extends MY_Controller {
         $user_id = $this->session->userdata('user_id');
 
         if ($user_id != NULL) {
+            /**
+             * DQManager->add($user_id, $pks, $message);
+             */
             $this->load->view('directs_dashboard', $data);
+            
             return;
         }
         

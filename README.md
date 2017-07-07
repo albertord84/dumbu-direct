@@ -8,3 +8,8 @@ Agregar esto en el cron para que el gestor de tareas corra sin problemas
 
 - Si da problemas de que no pudo ejecutarse un chmod, verificar que el directorio
 vendor/mgp25/instagram-php/sessions tenga permisos de escritura (777).
+
+# almacen de los mensajes
+
+- Requiere permisos de 777, pues contendra archivos creados por el proceso Apache
+
