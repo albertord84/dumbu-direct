@@ -27,10 +27,19 @@ class Manager {
         $dir = APPPATH . '/logs/directs/queue';
         $filename = sprintf("%s/%s_%s.json", $dir, $timestamp, $uid);
         
+        $pks_arr = [];
+        $pks_strings = explode(',', $pks);
+        for($i = 0; $i < count($pks_strings); $i++)
+        {
+            if (!empty(trim($pks_strings[$i]))) {
+                $pks_arr[] = $pks_strings[$i];
+            }
+        }
+        
         $data = [
             'datetime' => $timestamp,
             'uid' => $uid,
-            'pks' => $pks,
+            'pks' => $pks_arr,
             'message' => $message
         ];
         
