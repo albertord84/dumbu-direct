@@ -58,7 +58,7 @@ class MY_Controller extends CI_Controller {
     }
 
     protected function getLocalDate() {
-        $date_cmd = `date "+%F %R"`;
+        $date_cmd = `date "+%F %R:%S"`;
         $date = trim($date_cmd);
         return str_replace(' ', '_', str_replace(':', '', str_replace('-', '', $date)));
     }
