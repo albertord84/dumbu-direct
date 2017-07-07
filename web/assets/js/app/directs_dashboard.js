@@ -13,7 +13,7 @@
     };
 
     AppDumbu.controller('MainController', [
-        '$scope', '$log', 'DDashboardService',
+        '$scope', '$log', 'DirectsService',
         AppDumbu.MainController
     ]);
 

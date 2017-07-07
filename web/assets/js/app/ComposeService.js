@@ -20,7 +20,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                     $log.log(resp.data);
                     var frm = $('#formCompose');
                     frm.attr({
-                        'action': '/index.php/ddashboard',
+                        'action': '/index.php/directs_dashboard',
                         'method': 'POST'
                     }).submit();
                 }

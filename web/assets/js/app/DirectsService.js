@@ -1,8 +1,8 @@
 /* global AppDumbu */
 
-AppDumbu.DDashboardService = AppDumbu.service('DDashboardService', [
+AppDumbu.DirectsService = AppDumbu.service('DirectsService', [
     '$resource', '$log', '$cookies', '$http', '$location', 
-    function _DDashboardService($resource, $log, $cookies, $http, $location)
+    function _DirectsService($resource, $log, $cookies, $http, $location)
     {
         var self = {
 
