@@ -33,8 +33,9 @@ class Manager {
         
         $fhandle = fopen($filename, 'w');
         fwrite($fhandle, json_encode($data));
+        fclose($fhandle);
         
-        if ( !file_exists($filename) )
+        if ( !file_exists(APPPATH . "/logs/directs/$filename") )
         
         return TRUE;
     }
@@ -46,7 +47,15 @@ class Manager {
     
     public function get($uid)
     {
+        $cmd = sprintf("find %s -name \"*%s*\" | tail -n 1", 
+                APPPATH . '/logs/directs', 
+                $uid);
         
+        $resp = trim(shell_exec($cmd));
+        
+        $file = file_get_contents($resp);
+        
+        return $file;
     }
     
 }
