@@ -115,5 +115,42 @@ class Manager {
         }
     }
     
+    /**
+     * Devuelve la cantidad de mensajes en la cola.
+     * 
+     * @return int Cantidad de mensajes que estan en cola.
+     */
+    public function queue_count()
+    {
+        $cmd = sprintf("ls -l %s | grep -c json", 
+                APPPATH . '/logs/directs/queue');
+        
+        $resp = trim(shell_exec($cmd));
+        
+        return $resp;
+    }
+
+    /**
+     * Devuelve el listado de mensajes en la cola
+     * 
+     * @param int $page Pagina que se desea mostrar.
+     * @param int $count Cantidad de mensajes por pagina.
+     * 
+     * @return array Lista de mensajes.
+     */
+    public function msg_page($page, $count)
+    {
+        $total = $this->queue_count();
+        
+        $start = intval( $total / $page );
+        $cmd = sprintf("ls %s | tail -n %s | head -n %s", 
+                APPPATH . '/logs/directs/queue', 
+                $start, $count);
+        
+        $resp = explode( PHP_EOL, trim( shell_exec($cmd) ) );
+        
+        return $resp;
+    }
+    
 }
 

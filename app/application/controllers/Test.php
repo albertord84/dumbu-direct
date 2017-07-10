@@ -57,4 +57,24 @@ class Test extends MY_Controller {
         }
     }
 
+    public function msg_count()
+    {
+        //echo 'OK'; if (TRUE) exit(0);
+        
+        $this->load->library('directs/queue/manager');
+        
+        $dqm = new Manager();
+        echo $dqm->queue_count();
+    }
+
+    public function msg_page($p, $c)
+    {
+        //echo 'OK'; if (TRUE) exit(0);
+        
+        $this->load->library('directs/queue/manager');
+        
+        $dqm = new Manager();
+        echo json_encode( $dqm->msg_page($p, $c) );
+    }
+
 }
