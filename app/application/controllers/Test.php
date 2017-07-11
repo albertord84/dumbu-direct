@@ -84,5 +84,18 @@ class Test extends MY_Controller {
         $dqm = new Manager();
         print_r( json_decode( $dqm->get($id) ) );
     }
+    
+    public function last_sent()
+    {
+        $this->load->library('directs/queue/manager');
+        
+        $dqm = new Manager();
+        
+        $last = $dqm->last_sent();
+        if ($last) {
+            print_r($last);
+        }
+        else echo 'NO';
+    }
 
 }

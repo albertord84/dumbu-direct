@@ -152,5 +152,21 @@ class Manager {
         return $resp;
     }
     
+    /**
+     * Devuelve el ID del ultimo mensaje enviado.
+     * 
+     * @return mixed Contenido del ultimo mensaje enviado, si no, FALSE
+     */
+    public function last_sent()
+    {
+        $filename = APPPATH . '/logs/directs/last.json';
+        
+        if ( ! file_exists($filename) ) {
+            return FALSE;
+        }
+        
+        return file_get_contents($filename);
+    }
+    
 }
 

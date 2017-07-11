@@ -4,6 +4,12 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+// Valores necesarios para usar el gestor de la cola de mensajes
+define('BASEPATH', __DIR__ . '/../../../../system');
+define('APPPATH', __DIR__ . '/../../../../application');
+
+include_once APPPATH . '/libraries/directs/queue/Manager.php';
+
 class SendDirects extends Command
 {
     /**
@@ -27,6 +33,8 @@ class SendDirects extends Command
     private $net_proxy = NULL;
     
     private $instagram = NULL;
+    
+    private $qManager = NULL;
 
     /**
      * Create a new command instance.
@@ -74,9 +82,7 @@ class SendDirects extends Command
         
         $this->loginToInstagram();
         
-        $this->sendMessage($this->getUserId('dumbu.08'), "Probando codigo luego de pasar la escoba");
-        //$this->sendMessage($instagram, $uid, "Hola, ¿cómo estás?");
-        // Aqui es donde se hace el trabajo pesado
+        //$this->sendMessage($this->getUserId('dumbu.08'), "Probando codigo luego de pasar la escoba");
         $this->processQueue();
         
         $this->logoutInstagram();
@@ -84,9 +90,13 @@ class SendDirects extends Command
     
     private function processQueue()
     {
+        $this->qManager = new \Manager();
         
+        $last = $this->qManager->last_sent();
+        if ( ! $last ) {
+            echo 'Comenzar desde el comienzo de la cola...\n';
+        }
     }
-
 
     /**
      * Chequea si existe el estanque donde se echaran los mensajes. Si no existe
