@@ -168,5 +168,20 @@ class Manager {
         return file_get_contents($filename);
     }
     
+    /**
+     * Establece como ultimo mensaje procesado aquel cuyo nombre de archivo
+     * se pase como parametro.
+     * 
+     * @param string $filename Nombre del archivo que fue el ultimo mensaje procesado
+     * @param int $page Numero de la ultima pagina que se proceso
+     */
+    public function set_last($filename, $page)
+    {
+        $last = APPPATH . '/logs/directs/last.json';
+        $json_data = json_decode( file_get_contents(APPPATH . '/logs/directs/queue/' . $filename) );
+        $json_data->page = $page;
+        file_put_contents( $last, json_encode($json_data) );
+    }
+    
 }
 

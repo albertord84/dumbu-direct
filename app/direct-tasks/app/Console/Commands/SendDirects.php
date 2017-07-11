@@ -61,6 +61,9 @@ class SendDirects extends Command
     public function handle()
     {
         set_time_limit(0);
+        
+        echo sprintf("%s - Comenzando procesamiento de la cola de mensajes..." . 
+            PHP_EOL, $this->getLocalDate());
 
         // Quitar cuando se vaya a probar el procesamiento de la cola
         //if (TRUE) return;
@@ -86,21 +89,63 @@ class SendDirects extends Command
         $this->processQueue();
         
         $this->logoutInstagram();
+        
+        echo sprintf("%s - Terminado el procesamiento de la cola de mensajes." . 
+            PHP_EOL, $this->getLocalDate());
     }
     
     private function processQueue()
     {
+        $page_size = 1;
         $this->qManager = new \Manager();
         
+        $page = 1;
+        $last_msg = NULL;
+        $msg_list = NULL;
+        
         $last = $this->qManager->last_sent();
+        
         if ( ! $last ) {
-            echo 'Comenzar desde el comienzo de la cola...\n';
+            echo 'Comenzar desde el comienzo de la cola...' . PHP_EOL;
+            $msg_list = $this->qManager->msg_page($page, $page_size);
+            $last_msg = $msg_list[ $page_size - 1 ];
+            
+        }
+        else {
+            echo 'Comenzar donde quedo el puntero de cola...' . PHP_EOL;
+            $json_obj = json_decode( $this->qManager->last_sent() );
+            $page = $json_obj->page;
+            $msg_list = $this->qManager->msg_page($page, $page_size);
+            $last_msg = $msg_list[ $page_size - 1 ];
+        }
+        
+        for ($i = 0; $i < count($msg_list); $i++) {
+            $msg_file = $this->getDirStore() . "/queue/"
+                    . $msg_list[ $i ];
+            echo sprintf('Procesando mensaje con id %s...' . PHP_EOL, 
+                    basename($msg_file));
+            $msg = json_decode( file_get_contents($msg_file) );
+            $text = $msg->message;
+            $recipients = $msg->pks;
+            for ($j = 0; $j < count($recipients); $j++) {
+                $pk = $recipients[ $j ];
+                $pk_taken = $this->qManager->pk_taken( $pk );
+                if ( ! $pk_taken ) {
+                    echo sprintf('Enviando mensaje al perfil con id %s...' . 
+                        PHP_EOL, $pk);
+                    //$this->sendMessage($pk, $text);
+                }
+                else {
+                    echo sprintf('Obviando el perfil con id %s...' . 
+                        PHP_EOL, $pk);
+                }
+            }
         }
     }
 
     /**
-     * Chequea si existe el estanque donde se echaran los mensajes. Si no existe
-     * manda a crearlo.
+     * Chequea si existe el estanque donde se echaran los mensajes.
+     * Si no existe manda a crearlo.
      */
     private function handleDirectsStore()
     {

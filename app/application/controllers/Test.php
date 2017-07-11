@@ -97,5 +97,14 @@ class Test extends MY_Controller {
         }
         else echo 'NO';
     }
+    
+    public function set_last()
+    {
+        $this->load->library('directs/queue/manager');
+        
+        $dqm = new Manager();
+        
+        $dqm->set_last('20170711_133706_3670825632.json', 3);
+    }
 
 }
