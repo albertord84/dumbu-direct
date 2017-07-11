@@ -16,7 +16,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="/assets/css/dumbu-direct.css?<?php echo d_guid(); ?>">
     </head>
     <body data-ng-controller="MainController">
-        <h1><?php echo $message; ?></h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+                    <div id="logo" class="text-center">
+                        <h1>DUMBU</h1>
+                    </div>
+                    <h1 class="text-center"><?php echo $message; ?></h1>
+                </div>
+            </div>
+        </div>
         <script src="/assets/js/jquery.min.js"></script>
         <script src="/assets/js/bootstrap.min.js"></script>
         <script src="/assets/js/angular.js"></script>

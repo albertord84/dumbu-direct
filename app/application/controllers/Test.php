@@ -76,5 +76,13 @@ class Test extends MY_Controller {
         $dqm = new Manager();
         echo json_encode( $dqm->msg_page($p, $c) );
     }
+    
+    public function get_obj($id)
+    {
+        $this->load->library('directs/queue/manager');
+        
+        $dqm = new Manager();
+        print_r( json_decode( $dqm->get($id) ) );
+    }
 
 }
