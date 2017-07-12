@@ -177,10 +177,13 @@ class Manager {
      */
     public function set_last($filename, $page)
     {
+        echo sprintf('Desplazando puntero de la cola hacia pagina %s...' . PHP_EOL, 
+                intval($page) + 1);
         $last = APPPATH . '/logs/directs/last.json';
         $json_data = json_decode( file_get_contents(APPPATH . '/logs/directs/queue/' . $filename) );
-        $json_data->page = $page;
+        $json_data->page = ++$page;
         file_put_contents( $last, json_encode($json_data) );
+        echo sprintf('Puntero de la cola desplazado exitosamente.' . PHP_EOL);
     }
     
 }

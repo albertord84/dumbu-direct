@@ -130,10 +130,7 @@ class SendDirects extends Command
             $text = $msg->message;
             $recipients = $this->cleanPks($msg->pks);
             try {
-                echo sprintf('Enviando mensaje %s desde cuenta con id %s...' . PHP_EOL,
-                        $msg->datetime, $msg->uid);
                 $this->writeTo($recipients, $text);
-                echo sprintf('Mensaje enviado exitosamente' . PHP_EOL);
             }
             catch (\Exception $e)
             {
@@ -141,10 +138,13 @@ class SendDirects extends Command
                         $msg->datetime, $e->getTraceAsString());
                 echo sprintf('Aplazando envio de mensajes a partir de %s_%s' . PHP_EOL,
                         $msg->datetime, $msg->uid);
+                return;
             }
         }
+        $this->qManager->set_last($last_msg, $page);
+        
     }
-
+    
     /**
      * Recorre la lista de perfiles enviandole a cada uno el mensaje especificado
      * 
