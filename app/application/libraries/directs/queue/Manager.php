@@ -107,7 +107,7 @@ class Manager {
         
         $resp = trim(shell_exec($cmd));
         
-        if ($resp == '0') {
+        if ( intval( $resp ) <= 1 ) {
             return FALSE;
         }
         else {

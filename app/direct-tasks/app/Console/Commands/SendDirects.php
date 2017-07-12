@@ -128,21 +128,59 @@ class SendDirects extends Command
                     basename($msg_file));
             $msg = json_decode( file_get_contents($msg_file) );
             $text = $msg->message;
-            $recipients = $msg->pks;
-            for ($j = 0; $j < count($recipients); $j++) {
-                $pk = $recipients[ $j ];
-                $pk_taken = $this->qManager->pk_taken( $pk );
-                if ( ! $pk_taken ) {
-                    echo sprintf('Enviando mensaje al perfil con id %s...' . 
-                        PHP_EOL, $pk);
-                    //$this->sendMessage($pk, $text);
-                }
-                else {
-                    echo sprintf('Obviando el perfil con id %s...' . 
-                        PHP_EOL, $pk);
-                }
+            $recipients = $this->cleanPks($msg->pks);
+            try {
+                echo sprintf('Enviando mensaje %s desde cuenta con id %s...' . PHP_EOL,
+                        $msg->datetime, $msg->uid);
+                $this->writeTo($recipients, $text);
+                echo sprintf('Mensaje enviado exitosamente' . PHP_EOL);
+            }
+            catch (\Exception $e)
+            {
+                echo sprintf('Error al enviar mensaje %s: %s' . PHP_EOL,
+                        $msg->datetime, $e->getTraceAsString());
+                echo sprintf('Aplazando envio de mensajes a partir de %s_%s' . PHP_EOL,
+                        $msg->datetime, $msg->uid);
             }
         }
+    }
+
+    /**
+     * Recorre la lista de perfiles enviandole a cada uno el mensaje especificado
+     * 
+     * @param array $pks Lista de perfiles
+     * @param string $msg Texto del mensaje que se enviara
+     */
+    private function writeTo($pks, $msg)
+    {
+        for ($i = 0; $i < count($pks); $i++) {
+            $pk = $pks[ $i ];
+            $this->sendMessage($pk, $msg);
+        }
+    }
+
+
+    /**
+     * Determina si alguno de los perfiles ya esta recibiendo mensajes.
+     * 
+     * @param array $pks Arreglo con la lista de perfiles a los que se escribira
+     * @return array Nueva lista sin los perfiles a los que ya se esta escribiendo
+     */
+    private function cleanPks($pks)
+    {
+        $new_list = [];
+        for ($i = 0; $i < count($pks); $i++) {
+            $pk = $pks[ $i ];
+            $pk_taken = $this->qManager->pk_taken( $pk );
+            if ( $pk_taken ) {
+                echo sprintf('Obviando el perfil con id %s...' . 
+                    PHP_EOL, $pk);
+            }
+            else {
+                $new_list[] = $pk;
+            }
+        }
+        return $new_list;
     }
 
     /**
@@ -348,6 +386,15 @@ class SendDirects extends Command
         } catch (Exception $e) {
             $m = $e->getTraceAsString();
             echo "No se pudo crear directorio de los directs activos: $m\n";
+            exit(0);
+        }
+        
+        try {
+            mkdir($dir . '/queue/error');
+            echo "Creado directorio de los directs que dan error de envio.\n";
+        } catch (Exception $e) {
+            $m = $e->getTraceAsString();
+            echo "No se pudo crear directorio de los directs erroneos: $m\n";
             exit(0);
         }
         
