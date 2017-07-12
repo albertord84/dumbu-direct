@@ -102,8 +102,8 @@ class SendDirects extends Command
     
     private function processQueue()
     {
-        $page_size = 1;
         $this->qManager = new \Manager();
+        $page_size = $this->qManager->get_page_size();
         
         if ($this->qManager->queue_count()==0) return;
         
@@ -120,7 +120,7 @@ class SendDirects extends Command
         }
         else {
             echo 'Comenzar donde quedo el puntero de cola...' . PHP_EOL;
-            $json_obj = json_decode( $this->qManager->last_sent() );
+            $json_obj = json_decode( $last );
             $page = $json_obj->page;
             $msg_list = $this->qManager->msg_page($page, $page_size);
             $last_msg = $msg_list[ $page_size - 1 ];
@@ -158,7 +158,7 @@ class SendDirects extends Command
      */
     private function writeTo($pks, $msg)
     {
-        echo sprintf('Enviando mensaje a %s perfile(s)...' . PHP_EOL,
+        echo sprintf('Enviando mensaje a %s perfil(es)...' . PHP_EOL,
                 count($pks));
         for ($i = 0; $i < count($pks); $i++) {
             $pk = $pks[ $i ];
@@ -443,7 +443,7 @@ class SendDirects extends Command
     {
         $date = $this->getLocalDate();
         try {
-            $instag_creds_file = __DIR__.'/../../../../../web/instagram_credentials';
+            $instag_creds_file = APPPATH.'/config/instagram_credentials';
             $_creds = file_get_contents($instag_creds_file);
             $creds = explode(':', $_creds);
             $this->username = $creds[0];

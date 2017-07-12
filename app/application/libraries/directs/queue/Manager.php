@@ -116,6 +116,29 @@ class Manager {
     }
     
     /**
+     * Devuelve el tamano de la pagina de mensajes a procesar.
+     * - Si la cantidad de mensajes es menor o igual a 10, se procesaran 1 a 1
+     * - Si son mas de 10, y menos de 100, se procesaran de 10 en 10
+     * - Si son mas de 100, se procesaran de 100 en 100
+     * 
+     * @return int Tamano de la pagina a procesar
+     */
+    public function get_page_size()
+    {
+        $r = 1;
+        $c = $this->queue_count();
+        
+        if ($c <= 10) $r = 1;
+        if ($c > 10 && c < 100) $r = 10;
+        if ($c > 100) $r = 100;
+        
+        echo sprintf('Tamano de la pagina de mensajes a procesar: %s' . PHP_EOL,
+                $r);
+        
+        return $r;
+    }
+
+    /**
      * Devuelve la cantidad de mensajes en la cola.
      * 
      * @return int Cantidad de mensajes que estan en cola.

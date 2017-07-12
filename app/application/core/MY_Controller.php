@@ -22,7 +22,7 @@ class MY_Controller extends CI_Controller {
 
     protected function useProxy() {
 
-        $netProxyFile = dirname(__FILE__) . '/../config/net_proxy';
+        $netProxyFile = APPPATH . '/config/net_proxy';
 
         if (file_exists($netProxyFile)) {
             $_netProxy = file_get_contents($netProxyFile);
@@ -40,7 +40,7 @@ class MY_Controller extends CI_Controller {
     protected function loadIgCreds() {
 
         try {
-            $igCredsFile = dirname(__FILE__) . '/../config/instagram_credentials';
+            $igCredsFile = APPPATH . '/config/instagram_credentials';
 
             if (!file_exists($igCredsFile)) {
                 show_error('Access credentials file, was not found', 500);
