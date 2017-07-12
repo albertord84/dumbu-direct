@@ -139,8 +139,8 @@ class SendDirects extends Command
             }
             catch (\Exception $e)
             {
-                echo sprintf('Error al enviar mensaje %s: %s' . PHP_EOL,
-                        $msg->datetime, $e->getTraceAsString());
+                echo sprintf('Error al enviar mensaje %s: %s (linea %s)' . PHP_EOL,
+                        $msg->datetime, $e->getTraceAsString(), $e->getLine());
                 echo sprintf('Aplazando envio de mensajes a partir de %s_%s' . PHP_EOL,
                         $msg->datetime, $msg->uid);
                 return;
@@ -158,6 +158,8 @@ class SendDirects extends Command
      */
     private function writeTo($pks, $msg)
     {
+        echo sprintf('Enviando mensaje a %s perfile(s)...' . PHP_EOL,
+                count($pks));
         for ($i = 0; $i < count($pks); $i++) {
             $pk = $pks[ $i ];
             $this->sendMessage($pk, $msg);
@@ -173,6 +175,7 @@ class SendDirects extends Command
      */
     private function cleanPks($pks)
     {
+        echo sprintf('Obviando perfiles con mensajes ya en cola...' . PHP_EOL);
         $new_list = [];
         for ($i = 0; $i < count($pks); $i++) {
             $pk = $pks[ $i ];
@@ -182,6 +185,8 @@ class SendDirects extends Command
                     PHP_EOL, $pk);
             }
             else {
+                echo sprintf('Manteniendo perfil %s como destinatario...' . PHP_EOL,
+                        $pk);
                 $new_list[] = $pk;
             }
         }
@@ -240,19 +245,19 @@ class SendDirects extends Command
         $date = $this->getLocalDate();
         try {
             $msg = "Envio %d de %d...";
-            $u = $this->getUserName($uid);
-            echo "$date -- Enviando mensaje a $u ($uid): \"$message\"\n";
+            //$u = $this->getUserName($uid);
+            echo "$date -- Enviando mensaje al perfil $uid: \"$message\"\n";
             for($i = 0; $i < $count; $i++) {
                 $g = $this->d_guid();
                 $m = "$date -- $g / " . sprintf($msg, $i + 1, $count);
                 $this->instagram->directMessage($uid, $message);
                 echo "$m\n";
             }
-            echo "$date -- Mensaje enviado a $u ($uid)\n";
+            echo "$date -- Mensaje enviado al perfil $uid\n";
             return;
         } catch (\Exception $e) {
             $m = $e->getMessage();
-            echo "$date -- Something went wrong trying to send the message to $u: $m\n";
+            echo "$date -- Something went wrong trying to send the message to profile $uid: $m\n";
             exit(0);
         }
     }
