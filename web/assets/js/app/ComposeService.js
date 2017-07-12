@@ -20,7 +20,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                     $log.log(resp.data);
                     var frm = $('#formCompose');
                     frm.attr({
-                        'action': 'index.php/directs_dashboard',
+                        'action': 'directs_dashboard',
                         'method': 'POST'
                     }).submit();
                 }
@@ -36,7 +36,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                         timer: 5000,
                         type: 'error'
                     }).then(function _redirectToLogin(){
-                        $location.url('/index.php/logout');
+                        $location.url('logout');
                     }, function _cancelTimer(){
                         
                     });

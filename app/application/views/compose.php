@@ -21,7 +21,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/index.php/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                        <li><a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
             </nav>
@@ -29,7 +29,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
                 <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
                     <div id="logo" class="text-center">
                         <h1>DUMBU</h1>
-                        <p><a href="/index.php/search"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;</a>Appeal the attention of previously selected profiles...</p>
+                        <p><a href="search"><i class="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;</a>Appeal the attention of previously selected profiles...</p>
                     </div>
                     <div class="span4 well">
                         <form id="formCompose" accept-charset="UTF-8" action="" method="POST">
