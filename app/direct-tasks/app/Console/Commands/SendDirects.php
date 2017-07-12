@@ -66,7 +66,7 @@ class SendDirects extends Command
             PHP_EOL, $this->getLocalDate());
         
         $qm = new \Manager();
-        if ($this->qManager->queue_count()==0) {
+        if ($qm->queue_count()==0) {
             echo 'No hay mensajes que procesar por ahora.' . PHP_EOL;
             return;
         }
