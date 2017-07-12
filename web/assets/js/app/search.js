@@ -50,15 +50,15 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
     };
 
     $scope.logout = function _logout() {
-        $location.url('index.php/logout');
+        $location.url('logout');
     };
 
     var igUsers = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: 'index.php/users/johndoe',
+        prefetch: 'users/johndoe',
         remote: {
-            url: 'index.php/users/%QUERY',
+            url: 'users/%QUERY',
             wildcard: '%QUERY'
         }
     });
