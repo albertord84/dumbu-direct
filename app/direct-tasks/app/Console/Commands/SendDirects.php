@@ -99,6 +99,8 @@ class SendDirects extends Command
         $page_size = 1;
         $this->qManager = new \Manager();
         
+        if ($this->qManager->queue_count()==0) return;
+        
         $page = 1;
         $last_msg = NULL;
         $msg_list = NULL;
