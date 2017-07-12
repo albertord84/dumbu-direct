@@ -47,7 +47,7 @@
     {
         // Tomado de http://jsfiddle.net/eys3d/741/
         var over = '<div id="loading-overlay">' +
-            '<img id="loading-element" src="/assets/img/loading.gif" />' +
+            '<img id="loading-element" src="assets/img/loading.gif" />' +
             '</div>';
         $(over).appendTo('body');
     };

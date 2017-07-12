@@ -20,7 +20,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                     $log.log(resp.data);
                     var frm = $('#formCompose');
                     frm.attr({
-                        'action': '/index.php/directs_dashboard',
+                        'action': 'index.php/directs_dashboard',
                         'method': 'POST'
                     }).submit();
                 }
@@ -42,7 +42,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                     });
                 }
                 
-                $http.post('/index.php/checkid', {
+                $http.post('index.php/checkid', {
                     user_id: uid
                 }).then(successCallback, errorCallback);
             }
