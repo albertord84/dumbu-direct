@@ -64,6 +64,12 @@ class SendDirects extends Command
         
         echo sprintf("%s - Comenzando procesamiento de la cola de mensajes..." . 
             PHP_EOL, $this->getLocalDate());
+        
+        $qm = new \Manager();
+        if ($this->qManager->queue_count()==0) {
+            echo 'No hay mensajes que procesar por ahora.' . PHP_EOL;
+            return;
+        }
 
         // Quitar cuando se vaya a probar el procesamiento de la cola
         //if (TRUE) return;
@@ -111,7 +117,6 @@ class SendDirects extends Command
             echo 'Comenzar desde el comienzo de la cola...' . PHP_EOL;
             $msg_list = $this->qManager->msg_page($page, $page_size);
             $last_msg = $msg_list[ $page_size - 1 ];
-            
         }
         else {
             echo 'Comenzar donde quedo el puntero de cola...' . PHP_EOL;

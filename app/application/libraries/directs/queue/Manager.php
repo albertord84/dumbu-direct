@@ -143,11 +143,13 @@ class Manager {
         $total = $this->queue_count();
         
         $start = intval( $total / $page );
-        $cmd = sprintf("ls %s | tail -n %s | head -n %s", 
+        $cmd = sprintf("ls %s | grep -v error | tail -n %s | head -n %s", 
                 APPPATH . '/logs/directs/queue', 
-                $start, $count);
+                $start == 0 ? 1 : $start, $count);
+
+        $cmd_out = shell_exec($cmd);
         
-        $resp = explode( PHP_EOL, trim( shell_exec($cmd) ) );
+        $resp = explode( PHP_EOL, trim( $cmd_out ) );
         
         return $resp;
     }
@@ -181,9 +183,44 @@ class Manager {
                 intval($page) + 1);
         $last = APPPATH . '/logs/directs/last.json';
         $json_data = json_decode( file_get_contents(APPPATH . '/logs/directs/queue/' . $filename) );
-        $json_data->page = ++$page;
+        $last_msg = $this->last_msg();
+        if (strcmp($filename, $last_msg)==0) { // Reiniciar la cola desde el primer mensaje
+            $filename = $this->first_msg();
+            $json_data = json_decode( file_get_contents(APPPATH . '/logs/directs/queue/' . $filename) );
+            $json_data->page = 1;
+        }
+        else {
+            $json_data->page = ++$page;
+        }
         file_put_contents( $last, json_encode($json_data) );
-        echo sprintf('Puntero de la cola desplazado exitosamente.' . PHP_EOL);
+        echo sprintf('Puntero de la cola desplazado exitosamente a %s' . PHP_EOL,
+                $json_data->page);
+    }
+    
+    /**
+     * Devuelve el nombre del archivo del ultimo mensaje en la cola
+     * 
+     * @return string Nombre del archivo
+     */
+    public function last_msg()
+    {
+        echo sprintf('Obteniendo ultimo mensaje en la cola...' . PHP_EOL);
+        $cmd = sprintf("ls %s | grep -v error | tail -n 1", 
+                APPPATH . '/logs/directs/queue');
+        return trim( shell_exec($cmd) );
+    }
+    
+    /**
+     * Devuelve el nombre del archivo del primer mensaje en la cola
+     * 
+     * @return string Nombre del archivo
+     */
+    public function first_msg()
+    {
+        echo sprintf('Obteniendo primer mensaje en la cola...' . PHP_EOL);
+        $cmd = sprintf("ls %s | grep -v error | head -n 1", 
+                APPPATH . '/logs/directs/queue');
+        return trim( shell_exec($cmd) );
     }
     
 }
