@@ -22,8 +22,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div id="logo" class="text-center">
                         <h1>DUMBU</h1>
                     </div>
+                    <p class="text-center text-muted"><b>You sent this message...</b></p>
                     <h3 class="text-center"><?php echo $message; ?></h3>
-                    <p class="text-center text-muted"><b>Your message will be processed soon...</b></p>
+                    <p class="text-center text-muted"><b>Your request will be processed soon...</b></p>
                     <p class="text-center text-muted small">If you keep this page opened, you will be notified</p>
                 </div>
             </div>
