@@ -107,13 +107,13 @@ class SendDirects extends Command
         
         if ($this->qManager->queue_count()==0) return;
         
-        $page = 1;
-        $last_msg = NULL;
-        $msg_list = NULL;
+        //$page = 1;
+        //$last_msg = NULL;
+        //$msg_list = NULL;
         
-        $last = $this->qManager->last_sent();
+        //$last = $this->qManager->last_sent();
         
-        if ( ! $last ) {
+        /*if ( ! $last ) {
             echo 'Comenzar desde el comienzo de la cola...' . PHP_EOL;
             $msg_list = $this->qManager->msg_page($page, $page_size);
             $last_msg = $msg_list[ $page_size - 1 ];
@@ -124,7 +124,9 @@ class SendDirects extends Command
             $page = $json_obj->page;
             $msg_list = $this->qManager->msg_page($page, $page_size);
             $last_msg = $msg_list[ $page_size - 1 ];
-        }
+        }*/
+        
+        $msg_list = $this->qManager->msg_page(1, $page_size);
         
         for ($i = 0; $i < count($msg_list); $i++) {
             $msg_file = $this->getDirStore() . "/queue/"
@@ -135,35 +137,61 @@ class SendDirects extends Command
             $text = $msg->message;
             $recipients = $this->cleanPks($msg->pks);
             try {
-                $this->writeTo($recipients, $text);
+                $sent = $this->writeTo($recipients, $text);
+                if ($sent) {
+                    $this->popMessage($msg_file);
+                }
             }
             catch (\Exception $e)
             {
                 echo sprintf('Error al enviar mensaje %s: %s (linea %s)' . PHP_EOL,
                         $msg->datetime, $e->getTraceAsString(), $e->getLine());
-                echo sprintf('Aplazando envio de mensajes a partir de %s_%s' . PHP_EOL,
+                echo sprintf('Fallo el envio de mensajes a partir de %s_%s.json' . PHP_EOL,
                         $msg->datetime, $msg->uid);
                 return;
             }
         }
-        $this->qManager->set_last($last_msg, $page);
+        //$this->qManager->set_last($last_msg, $page);
         
     }
     
+    /**
+     * Saca de la cola el mensaje especificado
+     * 
+     * @param string $filename Nombre del archivo del mensaje a sacar de la cola
+     */
+    private function popMessage($filename)
+    {
+        try {
+            copy($filename, $this->getDirStore() . '/old/' . basename($filename));
+            unlink($filename);
+            echo sprintf('Mensaje %s movido exitosamente al estanque de enviados' . 
+                PHP_EOL, basename($filename));
+        } catch (Exception $e) {
+            echo sprintf('Error al mover el mensaje %s al estanque de enviados: %s (linea %s)' . 
+                PHP_EOL, basename($filename), $e->getMessage(), $e->getLine());
+        }
+    }
+
+
     /**
      * Recorre la lista de perfiles enviandole a cada uno el mensaje especificado
      * 
      * @param array $pks Lista de perfiles
      * @param string $msg Texto del mensaje que se enviara
+     * 
+     * @return boolean Verdadero si se logro enviar el mensaje a la lista de perfiles, si no, falso
      */
     private function writeTo($pks, $msg)
     {
+        $sent = FALSE;
         echo sprintf('Enviando mensaje a %s perfil(es)...' . PHP_EOL,
                 count($pks));
         for ($i = 0; $i < count($pks); $i++) {
             $pk = $pks[ $i ];
-            $this->sendMessage($pk, $msg);
+            $sent = $this->sendMessage($pk, $msg);
         }
+        return $sent;
     }
 
 
@@ -237,8 +265,10 @@ class SendDirects extends Command
      * 
      * @param string $uid Id del usuario de Instagram al que se enviara el mensaje
      * @param string $message Texto del mensaje
-     * @param int $count Cantidad de veces que se enviara el mensaje.
-     * Si no se especifica, se asume que es uno.
+     * @param int $count Cantidad de veces que se enviara el mensaje. Por defecto, una sola vez.
+     * 
+     * @return boolean Verdadero si se envio el mensaje, si no, se detiene la ejecucion.
+     * 
      */
     private function sendMessage($uid, $message, $count = 1)
     {
@@ -254,7 +284,7 @@ class SendDirects extends Command
                 echo "$m\n";
             }
             echo "$date -- Mensaje enviado al perfil $uid\n";
-            return;
+            return TRUE;
         } catch (\Exception $e) {
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to send the message to profile $uid: $m\n";
