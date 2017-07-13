@@ -46,10 +46,14 @@
     AppDumbu.showLoadingOverlay = function _loadingOverlay()
     {
         // Tomado de http://jsfiddle.net/eys3d/741/
-        var over = '<div id="loading-overlay">' +
-            '<img id="loading-element" src="assets/img/loading.gif" />' +
+        var over = 
+            '<div id="loading-overlay">' +
+                '<img id="loading-element" />' +
             '</div>';
         $(over).appendTo('body');
+        $('#loading-element').attr({
+            src: $('img.hidden.loading').attr('src')
+        });
     };
 
     AppDumbu.hideLoadingOverlay = function _hideLoadingOverlay()

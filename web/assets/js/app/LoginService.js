@@ -7,7 +7,7 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
       auth: function _auth($scope) {
         AppDumbu.showLoadingOverlay();
         $scope.authenticating = true;
-        $http.post('index.php/auth', {
+        $http.post(AppDumbu.ajaxUrl + '/auth', {
           username: $scope.username,
           password: $scope.password
         }).then(function _authSuccess(response){
@@ -15,7 +15,7 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
             setTimeout(function _wait(){
               $scope.authenticating = false;
               $scope.$digest();
-              $('#loginForm').attr('action', 'index.php/search').submit();
+              $('#loginForm').attr('action', AppDumbu.ajaxUrl + '/search').submit();
             }, 1000);
           }
           else {

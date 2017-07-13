@@ -20,7 +20,7 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                     $log.log(resp.data);
                     var frm = $('#formCompose');
                     frm.attr({
-                        'action': 'directs_dashboard',
+                        'action': AppDumbu.ajaxUrl + '/directs_dashboard',
                         'method': 'POST'
                     }).submit();
                 }
@@ -36,13 +36,13 @@ AppDumbu.ComposeService = AppDumbu.service('ComposeService', [
                         timer: 5000,
                         type: 'error'
                     }).then(function _redirectToLogin(){
-                        $location.url('logout');
+                        location.href = AppDumbu.ajaxUrl + '/logout';
                     }, function _cancelTimer(){
                         
                     });
                 }
                 
-                $http.post('index.php/checkid', {
+                $http.post(AppDumbu.ajaxUrl + '/checkid', {
                     user_id: uid
                 }).then(successCallback, errorCallback);
             }

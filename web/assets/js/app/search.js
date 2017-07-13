@@ -40,7 +40,7 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
         $service.saveSelectedProfileIds($scope);
         // Redirigir hacia la pagina de componer el direct message
         var frm = $service.getRedirForm({
-            action: 'compose',
+            action: AppDumbu.ajaxUrl + '/compose',
             method: 'post',
             inputs: {
                 pks: $scope.pks
@@ -49,16 +49,12 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
         frm.submit();
     };
 
-    $scope.logout = function _logout() {
-        $location.url('logout');
-    };
-
     var igUsers = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: 'users/johndoe',
+        prefetch: AppDumbu.ajaxUrl + '/users/johndoe',
         remote: {
-            url: 'users/%QUERY',
+            url: AppDumbu.ajaxUrl + '/users/%QUERY',
             wildcard: '%QUERY'
         }
     });
