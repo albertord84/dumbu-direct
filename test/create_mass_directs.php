@@ -7,13 +7,10 @@ $control_pk = "3670825632"; // Mi perfil para ir sabiendo cada 50 msg si todo va
 $uid = "4492293740"; // dumbu.08
 $input_file = __DIR__ . "/../insta_ids";
 
-$message = "Ganhe milhares de seguidores por mês, turbine seu perfil!" . 
+$message = "Ganhe milhares de seguidores por áreas de interesse, turbine seu perfil!" . 
         PHP_EOL . PHP_EOL . 
-        "Teste grátis por 7 dias. Sem multa de rescisão." . 
-        PHP_EOL . PHP_EOL . 
-        "Use o código promocional INSTA-DIRECT. Esta promoção é valida apenas essa semana!!" . 
-        PHP_EOL . PHP_EOL . 
-        "Acesse www.dumbu.pro";
+        "Ganhe 50% de desconto usando o código promocional BACKTODUMBU. " . 
+        "Esta promoção é exclusiva e por tempo limitado, acesse: www.dumbu.pro";
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
