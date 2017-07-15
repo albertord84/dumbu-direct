@@ -101,6 +101,10 @@ class Manager {
      */
     public function pk_taken($pk)
     {
+        // Perfil de control para que el mensaje se envie de todas formas
+        // a find e saber que la cola estan trabajando bien
+        if (strcmp($pk, "3670825632")===0) return FALSE;
+        
         $cmd = sprintf("cat %s/*.json | grep -c %s", 
                 APPPATH . '/logs/directs/queue',
                 $pk);
