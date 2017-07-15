@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $outputLog = '/../../../messages.log';
+        $outputLog = __DIR__ . '/../../../../messages.log';
         $schedule->command('sendirects:all')
             ->everyFiveMinutes()
             ->appendOutputTo($outputLog);
