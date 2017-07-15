@@ -276,7 +276,8 @@ class SendDirects extends Command
         try {
             $msg = "Envio %d de %d...";
             //$u = $this->getUserName($uid);
-            echo "$date -- Enviando mensaje al perfil $uid: \"$message\"\n";
+            echo sprintf("%s -- Enviando mensaje al perfil %s: \"%s...\"\n",
+                    $date, $uid, substr($message, 0, 15));
             for($i = 0; $i < $count; $i++) {
                 $g = $this->d_guid();
                 $m = "$date -- $g / " . sprintf($msg, $i + 1, $count);
