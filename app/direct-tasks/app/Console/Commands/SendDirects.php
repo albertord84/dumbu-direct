@@ -288,6 +288,7 @@ class SendDirects extends Command
             echo "$date -- Mensaje enviado al perfil $uid\n";
             return TRUE;
         } catch (\Exception $e) {
+            sleep(5);
             $m = $e->getMessage();
             echo "$date -- Something went wrong trying to send the message to profile $uid: $m\n";
             return TRUE; // Asegura que se quite de la cola el mensaje que dio error
