@@ -283,6 +283,7 @@ class SendDirects extends Command
                 $m = "$date -- $g / " . sprintf($msg, $i + 1, $count);
                 $this->instagram->directMessage($uid, $message);
                 echo "$m\n";
+                sleep(5);
             }
             echo "$date -- Mensaje enviado al perfil $uid\n";
             return TRUE;
