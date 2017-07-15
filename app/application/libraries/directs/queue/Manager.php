@@ -40,7 +40,7 @@ class Manager {
             'datetime' => $timestamp,
             'uid' => $uid,
             'pks' => $pks_arr,
-            'message' => $message
+            'message' => htmlentities( $message )
         ];
         
         $fhandle = fopen($filename, 'w');
