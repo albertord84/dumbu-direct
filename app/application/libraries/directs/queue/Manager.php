@@ -119,7 +119,7 @@ class Manager {
      * Devuelve el tamano de la pagina de mensajes a procesar.
      * - Si la cantidad de mensajes es menor o igual a 10, se procesaran 1 a 1
      * - Si son mas de 10, y menos de 100, se procesaran de 10 en 10
-     * - Si son mas de 100, se procesaran de 100 en 100
+     * - Si son mas de 100, se procesaran de 50 en 50
      * 
      * @return int Tamano de la pagina a procesar
      */
@@ -130,7 +130,7 @@ class Manager {
         
         if ($c <= 10) $r = 1;
         if ($c > 10 && c < 100) $r = 10;
-        if ($c > 100) $r = 100;
+        if ($c > 50) $r = 50;
         
         echo sprintf('Tamano de la pagina de mensajes a procesar: %s' . PHP_EOL,
                 $r);
