@@ -129,7 +129,7 @@ class Manager {
         $c = $this->queue_count();
         
         if ($c <= 10) $r = 1;
-        if ($c > 10 && c < 100) $r = 10;
+        if ($c > 10 && $c < 100) $r = 10;
         if ($c > 50) $r = 50;
         
         echo sprintf('Tamano de la pagina de mensajes a procesar: %s' . PHP_EOL,
