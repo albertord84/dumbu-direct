@@ -129,6 +129,8 @@ class Manager {
      */
     public function get_page_size()
     {
+        if (TRUE) return 10;
+        
         $r = 1;
         $c = $this->queue_count();
         
