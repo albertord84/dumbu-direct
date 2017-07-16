@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     {
         $outputLog = __DIR__ . '/../../../../messages.log';
         $schedule->command('sendirects:all')
-            ->everyTenMinutes()
+            ->hourly()
             ->appendOutputTo($outputLog);
     }
 
