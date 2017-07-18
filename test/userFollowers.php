@@ -7,7 +7,7 @@ date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
 $username = $creds[0];
 $password = $creds[1];
-$recip = 'dumbu.09';
+$recip = 'dumbu.08';
 $photoFileName = dirname(__FILE__) . '/assets/img/photo.jpg';
 $debug = false;
 $truncatedDebug = true;
