@@ -1,5 +1,5 @@
 <?php
-$_creds = file_get_contents(__DIR__.'/app/application/config/instagram_credentials');
+$_creds = file_get_contents(__DIR__.'/../app/application/config/instagram_credentials');
 $creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
