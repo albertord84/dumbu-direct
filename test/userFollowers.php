@@ -1,12 +1,12 @@
 <?php
-$_creds = file_get_contents(dirname(__FILE__).'/instagram_credentials');
+$_creds = file_get_contents(__DIR__.'/app/application/config/instagram_credentials');
 $creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $creds[0];
 $password = $creds[1];
-$recip='alberto_dreyes';
+$recip='dumbu.08';
 $photoFileName=dirname(__FILE__).'/assets/img/photo.jpg';
 $debug = false;
 $truncatedDebug = false;
