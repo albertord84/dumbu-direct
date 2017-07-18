@@ -20,7 +20,13 @@ try {
     exit(0);
 }
 try {
-  echo json_encode($ig->getUserFollowers($ig->getUsernameId($recip)));
+  $resp = $ig->getUserFollowers($ig->getUsernameId($recip));
+  $users = $resp->users;
+  for($i=0; $i<count($users); $i++) {
+      $user = $users[ $i ];
+      echo sprintf("profile: %s / username: %s / private: %s", $user->pk, 
+              $user->username, $user->is_private ? 'true' : 'false');
+  }
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: '.$e->getMessage()."\n";
 }
