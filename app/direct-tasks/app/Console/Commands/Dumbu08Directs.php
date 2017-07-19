@@ -94,7 +94,7 @@ class Dumbu08Directs extends Command
                 //$this->changeThrottle();
                 exit(0);
             }
-            copy($fileName, APPPATH . '/logs/directs/old/' .
+            copy($fileName, __DIR__ . '/../../../../application/logs/directs/old' .
                     basename($fileName));
             unlink($fileName);
         }
