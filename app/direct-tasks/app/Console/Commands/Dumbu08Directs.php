@@ -81,6 +81,7 @@ class Dumbu08Directs extends Command
             exit(0);
         }
         foreach ($firstTenFileNames as $fileName) {
+            if ( !file_exists($fileName) ) { continue; }
             $fileObj = json_decode( file_get_contents($fileName) );
             try {
                 $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
