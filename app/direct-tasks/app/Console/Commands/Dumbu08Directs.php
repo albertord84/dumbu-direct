@@ -87,6 +87,8 @@ class Dumbu08Directs extends Command
             $fileObj = json_decode( file_get_contents($fileName) );
             try {
                 $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
+                echo sprintf("Enviado mensaje %s al perfil %s" . PHP_EOL,
+                    $fileName, $fileObj->pks[0]);
             }
             catch (Exception $e) {
                 echo sprintf("Error al enviar el mensaje a %s: %s" . PHP_EOL,
