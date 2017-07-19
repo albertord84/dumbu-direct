@@ -75,6 +75,11 @@ class Dumbu08Directs extends Command
     private function processFirstTenMessages()
     {
         $firstTenFileNames = $this->getFirstTenFileNames();
+        if (count($firstTenFileNames)==0) {
+            echo sprintf("Por ahora no hay mensajes para %s" . PHP_EOL,
+                $this->username);
+            exit(0);
+        }
         foreach ($firstTenFileNames as $fileName) {
             if (!strstr($fileName, 'json')) {
                 continue;
