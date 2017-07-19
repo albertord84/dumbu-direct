@@ -52,7 +52,7 @@ class Dumbu08Directs extends Command
         echo sprintf("%s - Procesando mensajes de %s" . PHP_EOL,
                 date('r'), $this->username);
         
-        //$this->loginInstagram();
+        $this->loginInstagram();
         $this->processFirstTenMessages();
         
         echo sprintf("%s - Terminado el procesamiento de los mensajes de %s" . 
