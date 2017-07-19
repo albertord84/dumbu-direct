@@ -5,8 +5,8 @@ $debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
-    $username = 'dumbu.08';
-    $password = 'Sorvete69';
+    $username = 'dumbu.09';
+    $password = 'dumbu2017';
     $ig->setUser($username, $password);
     $ig->login();
 } catch (\Exception $e) {
