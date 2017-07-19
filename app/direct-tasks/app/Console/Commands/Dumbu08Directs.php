@@ -67,8 +67,8 @@ class Dumbu08Directs extends Command
             $this->instagram->login();
         }
         catch(Exception $e) {
-            echo sprintf("Error al iniciar sesion como %s: %s" . PHP_EOL,
-                $this->username, $e->getMessage());
+            echo sprintf("%s - Error al iniciar sesion como %s: %s" . PHP_EOL,
+                date('r'), $this->username, $e->getMessage());
         }
     }
     
@@ -76,8 +76,8 @@ class Dumbu08Directs extends Command
     {
         $firstTenFileNames = $this->getFirstTenFileNames();
         if (count($firstTenFileNames)==0) {
-            echo sprintf("Por ahora no hay mensajes para %s" . PHP_EOL,
-                $this->username);
+            echo sprintf("%s - Por ahora no hay mensajes para %s" . PHP_EOL,
+                date('r'), $this->username);
             exit(0);
         }
         foreach ($firstTenFileNames as $fileName) {
@@ -87,12 +87,12 @@ class Dumbu08Directs extends Command
             $fileObj = json_decode( file_get_contents($fileName) );
             try {
                 $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
-                echo sprintf("Enviado mensaje %s al perfil %s" . PHP_EOL,
-                    $fileName, $fileObj->pks[0]);
+                echo sprintf("%s - Enviado mensaje %s al perfil %s" . PHP_EOL,
+                    date('r'), $fileName, $fileObj->pks[0]);
             }
             catch (Exception $e) {
-                echo sprintf("Error al enviar el mensaje a %s: %s" . PHP_EOL,
-                    $fileObj->pks[0], $e->getMessage());
+                echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
+                    date('r'), $fileObj->pks[0], $e->getMessage());
                 //$this->changeThrottle();
                 exit(0);
             }
