@@ -85,13 +85,13 @@ class Dumbu08Directs extends Command
         foreach ($firstTenFileNames as $fileName) {
             if ( !file_exists($fileName) ) { continue; }
             echo sprintf("%s - Procesando mensaje %s" . PHP_EOL,
-                date('r'), $fileName);
+                date('r'), basename($fileName));
             $fileObj = json_decode( file_get_contents($fileName) );
             $resp = NULL;
             try {
                 $resp = $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
                 echo sprintf("%s - Enviado mensaje %s al perfil %s" . PHP_EOL,
-                    date('r'), $fileName, $fileObj->pks[0]);
+                    date('r'), basename($fileName), $fileObj->pks[0]);
                 $this->popMessage($fileName);
                 sleep(5);
             }
