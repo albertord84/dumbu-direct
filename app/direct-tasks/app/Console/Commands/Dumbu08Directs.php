@@ -87,19 +87,26 @@ class Dumbu08Directs extends Command
                 $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
                 echo sprintf("%s - Enviado mensaje %s al perfil %s" . PHP_EOL,
                     date('r'), $fileName, $fileObj->pks[0]);
+                $this->popMessage($fileName);
             }
             catch (Exception $e) {
                 echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
                     date('r'), $fileObj->pks[0], $e->getMessage());
                 //$this->changeThrottle();
+                $this->popMessage($fileName);
                 exit(0);
             }
-            copy($fileName, __DIR__ . '/../../../../application/logs/directs/old' .
-                    basename($fileName));
-            unlink($fileName);
         }
     }
     
+    private function popMessage($fileName)
+    {
+        copy($fileName, __DIR__ . '/../../../../application/logs/directs/old' .
+            basename($fileName));
+        unlink($fileName);
+    }
+
+
     private function getFirstTenFileNames()
     {
         $cmd = sprintf('find %s -name "*.json" | grep %s | head -n 10', 
