@@ -92,15 +92,14 @@ class Dumbu08Directs extends Command
                 $resp = $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
                 echo sprintf("%s - Enviado mensaje %s al perfil %s" . PHP_EOL,
                     date('r'), basename($fileName), $fileObj->pks[0]);
-                $this->popMessage($fileName);
-                sleep(5);
             }
             catch (Exception $e) {
                 echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
                     date('r'), $fileObj->pks[0], $e->getMessage());
                 //$this->changeThrottle();
-                $this->popMessage($fileName);
             }
+            $this->popMessage($fileName);
+            sleep(5);
         }
     }
     
