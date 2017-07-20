@@ -94,7 +94,6 @@ class Dumbu08Directs extends Command
                     date('r'), $fileObj->pks[0], $e->getMessage());
                 //$this->changeThrottle();
                 $this->popMessage($fileName);
-                exit(0);
             }
         }
     }
