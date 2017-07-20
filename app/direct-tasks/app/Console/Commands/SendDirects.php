@@ -135,9 +135,10 @@ class SendDirects extends Command
                     basename($msg_file));
             $msg = json_decode( file_get_contents($msg_file) );
             $text = $msg->message;
-            $recipients = $this->cleanPks($msg->pks);
+            //$recipients = $this->cleanPks($msg->pks);
             try {
-                $sent = $this->writeTo($recipients, $text);
+                //$sent = $this->writeTo($recipients, $text);
+                $sent = $this->writeTo($msg->pks, $text);
                 if ($sent) {
                     $this->popMessage($msg_file);
                 }
