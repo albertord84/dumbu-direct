@@ -108,7 +108,7 @@ class Dumbu08Directs extends Command
             basename($fileName));
         unlink($fileName);
         echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
-            date('r'), $fileName);
+            date('r'), basename($fileName));
     }
 
 
