@@ -64,7 +64,7 @@ class Dumbu09Directs extends Command
     private function loginInstagram()
     {
         try {
-            $this->instagram = new \InstagramAPI\Instagram(TRUE, TRUE);
+            $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
             $this->instagram->setUser($this->username, $this->password);
             $this->instagram->login();
         }
