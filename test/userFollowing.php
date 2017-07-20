@@ -7,7 +7,7 @@ date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
 $username = trim($creds[0]);
 $password = trim($creds[1]);
-$debug = false;
+$debug = true;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
@@ -20,9 +20,9 @@ try {
 try {
     $maxId = null;
     $followings = [];
-    $pk = $ig->getUsernameId($recip);
+    $pk = $ig->getUsernameId($username);
     do {
-        $resp = $ig->getUserFollowers($pk, $maxId);
+        $resp = $ig->getSelfUsersFollowing($pk, $maxId);
         $followings = array_merge($followings, $resp->getUsers());
         $maxId = $resp->getNextMaxId();
     } while ($maxId !== null);
