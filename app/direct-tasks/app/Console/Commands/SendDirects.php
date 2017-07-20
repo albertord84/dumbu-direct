@@ -480,8 +480,8 @@ class SendDirects extends Command
             $instag_creds_file = APPPATH.'/config/instagram_credentials';
             $_creds = file_get_contents($instag_creds_file);
             $creds = explode(':', $_creds);
-            $this->username = $creds[0];
-            $this->password = $creds[1];
+            $this->username = trim($creds[0]);
+            $this->password = trim($creds[1]);
             echo sprintf('Obtenidas las credenciales para el usuario: %s' . PHP_EOL,
                     $this->username);
         } catch (\Exception $e) {
