@@ -82,6 +82,8 @@ class Dumbu08Directs extends Command
         }
         foreach ($firstTenFileNames as $fileName) {
             if ( !file_exists($fileName) ) { continue; }
+            echo sprintf("%s - Procesando mensaje %s" . PHP_EOL,
+                date('r'), $fileName);
             $fileObj = json_decode( file_get_contents($fileName) );
             try {
                 $this->instagram->directMessage($fileObj->pks[0], $fileObj->message);
