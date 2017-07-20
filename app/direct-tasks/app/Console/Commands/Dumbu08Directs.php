@@ -68,7 +68,7 @@ class Dumbu08Directs extends Command
             $this->instagram->setUser($this->username, $this->password);
             $this->instagram->login();
         }
-        catch(Exception $e) {
+        catch(\Exception $e) {
             echo sprintf("%s - Error al iniciar sesion como %s: %s" . PHP_EOL,
                 date('r'), $this->username, $e->getMessage());
         }
@@ -82,14 +82,13 @@ class Dumbu08Directs extends Command
                 date('r'), basename($fileName), $fileObj->pks[0]);
             return TRUE;
         }
-        catch (Exception $e) {
+        catch (\Exception $e) {
             echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
                 date('r'), $fileObj->pks[0], $e->getMessage());
             //$this->changeThrottle();
             return TRUE;
         }
     }
-
 
     private function processFirstTenMessages()
     {
