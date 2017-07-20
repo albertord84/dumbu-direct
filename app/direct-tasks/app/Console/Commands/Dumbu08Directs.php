@@ -115,6 +115,7 @@ class Dumbu08Directs extends Command
         $cmd = sprintf('ls %s/*.json | grep %s | head', 
                 __DIR__ . '/../../../../application/logs/directs/queue',
                 $this->pk);
+        echo $cmd . PHP_EOL;
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
         return $firstTenFileNames;
