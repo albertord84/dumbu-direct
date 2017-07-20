@@ -104,6 +104,8 @@ class Dumbu08Directs extends Command
         copy($fileName, __DIR__ . '/../../../../application/logs/directs/old' .
             basename($fileName));
         unlink($fileName);
+        echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
+            date('r'), $fileName);
     }
 
 
