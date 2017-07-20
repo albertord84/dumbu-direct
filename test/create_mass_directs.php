@@ -4,8 +4,8 @@ $output_dir = '/tmp';
 
 $control_pk = "3670825632"; // Mi perfil para ir sabiendo cada 50 msg si todo va bien
 
-//$uid = '4542814483'; // dumbu.09
-$uid = "4492293740"; // dumbu.08
+$uid = '4542814483'; // dumbu.09
+//$uid = "4492293740"; // dumbu.08
 $input_file = __DIR__ . "/../tmp/followers";
 
 $message = "Ganhe milhares de seguidores por mês, turbine seu perfil!" . 
@@ -14,7 +14,7 @@ $message = "Ganhe milhares de seguidores por mês, turbine seu perfil!" .
         PHP_EOL . PHP_EOL . 
         "Use o código promocional INSTA-DIRECT. Esta promoção é valida apenas essa semana!!" . 
         PHP_EOL . PHP_EOL . 
-        "Acesse www.dumbu.pro";
+        "Acesse http://instadumbu.com";
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
