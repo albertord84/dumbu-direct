@@ -112,7 +112,7 @@ class Dumbu08Directs extends Command
 
     private function getFirstTenFileNames()
     {
-        $cmd = sprintf('ls %s/*.json" | grep %s | head', 
+        $cmd = sprintf('ls %s/*.json | grep %s | head', 
                 __DIR__ . '/../../../../application/logs/directs/queue',
                 $this->pk);
         $cmd_output = shell_exec($cmd);
