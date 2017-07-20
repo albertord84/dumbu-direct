@@ -49,6 +49,8 @@ class Dumbu08Directs extends Command
      */
     public function handle()
     {
+        set_time_limit(0);
+        
         echo sprintf("%s - Procesando mensajes de %s" . PHP_EOL,
                 date('r'), $this->username);
         
