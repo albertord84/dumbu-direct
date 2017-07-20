@@ -78,13 +78,13 @@ class Dumbu08Directs extends Command
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
-            echo sprintf("%s - Enviado mensaje %s al perfil %s" . PHP_EOL,
-                date('r'), basename($fileName), $fileObj->pks[0]);
+            echo sprintf("%s - Enviado mensaje: \"%s...\" al perfil %s" . PHP_EOL,
+                date('r'), substr($message, 0, 20), $destProfileId);
             return TRUE;
         }
         catch (\Exception $e) {
             echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
-                date('r'), $fileObj->pks[0], $e->getMessage());
+                date('r'), $destProfileId, $e->getMessage());
             //$this->changeThrottle();
             return TRUE;
         }
