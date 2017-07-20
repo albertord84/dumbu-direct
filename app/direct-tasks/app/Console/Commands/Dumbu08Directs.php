@@ -117,9 +117,14 @@ class Dumbu08Directs extends Command
         $cmd = sprintf('ls %s | grep %s | tail', 
                 __DIR__ . '/../../../../application/logs/directs/queue',
                 $this->pk);
-        echo $cmd . PHP_EOL;
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
+        for ($i = 0; $i < count($firstTenFileNames); $i++)
+        {
+            $f = $firstTenFileNames[ $i ];
+            $firstTenFileNames[ $i ] = __DIR__ . '/../../../../application/logs/directs/queue/' .
+                    $f;
+        }
         return $firstTenFileNames;
     }
 
