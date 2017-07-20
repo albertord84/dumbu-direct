@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         '\App\Console\Commands\SendDirects',
-        '\App\Console\Commands\Dumbu08Directs'
+        '\App\Console\Commands\Dumbu08Directs',
+        '\App\Console\Commands\Dumbu09Directs'
     ];
 
     /**
@@ -29,9 +30,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:all')
-            ->everyMinute()
+        $schedule->command('sendirects:dumbu09')
+            ->everyTenMinutes()
             ->appendOutputTo($outputLog);
+        /*$schedule->command('sendirects:all')
+            ->everyMinute()
+            ->appendOutputTo($outputLog);*/
     }
 
     /**
