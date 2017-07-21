@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        '\App\Console\Commands\SendDirects',
+        //'\App\Console\Commands\SendDirects',
         '\App\Console\Commands\Dumbu08Directs',
         '\App\Console\Commands\Dumbu09Directs'
     ];
