@@ -22,10 +22,16 @@ try {
         if ($i == 10) exit(0);
         $item = $threads[ $i ]->items[0];
         $inviter = $threads[ $i ]->inviter->username;
+        $dest_profile = json_decode( json_encode( $threads[ $i ]->last_seen_at ), TRUE );
+        $dest_user = NULL;
+        foreach ($dest_profile as $key => $value) {
+            $dest_user = $ig->getUserInfoById( $key )->user->username;
+            break;
+        }
         $timestamp = date('Y-m-d H:i:s', $item->timestamp / 1000000);
         $text = $item->text;
-        echo sprintf("%s ==> %s - \"%s\" escribio: \"%s...\"" . PHP_EOL, 
-                intval($i) + 1, $timestamp, $inviter, substr($text, 0, 20));
+        echo sprintf("%s ==> %s - \"%s\" escribio a \"%s\": \"%s...\"" . PHP_EOL, 
+                intval($i) + 1, $timestamp, $inviter, $dest_user, substr($text, 0, 20));
     }
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
