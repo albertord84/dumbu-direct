@@ -5,6 +5,10 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+// Para tener acceso al directorio del estanque de mensajes
+define('BASEPATH', __DIR__ . '/../../../../system');
+define('APPPATH', __DIR__ . '/../../../../application');
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -13,7 +17,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //'\App\Console\Commands\SendDirects',
         '\App\Console\Commands\Dumbu08Directs',
         '\App\Console\Commands\Dumbu09Directs'
     ];
