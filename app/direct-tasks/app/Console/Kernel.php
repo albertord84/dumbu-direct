@@ -6,8 +6,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 // Para tener acceso al directorio del estanque de mensajes
-define('BASEPATH', __DIR__ . '/../../../../system');
-define('APPPATH', __DIR__ . '/../../../../application');
+define('BASEPATH', __DIR__ . '/../../../system');
+define('APPPATH', __DIR__ . '/../../../application');
 
 class Kernel extends ConsoleKernel
 {
@@ -36,9 +36,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendirects:dumbu09')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        /*$schedule->command('sendirects:all')
-            ->everyMinute()
-            ->appendOutputTo($outputLog);*/
     }
 
     /**
