@@ -100,6 +100,7 @@ class Dumbu08Directs extends Command
         }
         foreach ($firstTenFileNames as $fileName) {
             if ( !file_exists($fileName) ) { continue; }
+            if ( strstr($fileName, '.json') == FALSE ) { continue; }
             echo sprintf("%s - Procesando mensaje %s" . PHP_EOL,
                 date('r'), basename($fileName));
             $fileObj = json_decode( file_get_contents($fileName) );

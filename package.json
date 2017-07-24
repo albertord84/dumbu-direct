@@ -16,6 +16,7 @@
     "grunt-contrib-concat": "^1.0.1",
     "instagram-private-api": "^0.5.16",
     "jquery": "^3.2.1",
+    "knockout": "^3.4.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "sweetalert": "^1.1.3",
