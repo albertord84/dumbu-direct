@@ -4,9 +4,9 @@ $output_dir = '/tmp';
 
 $control_pk = "3670825632"; // Mi perfil para ir sabiendo cada 50 msg si todo va bien
 
-$uid = '4542814483'; // dumbu.09
-//$uid = "4492293740"; // dumbu.08
-$input_file = __DIR__ . "/../tmp/followers";
+$uid = "4492293740"; // dumbu.08
+//$uid = '4542814483'; // dumbu.09
+$input_file = __DIR__ . "/../tmp/following";
 
 $message = "Ganhe milhares de seguidores por mês, turbine seu perfil!" . 
         PHP_EOL . PHP_EOL . 
