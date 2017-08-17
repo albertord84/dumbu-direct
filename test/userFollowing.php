@@ -19,15 +19,15 @@ try {
 }
 try {
     $maxId = null;
-    $followings = [];
+    $followers = [];
     $pk = $ig->getUsernameId($username);
     do {
         $resp = $ig->getSelfUsersFollowing($pk, $maxId);
-        $followings = array_merge($followings, $resp->getUsers());
+        $followers = array_merge($followers, $resp->getUsers());
         $maxId = $resp->getNextMaxId();
     } while ($maxId !== null);
-    for ($i = 0; $i < count($followings); $i++) {
-        $follower = $followings[$i];
+    for ($i = 0; $i < count($followers); $i++) {
+        $follower = $followers[$i];
         echo sprintf("%s ==> profile: %s / username: %s / private: %s" . PHP_EOL, 
                 $i, $follower->pk, $follower->username, 
                 $follower->is_private ? 'true' : 'false');

@@ -1,12 +1,14 @@
 <?php
-
-$_creds = file_get_contents(__DIR__ . '/../app/application/config/instagram_credentials');
-$creds = explode(':', $_creds);
+$username = trim($argv[1]);
+$password = trim($argv[2]);
+$recip = trim($argv[3]);
+//$_creds = file_get_contents(__DIR__ . '/../app/application/config/instagram_credentials');
+//$creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
-$username = trim($creds[0]);
-$password = trim($creds[1]);
+//$username = trim($creds[0]);
+//$password = trim($creds[1]);
 $debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
@@ -19,19 +21,32 @@ try {
 }
 try {
     $maxId = null;
-    $followings = [];
+    $followers = [];
     $pk = $ig->getUsernameId($recip);
+    $c = 0;
+    
+    $f = [];
+    $resp = $ig->getUserFollowers($pk);
+    $f = array_merge($f, $resp->getUsers());
+    print_r($f);
+    if (TRUE) exit();
+    
+    echo '[';
     do {
         $resp = $ig->getUserFollowers($pk, $maxId);
-        $followings = array_merge($followings, $resp->getUsers());
+        $followers = array_merge($followers, $resp->getUsers());
         $maxId = $resp->getNextMaxId();
+        $size = count($followers);
+        for ($i = $c; $i < $size; $i++) {
+            $follower = $followers[$i];
+            echo sprintf("{ \"num\": %s, \"profile\": \"%s\", \"username\": \"%s\", \"private\": %s }%s" . PHP_EOL, 
+                    $i, $follower->pk, $follower->username, 
+                    ($follower->is_private ? 'true' : 'false'), 
+                    ($i < $size - 1 ? ',' : ''));
+        }
+        $c = $size;
     } while ($maxId !== null);
-    for ($i = 0; $i < count($followings); $i++) {
-        $follower = $followings[$i];
-        echo sprintf("%s ==> profile: %s / username: %s / private: %s" . PHP_EOL, 
-                $i, $follower->pk, $follower->username, 
-                $follower->is_private ? 'true' : 'false');
-    }
+    echo ']';
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
 }
