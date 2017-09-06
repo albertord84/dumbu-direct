@@ -21,7 +21,7 @@ class PedroPettiDirects extends Command
     protected $description = 'Sends Instagram direct messages to pedropetti followers';
     
     // 5787797919 = pedropetti
-    // 5787797919 = pbpetti
+    // 236116119 = pbpetti
     private $pk = '236116119';
 
     private $username = 'pbpetti';

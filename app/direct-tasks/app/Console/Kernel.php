@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         '\App\Console\Commands\Dumbu08Directs',
-        '\App\Console\Commands\Dumbu09Directs'
+        '\App\Console\Commands\Dumbu09Directs',
+        '\App\Console\Commands\PedroPettiDirects'
     ];
 
     /**
@@ -30,10 +31,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $outputLog = __DIR__ . '/../../../../messages.log';
-        $schedule->command('sendirects:dumbu08')
+        /*$schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:dumbu09')
+            ->everyTenMinutes()
+            ->appendOutputTo($outputLog);*/
+        $schedule->command('sendirects:pedropetti')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
     }
