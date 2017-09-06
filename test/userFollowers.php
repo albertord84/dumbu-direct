@@ -9,7 +9,7 @@ date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
 //$username = trim($creds[0]);
 //$password = trim($creds[1]);
-$debug = true;
+$debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
@@ -28,9 +28,6 @@ try {
     $f = [];
     $resp = $ig->getUserFollowers($pk);
     $f = array_merge($f, $resp->getUsers());
-    print_r($f);
-    if (TRUE) exit();
-    
     echo '[';
     do {
         $resp = $ig->getUserFollowers($pk, $maxId);
