@@ -22,6 +22,7 @@ class Dumbu09Directs extends Command
     
     // 4542814483 = dumbu.09
     // 4492293740 = dumbu.08
+    // 236116119 = pbpetti
     private $pk = '4542814483';
 
     private $username = 'dumbu.09';

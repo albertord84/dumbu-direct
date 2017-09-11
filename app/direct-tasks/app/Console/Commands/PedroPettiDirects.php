@@ -66,6 +66,7 @@ class PedroPettiDirects extends Command
         try {
             $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
             $this->instagram->setUser($this->username, $this->password);
+            $this->instagram->setProxy("191.252.111.93:23128");
             $this->instagram->login();
         }
         catch(\Exception $e) {

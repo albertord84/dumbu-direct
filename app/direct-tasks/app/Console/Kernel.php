@@ -44,9 +44,9 @@ class Kernel extends ConsoleKernel
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);*/
         $schedule->command('sendirects:pedropetti')
-            ->cron('3 * * * * *')
+            ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:pedropetti')
+        /*$schedule->command('sendirects:pedropetti')
             ->cron('12 * * * * *')
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
@@ -57,7 +57,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
             ->cron('41 * * * * *')
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($outputLog);*/
     }
 
     /**
@@ -74,52 +74,14 @@ class Kernel extends ConsoleKernel
     {
         date_default_timezone_set('America/Sao_Paulo');
         $H = intval(date("H"));
-        if ( $H >= $this->stopHour || $H <= $this->stopHour + 1 )
+        $stopsHour = [
+            2,4,6,8,10,12,14,16,18,20,22
+        ];
+        if ( in_array($H, $stopsHour) )
         {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 1);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 3 || $H <= $this->stopHour + 4 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 4);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 6 || $H <= $this->stopHour + 7 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 7);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 9 || $H <= $this->stopHour + 10 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 10);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 12 || $H <= $this->stopHour + 13 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 13);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 15 || $H <= $this->stopHour + 16 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 16);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 18 || $H <= $this->stopHour + 19 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 19);
-            exit(0);
-        }
-        if ( $H >= $this->stopHour + 21 || $H <= $this->stopHour + 22 )
-        {
-            printf("Esperando una hora (hasta las %s) para reiniciar el envio...\n",
-                $this->stopHour + 22);
+            $h = array_search($H, $stopsHour);
+            printf("% - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
+                date('r'), $stopsHour[ $h ] + 1);
             exit(0);
         }
     }

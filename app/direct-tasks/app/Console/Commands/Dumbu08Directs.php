@@ -25,7 +25,7 @@ class Dumbu08Directs extends Command
     // 5787797919 = pedropetti
     // 236116119 = pbpetti
     //private $pk = '4492293740';
-    private $pk = '236116119';
+    private $pk = '4492293740';
 
     private $username = 'dumbu.08';
     
