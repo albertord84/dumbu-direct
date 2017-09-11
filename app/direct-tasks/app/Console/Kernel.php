@@ -31,27 +31,27 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $outputLog = __DIR__ . '/../../../../messages.log';
-        $schedule->command('sendirects:dumbu08')
+        /*$schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        /*$schedule->command('sendirects:dumbu09')
+        $schedule->command('sendirects:dumbu09')
             ->everyTenMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($outputLog);*/
         $schedule->command('sendirects:pedropetti')
             ->cron('3 * * * * *')
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
-            ->cron('13 * * * * *')
+            ->cron('12 * * * * *')
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
-            ->cron('20 * * * * *')
+            ->cron('23 * * * * *')
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
-            ->cron('32 * * * * *')
+            ->cron('34 * * * * *')
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
-            ->cron('44 * * * * *')
-            ->appendOutputTo($outputLog);*/
+            ->cron('41 * * * * *')
+            ->appendOutputTo($outputLog);
     }
 
     /**
