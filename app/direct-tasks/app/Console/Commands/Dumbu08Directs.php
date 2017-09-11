@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Dumbu08Directs extends Command
+class Dumbu08Directs extends DirectsCommand
 {
     /**
      * The name and signature of the console command.
