@@ -34,7 +34,10 @@ class PedroPettiDirects extends DirectsCommand
         $this->pk = '236116119';
         $this->username = 'pbpetti';
         $this->password = 'Pp75005310';
-        $this->proxy = '191.252.101.188:23128';
+        // 191.252.110.140
+        // 191.252.103.137
+        // 191.252.111.93
+        $this->proxy = '191.252.110.140:23128';
     }
 
 }
