@@ -32,10 +32,10 @@ class Kernel extends ConsoleKernel
     {
         $outputLog = __DIR__ . '/../../../../messages.log';
         $this->delayMessages();
-        /*$schedule->command('sendirects:dumbu08')
+        $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:dumbu09')
+        /*$schedule->command('sendirects:dumbu09')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);*/
         $schedule->command('sendirects:pedropetti')
@@ -43,15 +43,6 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($outputLog);
         /*$schedule->command('sendirects:pedropetti')
             ->cron('12 * * * * *')
-            ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:pedropetti')
-            ->cron('23 * * * * *')
-            ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:pedropetti')
-            ->cron('34 * * * * *')
-            ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:pedropetti')
-            ->cron('41 * * * * *')
             ->appendOutputTo($outputLog);*/
     }
 
