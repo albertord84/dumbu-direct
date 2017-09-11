@@ -35,9 +35,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
-        /*$schedule->command('sendirects:dumbu09')
+        $schedule->command('sendirects:dumbu09')
             ->everyTenMinutes()
-            ->appendOutputTo($outputLog);*/
+            ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
