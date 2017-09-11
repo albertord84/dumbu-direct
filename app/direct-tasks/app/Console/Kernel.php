@@ -80,7 +80,7 @@ class Kernel extends ConsoleKernel
         if ( in_array($H, $stopsHour) )
         {
             $h = array_search($H, $stopsHour);
-            printf("% - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
+            printf("%s - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
                 date('r'), $stopsHour[ $h ] + 1);
             exit(0);
         }
