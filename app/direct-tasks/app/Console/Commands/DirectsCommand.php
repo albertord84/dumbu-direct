@@ -27,6 +27,8 @@ class DirectsCommand extends Command
     protected $password = '';
     
     protected $instagram = NULL;
+
+    protected $proxy = NULL;
     
     /**
      * Create a new command instance.
@@ -69,7 +71,9 @@ class DirectsCommand extends Command
         try {
             $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
             $this->instagram->setUser($this->username, $this->password);
-            $this->instagram->setProxy("191.252.111.93:23128");
+            if ($this->proxy !== NULL) {
+                $this->instagram->setProxy($this->proxy);
+            }
             $this->instagram->login();
         }
         catch(\Exception $e) {

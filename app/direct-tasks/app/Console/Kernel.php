@@ -61,7 +61,7 @@ class Kernel extends ConsoleKernel
         date_default_timezone_set('America/Sao_Paulo');
         $H = intval(date("H"));
         $stopsHour = [
-            1,3,5,7,9,11,13,15,17,19,21,23
+            1,3,5,7,9,11,13,15,17,19,20,21,23
         ];
         if ( in_array($H, $stopsHour) )
         {
