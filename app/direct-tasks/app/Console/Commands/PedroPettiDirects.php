@@ -60,6 +60,11 @@ class PedroPettiDirects extends Command
         echo sprintf("%s - Terminado el procesamiento de los mensajes de %s" . 
                 PHP_EOL, date('r'), $this->username);
     }
+
+    private function currentHour()
+    {
+        return intval(date('H'));
+    }
     
     private function loginInstagram()
     {
@@ -119,7 +124,6 @@ class PedroPettiDirects extends Command
         echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
             date('r'), basename($fileName));
     }
-
 
     private function getFirstTenFileNames()
     {

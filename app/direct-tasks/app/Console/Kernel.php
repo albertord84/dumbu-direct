@@ -22,11 +22,6 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\PedroPettiDirects'
     ];
 
-    // Establecer para saber a partir de cuando, hacer
-    // pausas en el envio cada vez mayores a fin de no
-    // embotar el margen de peticiones permitidas
-    protected $stopHour = 13;
-
     /**
      * Define the application's command schedule.
      *
@@ -85,4 +80,5 @@ class Kernel extends ConsoleKernel
             exit(0);
         }
     }
+
 }

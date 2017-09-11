@@ -30,21 +30,21 @@ $ref_profs = array(
 //$input_file = __DIR__ . "/../tmp/$ref_prof.followers.txt";
 $input_file = "$dest_prof_list";
 
-$message = "Ganhe milhares de seguidores, promova seu perfil!" .
-        PHP_EOL . PHP_EOL .
-        "Gratuito durante um mês (use o código promocional AMIGOSDOPEDRO)" .
-        PHP_EOL . PHP_EOL .
-        "Os 200 primeiros terão acesso ao serviço de direct automático" .
-        PHP_EOL . PHP_EOL .
-        "um mês antes dos outros clientes!" .
-        PHP_EOL . PHP_EOL .
-        "Esta promoção é válida apenas esta semana!" .
-        PHP_EOL . PHP_EOL .
-        "Acesse www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
-        "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
-        PHP_EOL . PHP_EOL .
-        "foi enviada por www.dumbu.pro.";
+$message = "Ganhe milhares de seguidores qualificados por área".
+    PHP_EOL . PHP_EOL .
+    "de interesse ou geolocalização, turbine seu perfil!".
+    PHP_EOL . PHP_EOL .
+    "- 50% desconto o primeiro mes (use o código promocional INSTA50P)".
+    PHP_EOL . PHP_EOL .
+    "- 15 dias de teste gratis (use o código promocional INSTA15D)".
+    PHP_EOL . PHP_EOL .
+    "Esta promoção é valida apenas essa semana!".
+    PHP_EOL . PHP_EOL .
+    "Acesse www.dumbu.pro.".
+    PHP_EOL . PHP_EOL .
+    "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem".
+    PHP_EOL . PHP_EOL .
+    "foi enviada por www.dumbu.pro.";
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
