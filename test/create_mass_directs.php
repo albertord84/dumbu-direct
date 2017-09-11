@@ -15,6 +15,7 @@ $output_dir = '/tmp';
 
 $control_pk = "3670825632"; // Mi perfil para ir sabiendo cada 50 msg si todo va bien
 
+$pbpetti = "236116119";
 $pedropetti = "5787797919";
 $dumbu08 = "4492293740"; // dumbu.08
 $dumbu09 = '4542814483'; // dumbu.09
@@ -22,7 +23,8 @@ $dumbu09 = '4542814483'; // dumbu.09
 $ref_profs = array(
     'dumbu08' => $dumbu08,
     'dumbu09' => $dumbu09,
-    'pedropetti' => $pedropetti
+    'pedropetti' => $pedropetti,
+    'pbpetti' => $pbpetti
 );
 
 //$input_file = __DIR__ . "/../tmp/$ref_prof.followers.txt";

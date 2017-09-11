@@ -22,6 +22,11 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\PedroPettiDirects'
     ];
 
+    // Establecer para saber a partir de cuando, hacer
+    // pausas en el envio cada vez mayores a fin de no
+    // embotar el margen de peticiones permitidas
+    protected $stopHour = 13;
+
     /**
      * Define the application's command schedule.
      *
@@ -30,6 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        date_default_timezone_set('America/Sao_Paulo');
         $outputLog = __DIR__ . '/../../../../messages.log';
         /*$schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
@@ -37,6 +43,23 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendirects:dumbu09')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);*/
+        $H = intval(date("H"));
+        if ( $H >= $stopHour || $H <= $stopHour + 1 )
+        {
+            exit(0);
+        }
+        if ( $H >= $stopHour + 3 || $H <= $stopHour + 4 )
+        {
+            exit(0);
+        }
+        if ( $H >= $stopHour + 6 || $H <= $stopHour + 7 )
+        {
+            exit(0);
+        }
+        if ( $H >= $stopHour + 9 || $H <= $stopHour + 10 )
+        {
+            exit(0);
+        }
         $schedule->command('sendirects:pedropetti')
             ->cron('3 * * * * *')
             ->appendOutputTo($outputLog);
