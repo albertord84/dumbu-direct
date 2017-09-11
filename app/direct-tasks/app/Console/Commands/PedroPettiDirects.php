@@ -22,13 +22,6 @@ class PedroPettiDirects extends DirectsCommand
     
     // 5787797919 = pedropetti
     // 236116119 = pbpetti
-    private $pk = '236116119';
-
-    private $username = 'pbpetti';
-    
-    private $password = 'Pp75005310';
-    
-    private $instagram = NULL;
     
     /**
      * Create a new command instance.
