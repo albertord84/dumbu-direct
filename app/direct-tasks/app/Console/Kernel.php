@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $outputLog = __DIR__ . '/../../../../messages.log';
+        $outputLog = APPPATH . '/../../messages.log';
         $this->delayMessages();
         $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
