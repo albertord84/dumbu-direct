@@ -34,7 +34,7 @@ class PedroPettiDirects extends DirectsCommand
         $this->pk = '236116119';
         $this->username = 'pbpetti';
         $this->password = 'Pp75005310';
-        if ($this->currentHour()<=12) exit(0);
+        //if ($this->currentHour()<=12) exit(0);
         // 191.252.110.140:23128
         // 191.252.103.137:23128
         // 191.252.111.93:23128
