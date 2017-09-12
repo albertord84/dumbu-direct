@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\PedroPettiDirects'
     ];
 
-    protected $stopsHour = [
+    protected $stopHours = [
         1,3,5,7,9,11,13,15,17,19,21,22,23
     ];
 
@@ -64,11 +64,11 @@ class Kernel extends ConsoleKernel
     {
         date_default_timezone_set('America/Sao_Paulo');
         $H = intval(date("H"));
-        if ( in_array($H, $this->stopsHour) )
+        if ( in_array($H, $this->stopHours) )
         {
-            $h = array_search($H, $this->stopsHour);
+            $h = array_search($H, $this->stopHours);
             printf("%s - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
-                date('r'), $this->stopsHour[ $h ] + 1);
+                date('r'), $this->stopHours[ $h ] + 1);
             exit(0);
         }
     }
