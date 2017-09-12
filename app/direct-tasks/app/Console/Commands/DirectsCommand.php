@@ -29,6 +29,8 @@ class DirectsCommand extends Command
     protected $instagram = NULL;
 
     protected $proxy = NULL;
+
+    protected $suspended = FALSE;
     
     /**
      * Create a new command instance.
@@ -50,6 +52,12 @@ class DirectsCommand extends Command
     public function handle()
     {
         set_time_limit(0);
+
+        if ($this->suspended) {
+            echo sprintf("%s - Tarea %s suspendida por ahora" . PHP_EOL,
+                date('r'), $this->signature);
+            return;
+        }
         
         echo sprintf("%s - Procesando mensajes de %s" . PHP_EOL,
                 date('r'), $this->username);
