@@ -128,8 +128,7 @@ class DirectsCommand extends Command
     
     protected function popMessage($fileName)
     {
-        copy($fileName, __DIR__ . '/../../../../application/logs/directs/old/' .
-            basename($fileName));
+        copy($fileName, OLD_QUEUE_PATH . basename($fileName));
         unlink($fileName);
         echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
             date('r'), basename($fileName));
@@ -137,16 +136,13 @@ class DirectsCommand extends Command
 
     protected function getFirstTenFileNames()
     {
-        $cmd = sprintf('ls %s | grep %s | tail', 
-                __DIR__ . '/../../../../application/logs/directs/queue',
-                $this->pk);
+        $cmd = sprintf('ls %s | grep %s | tail', QUEUE_PATH, $this->pk);
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
         for ($i = 0; $i < count($firstTenFileNames); $i++)
         {
             $f = $firstTenFileNames[ $i ];
-            $firstTenFileNames[ $i ] = __DIR__ . '/../../../../application/logs/directs/queue/' .
-                    $f;
+            $firstTenFileNames[ $i ] = QUEUE_PATH . $f;
         }
         return $firstTenFileNames;
     }

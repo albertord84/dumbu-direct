@@ -5,9 +5,13 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-// Para tener acceso al directorio del estanque de mensajes
+// Para tener acceso a las cosas de CodeIgniter
 define('BASEPATH', __DIR__ . '/../../../system');
 define('APPPATH', __DIR__ . '/../../../application');
+
+// Para tener acceso al directorio del estanque de mensajes
+define('QUEUE_PATH', APPPATH . '/logs/directs/queue/');
+define('OLD_QUEUE_PATH', APPPATH . '/logs/directs/old/');
 
 class Kernel extends ConsoleKernel
 {
