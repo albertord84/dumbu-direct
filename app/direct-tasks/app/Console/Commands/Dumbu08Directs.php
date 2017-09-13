@@ -38,6 +38,7 @@ class Dumbu08Directs extends DirectsCommand
         $this->username = 'dumbu.08';    
         $this->password = 'Sorvete69';
         $this->proxy = '191.252.111.93:23128';
+        $this->suspended = TRUE;
     }
 
     
