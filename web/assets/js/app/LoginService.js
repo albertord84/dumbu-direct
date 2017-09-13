@@ -1,3 +1,5 @@
+/* global AppDumbu */
+
 AppDumbu.LoginService = AppDumbu.service('LoginService', [
   '$http', '$log',
   function _LoginService($http, $log)
@@ -11,7 +13,7 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
           username: $scope.username,
           password: $scope.password
         }).then(function _authSuccess(response){
-          if (response.data.status == 'OK') {
+          if (response.data.status === 'OK') {
             setTimeout(function _wait(){
               $scope.authenticating = false;
               $scope.$digest();
@@ -46,7 +48,7 @@ AppDumbu.LoginService = AppDumbu.service('LoginService', [
         return re.test(mail);
       }
 
-    }
+    };
     return self;
   }
 ]);

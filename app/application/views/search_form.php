@@ -79,17 +79,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
         </div>
-        <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/angular.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lodash.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/typeahead.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/handlebars.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/sweetalert.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-        <script src="<?php echo base_url('assets/js/app/search.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/app/SearchService.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/app/filters.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/jquery.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/angular.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/lodash.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/bootstrap.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/typeahead.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/handlebars.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
+        <script src="<?php echo base_url('assets/js/lib/app/search.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/app/SearchService.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/app/filters.js'); ?>?<?php echo d_guid(); ?>"></script>
         <?php include_once __DIR__ . '/js_globals.php'; ?>
     </body>
 </html>

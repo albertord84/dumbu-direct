@@ -56,15 +56,15 @@ $uuid = substr(md5(date('ds')), 0, 10);
                 </div>
             </div>
         </div>
-        <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/angular.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lodash.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/sweetalert.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-        <script src="<?php echo base_url('assets/js/jquery.pulsate.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/app/compose.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/app/ComposeService.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/jquery.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/angular.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/lodash.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/bootstrap.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
+        <script src="<?php echo base_url('assets/js/lib/jquery.pulsate.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/app/compose.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/lib/app/ComposeService.js'); ?>?<?php echo d_guid(); ?>"></script>
         <?php include_once __DIR__ . '/js_globals.php'; ?>
     </body>
 </html>
