@@ -26,17 +26,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </nav>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
-                    <div class="compose-direct bg-white"
-                         data-ng-if="selectedProfs.length != 0">
-                        <a class="btn btn-default btn-lg hidden-xs" href role="button"
-                           data-ng-click="composeDirect()">
-                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                        </a>
-                        <a class="btn btn-default btn-xs hidden-sm hidden-md hidden-lg"
-                           href role="button" data-ng-click="composeDirect()">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                        </a>
-                    </div>
                     <div class="form-container">
                         <div id="logo" class="text-center">
                             <h1>DUMBU</h1>
@@ -51,8 +40,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            placeholder="Select reference profiles..." class="typeahead"
                                            required />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-success" type="submit">
-                                            <i class="glyphicon glyphicon-search" aria-hidden="true"></i> Search
+                                        <button class="btn btn-success" type="button" 
+                                                data-ng-click="composeDirect()"
+                                                data-ng-disabled="selectedProfs.length == 0">
+                                            <i class="glyphicon glyphicon-pencil" 
+                                               aria-hidden="true"></i>Text&CloseCurlyQuote; em
                                         </button>
                                     </span>
                                 </div>
