@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends MY_Controller {
 
     public function index() {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->pk;
         $data['session'] = $this->session->userdata();
 
         if ($user_id != NULL) {
@@ -16,20 +16,16 @@ class Login extends MY_Controller {
         $this->load->view('login_form', $data);
     }
 
-    private function verify_instagram($user, $pass, &$account_id) {
+    private function verify_instagram($user, $pass) {
         $debug = false;
         $truncatedDebug = false;
         
         $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 
-        /*if ($this->useProxy()) {
-            $ig->client->setProxy($this->netProxy);
-        }*/
-
         $ig->setUser($user, $pass);
 
         $response = $ig->login();
-        $account_id = $ig->account_id;
+        $this->session->pk = $ig->account_id;
 
         // Cerrar la sesion en Instagram porque la API
         // la deja siempre abierta
@@ -37,7 +33,7 @@ class Login extends MY_Controller {
         
         $r = [
             'response' => $response,
-            'account_id' => $account_id
+            'account_id' => $this->session->pk
         ];
 
         return $r;
@@ -52,11 +48,9 @@ class Login extends MY_Controller {
             return;
         }
 
-        $resp = NULL;
-        $account_id = NULL;
         try {
-            $resp = $this->verify_instagram($username, $password, $account_id);
-            $this->session->pk = $account_id;
+            $resp = $this->verify_instagram($username, $password);
+            
             $this->session->username = $username;
             $this->session->password = $password;
 
@@ -64,7 +58,7 @@ class Login extends MY_Controller {
                 'status' => 'OK',
                 'response' => $resp,
                 'username' => $username,
-                'pk' => $account_id
+                'pk' => $this->session->pk
             ];
             echo json_encode($r);
 
@@ -73,8 +67,7 @@ class Login extends MY_Controller {
             $r = [
                 'status' => 'SOME_ERR', 
                 'response' => $resp,
-                'username' => $username,
-                'password' => $password
+                'username' => $username
             ];
             echo json_encode($r);
             return;
@@ -82,7 +75,7 @@ class Login extends MY_Controller {
     }
 
     public function logout() {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->pk;
 
         if ($user_id != NULL) {
             $this->session->sess_destroy();
@@ -97,7 +90,7 @@ class Login extends MY_Controller {
         
         $response = NULL;
         
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->pk;
         
         if (strcmp($user_id, $uid) == 0) {
             $response = array('success' => TRUE);

@@ -12,7 +12,7 @@ class Directs extends MY_Controller {
         $data['session'] = $this->session->userdata();
         $data['message'] = $message;
         
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->pk;
 
         if ($user_id != NULL) {
 

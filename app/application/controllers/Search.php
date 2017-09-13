@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Search extends MY_Controller {
 
     public function index() {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->pk;
         $data['session'] = $this->session->userdata();
 
         if ($user_id == NULL) {
@@ -21,11 +21,6 @@ class Search extends MY_Controller {
      */
     public function users($query) {
 
-        // Para el acceso a la API de Instagram
-        set_time_limit(0);
-        date_default_timezone_set('UTC');
-        require __DIR__ . '/../../../vendor/autoload.php';
-
         if ($query == 'johndoe') {
             echo "[ " .
             "{ \"username\": \"John Doe\" }, { \"username\": \"Johnny Doe\" }, " .
@@ -38,12 +33,6 @@ class Search extends MY_Controller {
         $debug = false;
         $truncatedDebug = false;
         $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
-
-        //$this->loadIgCreds();
-
-        /*if ($this->useProxy()) {
-            $ig->client->setProxy($this->netProxy);
-        }*/
 
         $ig->setUser($this->session->username, $this->session->password);
         try {
@@ -60,12 +49,4 @@ class Search extends MY_Controller {
         }
     }
 
-    // Posibles metodos de la API a usar aqui:
-    //
-  // Instagram::getAutoCompleteUserList
-    // Instagram::getSuggestedUsers
-    // Instagram::getUserFollowers
-    // Instagram::getUserFollowings
-    // Instagram::searchFBUsers
-    // Instagram::searchUsers
 }
