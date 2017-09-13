@@ -63,8 +63,8 @@ $uuid = substr(md5(date('ds')), 0, 10);
         <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
         <script src="<?php echo base_url('assets/js/lib/jquery.pulsate.min.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lib/app/compose.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lib/app/ComposeService.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/compose.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/ComposeService.js'); ?>?<?php echo d_guid(); ?>"></script>
         <?php include_once __DIR__ . '/js_globals.php'; ?>
     </body>
 </html>

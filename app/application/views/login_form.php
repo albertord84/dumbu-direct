@@ -69,8 +69,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="<?php echo base_url('assets/js/lib/lodash.min.js'); ?>"></script>
   <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
   <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-  <script src="<?php echo base_url('assets/js/lib/app/login.js'); ?>?<?php echo d_guid(); ?>"></script>
-  <script src="<?php echo base_url('assets/js/lib/app/LoginService.js'); ?>?<?php echo d_guid(); ?>"></script>
+  <script src="<?php echo base_url('assets/js/app/login.js'); ?>?<?php echo d_guid(); ?>"></script>
+  <script src="<?php echo base_url('assets/js/app/LoginService.js'); ?>?<?php echo d_guid(); ?>"></script>
   <?php include_once __DIR__ . '/js_globals.php'; ?>
   <img src="<?php echo base_url('assets/img/loading.gif'); ?>?<?php echo d_guid(); ?>" class="hidden loading" />
 </body>

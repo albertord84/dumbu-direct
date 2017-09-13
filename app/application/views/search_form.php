@@ -87,9 +87,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('assets/js/lib/handlebars.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-        <script src="<?php echo base_url('assets/js/lib/app/search.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lib/app/SearchService.js'); ?>?<?php echo d_guid(); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lib/app/filters.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/search.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/SearchService.js'); ?>?<?php echo d_guid(); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/filters.js'); ?>?<?php echo d_guid(); ?>"></script>
         <?php include_once __DIR__ . '/js_globals.php'; ?>
     </body>
 </html>

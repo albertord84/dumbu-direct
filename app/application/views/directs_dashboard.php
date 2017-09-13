@@ -36,8 +36,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('assets/js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('assets/js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-        <script src="<?php echo base_url('assets/js/lib/app/directs_dashboard.js'); ?>"></script>
-        <script src="<?php echo base_url('assets/js/lib/app/DirectsService.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/directs_dashboard.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/js/app/DirectsService.js'); ?>"></script>
         <?php include_once __DIR__ . '/js_globals.php'; ?>
         <img src="<?php echo base_url('assets/img/loading.gif'); ?>?<?php echo d_guid(); ?>" class="hidden" />
     </body>
