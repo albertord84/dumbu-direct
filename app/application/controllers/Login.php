@@ -17,19 +17,14 @@ class Login extends MY_Controller {
     }
 
     private function verify_instagram($user, $pass, &$account_id) {
-        // Para el acceso a la API de Instagram
-        set_time_limit(0);
-        date_default_timezone_set('UTC');
-        require __DIR__ . '/../../../vendor/autoload.php';
-
         $debug = false;
         $truncatedDebug = false;
-
+        
         $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 
-        if ($this->useProxy()) {
+        /*if ($this->useProxy()) {
             $ig->client->setProxy($this->netProxy);
-        }
+        }*/
 
         $ig->setUser($user, $pass);
 
@@ -39,8 +34,13 @@ class Login extends MY_Controller {
         // Cerrar la sesion en Instagram porque la API
         // la deja siempre abierta
         $ig->logout();
+        
+        $r = [
+            'response' => $response,
+            'account_id' => $account_id
+        ];
 
-        return $response;
+        return $r;
     }
 
     public function auth() {
@@ -56,17 +56,26 @@ class Login extends MY_Controller {
         $account_id = NULL;
         try {
             $resp = $this->verify_instagram($username, $password, $account_id);
-            $this->session->set_userdata('user_id', $account_id);
+            $this->session->pk = $account_id;
+            $this->session->username = $username;
+            $this->session->password = $password;
 
-            $r = array('status' => 'OK', 'response' => $resp,
-                'username' => $username, 'pk' => $account_id,
-                'session' => $this->session->userdata()
-            );
+            $r = [
+                'status' => 'OK',
+                'response' => $resp,
+                'username' => $username,
+                'pk' => $account_id
+            ];
             echo json_encode($r);
 
             return;
         } catch (\Exception $ex) {
-            $r = array('status' => 'SOME_ERR', 'response' => $resp);
+            $r = [
+                'status' => 'SOME_ERR', 
+                'response' => $resp,
+                'username' => $username,
+                'password' => $password
+            ];
             echo json_encode($r);
             return;
         }

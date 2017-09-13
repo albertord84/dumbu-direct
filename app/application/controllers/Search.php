@@ -39,13 +39,13 @@ class Search extends MY_Controller {
         $truncatedDebug = false;
         $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 
-        $this->loadIgCreds();
+        //$this->loadIgCreds();
 
-        if ($this->useProxy()) {
+        /*if ($this->useProxy()) {
             $ig->client->setProxy($this->netProxy);
-        }
+        }*/
 
-        $ig->setUser($this->igCreds['username'], $this->igCreds['password']);
+        $ig->setUser($this->session->username, $this->session->password);
         try {
             $ig->login();
         } catch (\Exception $ex) {
