@@ -44,6 +44,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <form role="form" id="search-form">
                             <div class="form-group">
+                                <img class="async-loading hidden"
+                                     src="<?php echo base_url('assets/img/loading-small.gif'); ?>">
                                 <div class="input-group">
                                     <input id="ref-prof" class="form-control" type="text" name="search"
                                            placeholder="Select reference profiles..." class="typeahead"

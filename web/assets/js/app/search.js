@@ -10,6 +10,8 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
 {
 
     AppDumbu.scope = $scope;
+    
+    $scope.asyncRequestStart = false;
 
     // Quitar una vez terminada la etapa de desarrollo
     $scope.selectedProfs = [{
@@ -69,9 +71,19 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
     });
 
     $('#ref-prof').on({
+        
         'typeahead:selected': function (e, datum) {
             $service.selectProfile($scope, datum);
+        },
+        
+        'typeahead:asyncrequest': function (jq, query, dsName) {
+            $('.async-loading').removeClass('hidden');
+        },
+        
+        'typeahead:asyncreceive': function (jq, query, dsName) {
+            $('.async-loading').addClass('hidden');
         }
+        
     });
 
 };
