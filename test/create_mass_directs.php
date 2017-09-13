@@ -62,11 +62,13 @@ if ($handle) {
         $fn = date("Ymd");
         $data['datetime'] = sprintf("%s_%s", $fn, $datetime);
         //$data['uid'] = $ref_profs[ $ref_prof ];
+        $dest = trim($line);
         $data['uid'] = $ref_prof;
-        $data['pks'][] = trim($line);
+        $data['pks'][] = $dest;
         $data['message'] = $message;
         //$output_file_name = sprintf("%s_%s_%s.json", $fn, $datetime, $ref_profs[ $ref_prof ]);
-        $output_file_name = sprintf("%s_%s_%s.json", $fn, $datetime, $ref_prof);
+        $output_file_name = sprintf("%s_%s_%s_%s.json", 
+            $fn, $datetime, $ref_prof, $dest);
         file_put_contents($output_dir . '/' . $output_file_name, json_encode($data) . PHP_EOL);
         echo sprintf("Creado mensaje %s/%s" . PHP_EOL, $output_dir, $output_file_name);
         $datetime++;
