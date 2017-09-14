@@ -166,5 +166,18 @@ class DirectsCommand extends Command
         }
         return $firstTenFileNames;
     }
+    
+    protected function getProxiesList()
+    {
+        $cmd = sprintf("grep -v '#' %s" . APPPATH . '/config/net_proxy');
+        $proxies = explode(PHP_EOL, trim(shell_exec($cmd)));
+        return $proxies;
+    }
+    
+    protected function setProxyNumber($proxyNumber)
+    {
+        $proxies = $this->getProxiesList();
+        $this->instagram->setProxy($proxies[$proxyNumber]);
+    }
 
 }

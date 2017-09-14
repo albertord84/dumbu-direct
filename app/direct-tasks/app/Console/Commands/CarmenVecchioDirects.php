@@ -34,16 +34,16 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->suspended = TRUE;
         $min = $this->currentMinute();
         if ($min < 15) {
-            $this->proxy = '191.252.103.106:23128';
+            $this->setProxyNumber(0);
         }
         if ($min > 15 && $min < 30) {
-            $this->proxy = '191.252.100.122:23128';
+            $this->setProxyNumber(1);
         }
         if ($min > 30 && $min < 45) {
-            $this->proxy = '191.252.109.233:23128';
+            $this->setProxyNumber(2);
         }
         if ($min > 45 && $min < 59) {
-            $this->proxy = '200.229.194.154:80';
+            $this->setProxyNumber(3);
         }
     }
 
