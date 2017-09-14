@@ -42,7 +42,7 @@ $message = "Ganhe milhares de seguidores qualificados por área".
     PHP_EOL . PHP_EOL .
     "============ %s ============".
     PHP_EOL . PHP_EOL .
-    "- 50% desconto o primeiro mes (use o código promocional INSTA50P)".
+    "- 50%% desconto o primeiro mes (use o código promocional INSTA50P)".
     PHP_EOL . PHP_EOL .
     "- 15 dias de teste gratis (use o código promocional INSTA15D)".
     PHP_EOL . PHP_EOL .
