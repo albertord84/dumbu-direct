@@ -7,7 +7,7 @@ class Directs extends MY_Controller {
     {
         $message = $this->input->post('message');
         
-        $pks = $this->session->userdata('pks');
+        $pks = $this->session->pks;
         
         $data['session'] = $this->session->userdata();
         $data['message'] = $message;
