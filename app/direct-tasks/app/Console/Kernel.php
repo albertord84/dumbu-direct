@@ -23,7 +23,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         '\App\Console\Commands\Dumbu08Directs',
         '\App\Console\Commands\Dumbu09Directs',
-        '\App\Console\Commands\PedroPettiDirects'
+        '\App\Console\Commands\PedroPettiDirects',
+        '\App\Console\Commands\WavCreatorsDirects',
+        '\App\Console\Commands\CarmenVecchioDirects'
     ];
 
     protected $stopHours = [
@@ -39,8 +41,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $outputLog = APPPATH . '/../../messages.log';
+        
         $this->delayMessages();
-        $schedule->command('sendirects:dumbu08')
+        
+        /*$schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:dumbu09')
@@ -48,10 +52,19 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
             ->everyTenMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($outputLog);*/
+        
+        // Ejemplo de envio a determinado minuto de cada hora del dia
         /*$schedule->command('sendirects:pedropetti')
             ->cron('12 * * * * *')
             ->appendOutputTo($outputLog);*/
+        
+        $schedule->command('sendirects:wavcreators')
+            ->everyTenMinutes()
+            ->appendOutputTo($outputLog);
+        $schedule->command('sendirects:carmenvecchio')
+            ->everyTenMinutes()
+            ->appendOutputTo($outputLog);
     }
 
     /**
