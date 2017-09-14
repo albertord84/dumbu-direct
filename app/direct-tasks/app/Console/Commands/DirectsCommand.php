@@ -153,10 +153,22 @@ class DirectsCommand extends Command
         echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
             date('r'), basename($fileName));
     }
+    
+    protected function guid() {
+        $one = mt_rand(0, 65535);
+        $two = mt_rand(0, 65535);
+        $three = mt_rand(0, 65535);
+        $four = mt_rand(0, 65535);
+        $five = mt_rand(0, 65535);
+        $guid = sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five);
+        return strtolower($guid);
+    }
 
     protected function getFirstTenFileNames()
     {
-        $cmd = sprintf('ls %s | grep %s | head', QUEUE_PATH, $this->pk);
+        $list = '/tmp/' . $this->guid();
+        $cmd = sprintf('ls %s | grep %s > %s && head %s && rm %s', QUEUE_PATH, 
+                $this->pk, $list, $list, $list);
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
         for ($i = 0; $i < count($firstTenFileNames); $i++)
