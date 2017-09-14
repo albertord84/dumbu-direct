@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     ];
 
     protected $stopHours = [
-        1,3,5,7,9,11,13,17,19,21,22
+        1,3,5,7,9,11,13,18,20,21,23
     ];
 
     /**
