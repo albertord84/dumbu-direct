@@ -169,7 +169,7 @@ class DirectsCommand extends Command
     
     protected function getProxiesList()
     {
-        $cmd = sprintf("grep -v '#' %s" . APPPATH . '/config/net_proxy');
+        $cmd = "grep -v '#' " . APPPATH . '/config/net_proxy';
         $proxies = explode(PHP_EOL, trim(shell_exec($cmd)));
         return $proxies;
     }
