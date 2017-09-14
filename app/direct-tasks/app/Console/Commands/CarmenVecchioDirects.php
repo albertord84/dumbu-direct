@@ -31,7 +31,7 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->pk = '55324697';
         $this->username = 'carmenvecchio';
         $this->password = 'filippo1988';
-        //$this->suspended = TRUE;
+        $this->suspended = TRUE;
         $min = $this->currentMinute();
         if ($min < 15) {
             $this->proxy = '191.252.103.106:23128';

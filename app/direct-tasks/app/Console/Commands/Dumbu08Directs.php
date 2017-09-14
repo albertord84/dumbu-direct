@@ -38,7 +38,20 @@ class Dumbu08Directs extends DirectsCommand
         $this->username = 'dumbu.08';    
         $this->password = 'Sorvete69';
         $this->proxy = '191.252.111.93:23128';
-        $this->suspended = TRUE;
+        $this->suspended = FALSE;
+        $min = $this->currentMinute();
+        if ($min < 15) {
+            $this->proxy = '191.252.103.106:23128';
+        }
+        if ($min > 15 && $min < 30) {
+            $this->proxy = '191.252.100.122:23128';
+        }
+        if ($min > 30 && $min < 45) {
+            $this->proxy = '191.252.109.233:23128';
+        }
+        if ($min > 45 && $min < 59) {
+            $this->proxy = '200.229.194.154:80';
+        }
     }
 
     

@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
         
         $this->delayMessages();
         
-        /*$schedule->command('sendirects:dumbu08')
+        $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:dumbu09')
@@ -52,7 +52,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
             ->everyTenMinutes()
-            ->appendOutputTo($outputLog);*/
+            ->appendOutputTo($outputLog);
         
         // Ejemplo de envio a determinado minuto de cada hora del dia
         /*$schedule->command('sendirects:pedropetti')

@@ -31,7 +31,7 @@ class WavCreatorsDirects extends DirectsCommand
         $this->pk = '246817495';
         $this->username = 'wavcreators';
         $this->password = 'theoath';
-        //$this->suspended = TRUE;
+        $this->suspended = TRUE;
         $min = $this->currentMinute();
         if ($min < 15) {
             $this->proxy = '191.252.103.106:23128';
