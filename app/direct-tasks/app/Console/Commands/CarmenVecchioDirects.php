@@ -32,19 +32,8 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->username = 'carmenvecchio';
         $this->password = 'filippo1988';
         $this->suspended = TRUE;
-        $min = $this->currentMinute();
-        if ($min < 15) {
-            $this->setProxyNumber(0);
-        }
-        if ($min > 15 && $min < 30) {
-            $this->setProxyNumber(1);
-        }
-        if ($min > 30 && $min < 45) {
-            $this->setProxyNumber(2);
-        }
-        if ($min > 45 && $min < 59) {
-            $this->setProxyNumber(3);
-        }
+        $proxyNumber = mt_rand(0,5);
+        $this->setProxyNumber($proxyNumber);
     }
 
 }

@@ -54,19 +54,22 @@ class DirectsCommand extends Command
         set_time_limit(0);
 
         if ($this->suspended) {
-            echo sprintf("%s - Tarea %s suspendida por ahora" . PHP_EOL,
-                date('r'), $this->signature);
+            $this->log(sprintf("Tarea %s suspendida por ahora", $this->signature));
             return;
         }
         
-        echo sprintf("%s - Procesando mensajes de %s" . PHP_EOL,
-                date('r'), $this->username);
+        $this->log(sprintf("Procesando mensajes de %s", $this->username));
         
         $this->loginInstagram();
         $this->processFirstTenMessages();
         
-        echo sprintf("%s - Terminado el procesamiento de los mensajes de %s" . 
-                PHP_EOL, date('r'), $this->username);
+        $this->log(sprintf("Terminado el procesamiento de los mensajes de %s",
+                $this->username));
+    }
+    
+    protected function log($t)
+    {
+        echo sprintf("%s - %s" . PHP_EOL, date('r'), $t);
     }
 
     protected function currentHour()
@@ -90,34 +93,41 @@ class DirectsCommand extends Command
             $this->instagram->login();
         }
         catch(\Exception $e) {
-            echo sprintf("%s - Error al iniciar sesion como %s: %s" . PHP_EOL,
-                date('r'), $this->username, $e->getMessage());
+            $this->log(sprintf("Error al iniciar sesion como %s: %s",
+                $this->username, $e->getMessage()));
         }
     }
     
     protected function checkAlreadyTexted($pk)
     {
-        $cmd_output = sprintf('ls %s | grep -c %s', OLD_QUEUE_PATH, $pk);
+        $cmd = sprintf('grep -c %s %s', $pk, 
+                OLD_QUEUE_PATH . '/already.texted.list');
+        $cmd_output = trim(shell_exec($cmd));
         if (intval($cmd_output) === 1) {
-            echo sprintf("%s - El cliente %s ya ha recibido mensajes..." . PHP_EOL,
-                date('r'), $pk);
+            $this->log(sprintf("El cliente %s ya ha recibido mensajes...", $pk));
             return TRUE;
         }
         else FALSE;
+    }
+    
+    protected function setUserAsTexted($pk)
+    {
+        $cmd = sprintf("echo %s >> %s", $pk,
+                OLD_QUEUE_PATH . '/already.texted.list');
+        shell_exec($cmd);
     }
     
     protected function sendMessage($destProfileId, $message)
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
-            echo sprintf("%s - Enviado mensaje: \"%s...\" al perfil %s" . PHP_EOL,
-                date('r'), substr($message, 0, 20), $destProfileId);
+            $this->log(sprintf("Enviado mensaje: \"%s...\" al perfil %s",
+                substr($message, 0, 20), $destProfileId));
             return TRUE;
         }
         catch (\Exception $e) {
-            echo sprintf("%s - Error al enviar el mensaje a %s: %s" . PHP_EOL,
-                date('r'), $destProfileId, $e->getMessage());
-            //$this->changeThrottle();
+            $this->log(sprintf("Error al enviar el mensaje a %s: %s",
+                $destProfileId, $e->getMessage()));
             return TRUE;
         }
     }
@@ -126,22 +136,21 @@ class DirectsCommand extends Command
     {
         $firstTenFileNames = $this->getFirstTenFileNames();
         if (count($firstTenFileNames)==0) {
-            echo sprintf("%s - Por ahora no hay mensajes para %s" . PHP_EOL,
-                date('r'), $this->username);
-            exit(0);
+            $this->log(sprintf("Por ahora no hay mensajes para %s", $this->username));
+            return;
         }
         foreach ($firstTenFileNames as $fileName) {
             if ( !file_exists($fileName) ) { continue; }
             if ( strstr($fileName, '.json') == FALSE ) { continue; }
-            echo sprintf("%s - Procesando mensaje %s" . PHP_EOL,
-                date('r'), basename($fileName));
+            $this->log(sprintf("Procesando mensaje %s", basename($fileName)));
             $fileObj = json_decode( file_get_contents($fileName) );
             if ($this->checkAlreadyTexted($fileObj->pks[0])) {
                 $this->popMessage($fileName);
                 continue;
             }
-            $resp = $this->sendMessage($fileObj->pks[0], $fileObj->message);
+            $this->sendMessage($fileObj->pks[0], $fileObj->message);
             $this->popMessage($fileName);
+            $this->setUserAsTexted($fileObj->pks[0]);
             sleep(5);
         }
     }
@@ -150,8 +159,7 @@ class DirectsCommand extends Command
     {
         copy($fileName, OLD_QUEUE_PATH . basename($fileName));
         unlink($fileName);
-        echo sprintf("%s - Sacado de la cola el mensaje %s" . PHP_EOL,
-            date('r'), basename($fileName));
+        $this->log(sprintf("Sacado de la cola el mensaje %s", basename($fileName)));
     }
     
     protected function guid() {
@@ -190,8 +198,8 @@ class DirectsCommand extends Command
     {
         $proxies = $this->getProxiesList();
         $this->proxy = $proxies[$proxyNumber];
-        echo sprintf("%s - Usando proxy %s para envios de %s..." . PHP_EOL,
-                date('r'), $this->proxy, $this->username);
+        $this->log(sprintf("Usando proxy %s para envios de %s...",
+                $this->proxy, $this->username));
     }
 
 }

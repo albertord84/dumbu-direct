@@ -38,7 +38,6 @@ class PedroPettiDirects extends DirectsCommand
         $min = $this->currentMinute();
         $proxyNumber = mt_rand(0,5);
         $this->setProxyNumber($proxyNumber);
-
     }
 
 }

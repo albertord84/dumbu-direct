@@ -59,12 +59,12 @@ class Kernel extends ConsoleKernel
             ->cron('12 * * * * *')
             ->appendOutputTo($outputLog);*/
         
-        $schedule->command('sendirects:wavcreators')
+        /*$schedule->command('sendirects:wavcreators')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:carmenvecchio')
             ->everyTenMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($outputLog);*/
     }
 
     /**

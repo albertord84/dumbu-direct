@@ -38,7 +38,9 @@ function guid() {
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
 
-$message = "Ganhe milhares de seguidores qualificados por área" .
+$message = "%s ====== %s" .
+        PHP_EOL . PHP_EOL .
+        "Ganhe milhares de seguidores qualificados por área" .
         PHP_EOL . PHP_EOL .
         "de interesse ou geolocalização, turbine seu perfil!" .
         PHP_EOL . PHP_EOL .
@@ -78,7 +80,7 @@ if ($handle) {
         $dest = trim($line);
         $data['uid'] = $ref_prof;
         $data['pks'][] = $dest;
-        $data['message'] = sprintf($message, guid(), guid(), guid());
+        $data['message'] = sprintf($message, guid(), guid(), guid(), guid(), guid());
         $output_file_name = sprintf("%s_%s_%s_%s.json", $fn, $datetime, $ref_prof, $dest);
         file_put_contents($output_dir . '/' . $output_file_name, json_encode($data) . PHP_EOL);
         echo sprintf("Creado mensaje %s/%s" . PHP_EOL, $output_dir, $output_file_name);
