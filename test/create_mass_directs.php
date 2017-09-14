@@ -27,7 +27,6 @@ $ref_profs = array(
     'pbpetti' => $pbpetti
 );
 
-//$input_file = __DIR__ . "/../tmp/$ref_prof.followers.txt";
 $input_file = "$dest_prof_list";
 
 function guid()
@@ -75,12 +74,10 @@ if ($handle) {
         );
         $fn = date("Ymd");
         $data['datetime'] = sprintf("%s_%s", $fn, $datetime);
-        //$data['uid'] = $ref_profs[ $ref_prof ];
         $dest = trim($line);
         $data['uid'] = $ref_prof;
         $data['pks'][] = $dest;
         $data['message'] = sprintf($message, guid(), guid(), guid());
-        //$output_file_name = sprintf("%s_%s_%s.json", $fn, $datetime, $ref_profs[ $ref_prof ]);
         $output_file_name = sprintf("%s_%s_%s_%s.json", 
             $fn, $datetime, $ref_prof, $dest);
         file_put_contents($output_dir . '/' . $output_file_name, json_encode($data) . PHP_EOL);
@@ -95,15 +92,16 @@ if ($handle) {
                 "message" => NULL
             );
             $data['datetime'] = sprintf("%s_%s", $fn, $datetime);
-            //$data['uid'] = $ref_profs[ $ref_prof ];
             $data['uid'] = $ref_prof;
             $data['pks'][] = $control_pk;
             $data['message'] = sprintf("Mensaje de control. Enviados hasta aqui cerca de %s.", $c);
-            //$output_file_name = sprintf("%s_%s_%s_chk.json", $fn, $datetime, $ref_profs[ $ref_prof ]);
             $output_file_name = sprintf("%s_%s_%s_chk.json", $fn, $datetime, $ref_prof);
             file_put_contents($output_dir . '/' . $output_file_name, json_encode($data) . PHP_EOL);
             echo sprintf("Creado mensaje %s/%s" . PHP_EOL, $output_dir, $output_file_name);
             $datetime++;
+        }
+        if ($c === 2000) {
+            break;
         }
     }
     fclose($handle);
