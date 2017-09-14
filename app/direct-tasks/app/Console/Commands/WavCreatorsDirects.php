@@ -43,7 +43,7 @@ class WavCreatorsDirects extends DirectsCommand
             $this->proxy = '191.252.109.233:23128';
         }
         if ($min > 45 && $min < 59) {
-            $this->proxy = '201.90.120.197:3128';
+            $this->proxy = '200.229.194.154:80';
         }
     }
 
