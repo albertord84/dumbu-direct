@@ -177,7 +177,7 @@ class DirectsCommand extends Command
     protected function setProxyNumber($proxyNumber)
     {
         $proxies = $this->getProxiesList();
-        $this->instagram->setProxy($proxies[$proxyNumber]);
+        $this->proxy = $proxies[$proxyNumber];
     }
 
 }
