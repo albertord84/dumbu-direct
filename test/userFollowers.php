@@ -42,6 +42,7 @@ try {
                     ($i < $size - 1 ? ',' : ''));
         }
         $c = $size;
+        sleep(5);
     } while ($maxId !== null);
     echo ']';
 } catch (\Exception $e) {
