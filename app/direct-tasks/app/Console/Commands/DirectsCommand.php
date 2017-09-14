@@ -129,16 +129,19 @@ class DirectsCommand extends Command
         
         if ($action === 0) {
             $this->instagram->getRecentRecipients();
+            $this->log("Chequeando recipientes recientes...");
             sleep(5);
             return;
         }
         if ($action === 1) {
             $this->instagram->getDiscoverChannels();
+            $this->log("Chequeando nuevos canales...");
             sleep(5);
             return;
         }
         if ($action === 2) {
             $this->instagram->getDiscoverTopLive();
+            $this->log("Chequeando lo mas pegado...");
             sleep(5);
             return;
         }
