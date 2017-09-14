@@ -121,8 +121,8 @@ class DirectsCommand extends Command
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
-            $this->log(sprintf("Enviado mensaje: \"%s...\" al perfil %s",
-                substr($message, 0, 20), $destProfileId));
+            $this->log(sprintf("Usuario %s envio mensaje: \"%s...\" al perfil %s",
+                $this->pk, substr($message, 0, 20), $destProfileId));
             return TRUE;
         }
         catch (\Exception $e) {
