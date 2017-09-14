@@ -74,6 +74,11 @@ class DirectsCommand extends Command
         return intval(date('H'));
     }
     
+    protected function currentMinute()
+    {
+        return intval(date('i'));
+    }
+    
     protected function loginInstagram()
     {
         try {
@@ -88,6 +93,17 @@ class DirectsCommand extends Command
             echo sprintf("%s - Error al iniciar sesion como %s: %s" . PHP_EOL,
                 date('r'), $this->username, $e->getMessage());
         }
+    }
+    
+    protected function checkAlreadyTexted($pk)
+    {
+        $cmd_output = sprintf('ls %s | grep -c %s', OLD_QUEUE_PATH, $pk);
+        if (intval($cmd_output) === 1) {
+            echo sprintf("%s - El cliente %s ya ha recibido mensajes..." . PHP_EOL,
+                date('r'), $pk);
+            return TRUE;
+        }
+        else FALSE;
     }
     
     protected function sendMessage($destProfileId, $message)
@@ -120,6 +136,10 @@ class DirectsCommand extends Command
             echo sprintf("%s - Procesando mensaje %s" . PHP_EOL,
                 date('r'), basename($fileName));
             $fileObj = json_decode( file_get_contents($fileName) );
+            if ($this->checkAlreadyTexted($fileObj->pks[0])) {
+                $this->popMessage($fileName);
+                continue;
+            }
             $resp = $this->sendMessage($fileObj->pks[0], $fileObj->message);
             $this->popMessage($fileName);
             sleep(5);
