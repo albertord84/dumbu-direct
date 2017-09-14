@@ -4,7 +4,7 @@ date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $argv[1];
 $password = $argv[2];
-$recip = $argv[3]; // nombre del perfil, no el id del perfil
+$recip = $argv[3]; // id del perfil, no el nombre del usuario
 $msg = $argv[4];
 $debug = false;
 $truncatedDebug = false;
@@ -18,7 +18,8 @@ try {
     exit(0);
 }
 try {
-    $ig->directMessage($recip, $msg);
+    $uid = $ig->getUsernameId($recip);
+    $ig->directMessage($uid, $msg);
 } catch (\Exception $e) {
     echo 'Something went wrong trying to text to '.$recip.': '.$e->getMessage()."\n";
 }

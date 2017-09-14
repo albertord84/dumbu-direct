@@ -20,7 +20,7 @@ try {
     exit(0);
 }
 try {
-	$uId = $ig->getUsernameId($recip);
+    $uId = $ig->getUsernameId($recip);
     $ig->directPhoto($uId, "$photoFileName", "Esto es probando enviar fotos...");
 } catch (\Exception $e) {
     echo 'Something went wrong trying to post photo to '.$recip.': '.$e->getMessage()."\n";
