@@ -32,6 +32,8 @@ class DirectsCommand extends Command
 
     protected $suspended = FALSE;
     
+    protected $last_action = 0;
+
     /**
      * Create a new command instance.
      *
@@ -117,7 +119,32 @@ class DirectsCommand extends Command
         shell_exec($cmd);
     }
     
-    protected function sendMessage($destProfileId, $message)
+    protected function simulateHumanInteraction()
+    {
+        while (($action = mt_rand(0, 2)) === $this->last_action)
+        {
+            $action = mt_rand(0, 2);
+        }
+        $this->last_action = $action;
+        
+        if ($action === 0) {
+            $this->instagram->getRecentRecipients();
+            sleep(5);
+            return;
+        }
+        if ($action === 1) {
+            $this->instagram->getDiscoverChannels();
+            sleep(5);
+            return;
+        }
+        if ($action === 2) {
+            $this->instagram->getDiscoverTopLive();
+            sleep(5);
+            return;
+        }
+    }
+
+        protected function sendMessage($destProfileId, $message)
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
@@ -149,6 +176,7 @@ class DirectsCommand extends Command
                 continue;
             }
             $this->sendMessage($fileObj->pks[0], $fileObj->message);
+            $this->simulateHumanInteraction();
             $this->popMessage($fileName);
             $this->setUserAsTexted($fileObj->pks[0]);
             sleep(5);
