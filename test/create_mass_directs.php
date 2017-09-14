@@ -30,13 +30,24 @@ $ref_profs = array(
 //$input_file = __DIR__ . "/../tmp/$ref_prof.followers.txt";
 $input_file = "$dest_prof_list";
 
+function guid()
+    {
+        return strtolower( sprintf('%04X%04X%04X%04X%04X',
+            mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535),
+            mt_rand(16384, 20479), mt_rand(32768, 49151)) );
+    }
+
 $message = "Ganhe milhares de seguidores qualificados por área".
     PHP_EOL . PHP_EOL .
     "de interesse ou geolocalização, turbine seu perfil!".
     PHP_EOL . PHP_EOL .
+    "============ %s ============".
+    PHP_EOL . PHP_EOL .
     "- 50% desconto o primeiro mes (use o código promocional INSTA50P)".
     PHP_EOL . PHP_EOL .
     "- 15 dias de teste gratis (use o código promocional INSTA15D)".
+    PHP_EOL . PHP_EOL .
+    "============ %s ============".
     PHP_EOL . PHP_EOL .
     "Esta promoção é valida apenas essa semana!".
     PHP_EOL . PHP_EOL .
@@ -44,7 +55,9 @@ $message = "Ganhe milhares de seguidores qualificados por área".
     PHP_EOL . PHP_EOL .
     "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem".
     PHP_EOL . PHP_EOL .
-    "foi enviada por www.dumbu.pro.";
+    "foi enviada por www.dumbu.pro.".
+    PHP_EOL . PHP_EOL .
+    "============ %s ============";
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
@@ -53,6 +66,7 @@ if ($handle) {
     $c = 0;
     $datetime = date("U");
     while (($line = fgets($handle)) !== false) {
+        $guid = 
         $data = array(
             "datetime" => NULL,
             "uid" => NULL,
@@ -65,7 +79,7 @@ if ($handle) {
         $dest = trim($line);
         $data['uid'] = $ref_prof;
         $data['pks'][] = $dest;
-        $data['message'] = $message;
+        $data['message'] = sprintf($message, guid(), guid(), guid());
         //$output_file_name = sprintf("%s_%s_%s.json", $fn, $datetime, $ref_profs[ $ref_prof ]);
         $output_file_name = sprintf("%s_%s_%s_%s.json", 
             $fn, $datetime, $ref_prof, $dest);
