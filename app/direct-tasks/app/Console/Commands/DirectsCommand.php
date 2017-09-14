@@ -188,7 +188,7 @@ class DirectsCommand extends Command
     
     protected function popMessage($fileName)
     {
-        copy($fileName, OLD_QUEUE_PATH . basename($fileName));
+        //copy($fileName, OLD_QUEUE_PATH . basename($fileName));
         unlink($fileName);
         $this->log(sprintf("Sacado de la cola el mensaje %s", basename($fileName)));
     }
