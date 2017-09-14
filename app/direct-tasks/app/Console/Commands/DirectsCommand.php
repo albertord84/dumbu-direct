@@ -190,6 +190,8 @@ class DirectsCommand extends Command
     {
         $proxies = $this->getProxiesList();
         $this->proxy = $proxies[$proxyNumber];
+        echo sprintf("%s - Usando proxy %s..." . PHP_EOL,
+                date('r'), $this->proxy);
     }
 
 }
