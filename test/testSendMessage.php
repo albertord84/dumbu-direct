@@ -6,8 +6,8 @@ $username = $argv[1];
 $password = $argv[2];
 $recip = $argv[3]; // id del perfil, no el nombre del usuario
 $msg = $argv[4];
-$debug = false;
-$truncatedDebug = false;
+$debug = true;
+$truncatedDebug = true;
 $captionText = '';
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
