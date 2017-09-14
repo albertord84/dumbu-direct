@@ -156,7 +156,7 @@ class DirectsCommand extends Command
 
     protected function getFirstTenFileNames()
     {
-        $cmd = sprintf('ls %s | grep %s | tail', QUEUE_PATH, $this->pk);
+        $cmd = sprintf('ls %s | grep %s | head', QUEUE_PATH, $this->pk);
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
         for ($i = 0; $i < count($firstTenFileNames); $i++)
