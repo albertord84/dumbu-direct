@@ -130,7 +130,7 @@ class DirectsCommand extends Command
         if ($action === 0) {
             $this->instagram->getRecentRecipients();
             $this->log("Chequeando recipientes recientes...");
-            sleep(5);
+            sleep(10);
             return;
         }
         if ($action === 1) {
@@ -142,7 +142,7 @@ class DirectsCommand extends Command
         if ($action === 2) {
             $this->instagram->getDiscoverTopLive();
             $this->log("Chequeando lo mas pegado...");
-            sleep(5);
+            sleep(10);
             return;
         }
     }
