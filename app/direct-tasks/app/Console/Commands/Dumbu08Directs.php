@@ -39,7 +39,8 @@ class Dumbu08Directs extends DirectsCommand
         $this->password = 'Sorvete69';
         $this->suspended = FALSE;
         $min = $this->currentMinute();
-        $proxyNumber = mt_rand(0,5);
+        //$proxyNumber = mt_rand(0,5);
+        $proxyNumber = 9;
         $this->setProxyNumber($proxyNumber);
     }
 
