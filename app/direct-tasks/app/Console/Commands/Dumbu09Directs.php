@@ -38,7 +38,7 @@ class Dumbu09Directs extends DirectsCommand
         $this->suspended = FALSE;
         $min = $this->currentMinute();
         //$proxyNumber = mt_rand(0,5);
-        $proxyNumber = 9;
+        $proxyNumber = 5;
         $this->setProxyNumber($proxyNumber);
     }
 

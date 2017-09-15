@@ -165,7 +165,7 @@ class DirectsCommand extends Command
             return TRUE;
         }
         catch (\Exception $e) {
-            $this->log(sprintf("Error de %s(%s) al enviar a %s: %s",
+            $this->log(sprintf("Error de envio %s(%s) => %s: %s",
                 $this->username, $this->pk, $destProfileId, $e->getMessage()));
             return TRUE;
         }
