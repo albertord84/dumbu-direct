@@ -121,16 +121,25 @@ class DirectsCommand extends Command
     
     protected function simulateHumanInteraction()
     {
-        while (($action = mt_rand(0, 2)) === $this->last_action)
+        $this->getAutoCompleteUserList();
+        $this->getReelsTrayFeed();
+        $this->getRankedRecipients();
+        $this->getRecentRecipients();
+        $this->getMegaphoneLog();
+        $this->getV2Inbox();
+        $this->getRecentActivity();
+        /*while (($action = mt_rand(0, 2)) === $this->last_action)
         {
             $action = mt_rand(0, 2);
         }
         $this->last_action = $action;
         
         if ($action === 0) {
+            $this->getReelsTrayFeed();
+            $this->getRankedRecipients();
             $this->instagram->getRecentRecipients();
             $this->log("Chequeando recipientes recientes...");
-            sleep(10);
+            sleep(5);
             return;
         }
         if ($action === 1) {
@@ -142,22 +151,22 @@ class DirectsCommand extends Command
         if ($action === 2) {
             $this->instagram->getDiscoverTopLive();
             $this->log("Chequeando lo mas pegado...");
-            sleep(10);
+            sleep(5);
             return;
-        }
+        }*/
     }
 
         protected function sendMessage($destProfileId, $message)
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
-            $this->log(sprintf("Usuario %s envio mensaje: \"%s...\" al perfil %s",
-                $this->pk, substr($message, 0, 20), $destProfileId));
+            $this->log(sprintf("Usuario %s(%s) envio mensaje: \"%s...\" al perfil %s",
+                $this->username, $this->pk, substr($message, 0, 20), $destProfileId));
             return TRUE;
         }
         catch (\Exception $e) {
-            $this->log(sprintf("Error de %s al enviar a %s: %s",
-                    $this->pk, $destProfileId, $e->getMessage()));
+            $this->log(sprintf("Error de %s(%s) al enviar a %s: %s",
+                $this->username, $this->pk, $destProfileId, $e->getMessage()));
             return TRUE;
         }
     }
