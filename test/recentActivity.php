@@ -1,11 +1,10 @@
 <?php
-$_creds = file_get_contents(__DIR__.'/../app/application/config/instagram_credentials');
 $creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
-$username = trim($creds[0]);
-$password = trim($creds[1]);
+$username = $argv[1];
+$password = $argv[2];
 $debug = true;
 $truncatedDebug = false;
 $captionText = '';

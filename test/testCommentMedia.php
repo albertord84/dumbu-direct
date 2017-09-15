@@ -28,19 +28,19 @@ function guid() {
 }
 
 $message = "Ganhe milhares de seguidores qualificados por área" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
         "de interesse ou geolocalização, turbine seu perfil!" .
-        PHP_EOL . PHP_EOL .
-        "- 50%% desconto o primeiro mes (use o código promocional INSTA50P)" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
+        "- 50% desconto o primeiro mes (use o código promocional INSTA50P)" .
+        PHP_EOL . 
         "- 15 dias de teste gratis (use o código promocional INSTA15D)" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
         "Esta promoção é valida apenas essa semana!" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
         "Acesse www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
         "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL . 
         "foi enviada por www.dumbu.pro.";
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
