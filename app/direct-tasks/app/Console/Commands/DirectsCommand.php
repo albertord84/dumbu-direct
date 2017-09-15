@@ -121,13 +121,13 @@ class DirectsCommand extends Command
     
     protected function simulateHumanInteraction()
     {
-        $this->getAutoCompleteUserList();
-        $this->getReelsTrayFeed();
-        $this->getRankedRecipients();
-        $this->getRecentRecipients();
-        $this->getMegaphoneLog();
-        $this->getV2Inbox();
-        $this->getRecentActivity();
+        $this->instagram->getAutoCompleteUserList();
+        $this->instagram->getReelsTrayFeed();
+        $this->instagram->getRankedRecipients();
+        $this->instagram->getRecentRecipients();
+        $this->instagram->getMegaphoneLog();
+        $this->instagram->getV2Inbox();
+        $this->instagram->getRecentActivity();
         /*while (($action = mt_rand(0, 2)) === $this->last_action)
         {
             $action = mt_rand(0, 2);
