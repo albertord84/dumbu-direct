@@ -1,5 +1,4 @@
 <?php
-$creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
@@ -17,7 +16,7 @@ try {
     exit(0);
 }
 try {
-    echo var_dump($ig->getRecentActivity());
+    $ig->getRecentActivity();
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: '.$e->getMessage()."\n";
 }
