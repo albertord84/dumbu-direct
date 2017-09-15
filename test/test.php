@@ -6,7 +6,7 @@ date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $creds[0];
 $password = $creds[1];
-$recip='alberto_dreyes';
+$uid='alberto_dreyes';
 $debug = true;
 $truncatedDebug = false;
 $captionText = '';
@@ -19,8 +19,8 @@ try {
     exit(0);
 }
 try {
-    $uId = $ig->getUsernameId($recip);
+    $uId = $ig->getUsernameId($uid);
     $ig->directMessage($uId, "Quinta prueba ofuscando, ademas de los ya ofuscados, Utils.php que es tambien importante...");
 } catch (\Exception $e) {
-    echo 'Something went wrong trying to post to '.$recip.': '.$e->getMessage()."\n";
+    echo 'Something went wrong trying to post to '.$uid.': '.$e->getMessage()."\n";
 }

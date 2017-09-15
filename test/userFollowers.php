@@ -1,7 +1,7 @@
 <?php
 $username = trim($argv[1]);
 $password = trim($argv[2]);
-$recip = trim($argv[3]);
+$uid = trim($argv[3]);
 //$_creds = file_get_contents(__DIR__ . '/../app/application/config/instagram_credentials');
 //$creds = explode(':', $_creds);
 set_time_limit(0);
@@ -22,7 +22,7 @@ try {
 try {
     $maxId = null;
     $followers = [];
-    $pk = $ig->getUsernameId($recip);
+    $pk = $ig->getUsernameId($uid);
     $c = 0;
     
     $f = [];

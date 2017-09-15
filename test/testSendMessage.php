@@ -4,8 +4,8 @@ date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $argv[1];
 $password = $argv[2];
-$recip = $argv[3]; // id del perfil, no el nombre del usuario
-//$msg = $argv[4];
+$uid = $argv[3]; // id del perfil, no el nombre del usuario
+$msg = NULL; // $argv[4];
 $debug = true;
 $truncatedDebug = true;
 $captionText = '';
@@ -52,8 +52,9 @@ try {
     exit(0);
 }
 try {
-    $uid = $ig->getUsernameId($recip);
-    $ig->directMessage($uid, sprintf($message, guid(), guid(), guid(), guid(), guid()));
+    $ig->directMessage($uid, $msg == NULL ?
+            sprintf($message, guid(), guid(), guid(), guid(), guid()) :
+            $msg);
 } catch (\Exception $e) {
-    echo 'Something went wrong trying to text to '.$recip.': '.$e->getMessage()."\n";
+    echo 'Something went wrong trying to text to '.$uid.': '.$e->getMessage()."\n";
 }

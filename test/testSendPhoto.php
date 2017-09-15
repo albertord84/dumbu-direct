@@ -6,7 +6,7 @@ date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $creds[0];
 $password = $creds[1];
-$recip='alberto_dreyes';
+$uid='alberto_dreyes';
 $photoFileName=dirname(__FILE__).'/assets/img/photo.jpg';
 $debug = true;
 $truncatedDebug = false;
@@ -20,8 +20,8 @@ try {
     exit(0);
 }
 try {
-    $uId = $ig->getUsernameId($recip);
+    $uId = $ig->getUsernameId($uid);
     $ig->directPhoto($uId, "$photoFileName", "Esto es probando enviar fotos...");
 } catch (\Exception $e) {
-    echo 'Something went wrong trying to post photo to '.$recip.': '.$e->getMessage()."\n";
+    echo 'Something went wrong trying to post photo to '.$uid.': '.$e->getMessage()."\n";
 }
