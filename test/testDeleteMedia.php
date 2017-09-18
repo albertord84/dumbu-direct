@@ -5,6 +5,7 @@ require __DIR__.'/../vendor/autoload.php';
 $username = $argv[1];
 $password = $argv[2];
 $media_id = $argv[3]; // id del medio
+$comment_id = $argv[4]; // id del comentario
 $debug = true;
 $truncatedDebug = false;
 
@@ -17,7 +18,7 @@ try {
     exit(0);
 }
 try {
-    $ig->deleteMedia($media_id);
+    $ig->deleteComment($media_id, $comment_id);
 } catch (\Exception $e) {
     echo 'Something went wrong trying delete media: '.$e->getMessage()."\n";
 }
