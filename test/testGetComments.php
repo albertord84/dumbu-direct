@@ -17,8 +17,10 @@ try {
     exit(0);
 }
 try {
-    $ig->request("/media/$media_id/comments")
-       ->addParams('method', 'GET');
+    $comments = $ig->getMediaComments($media_id)->comments;
+    foreach ($comments as $comment) {
+        printf("%s: %s\n", $comment->pk, $comment->text);
+    }
 } catch (\Exception $e) {
     echo 'Something went wrong trying get comments'.$uid.': '.$e->getMessage()."\n";
 }

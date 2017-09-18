@@ -128,10 +128,7 @@ class DirectsCommand extends Command
         $this->instagram->getMegaphoneLog();
         $this->instagram->getRecentActivity();
         
-        while (($action = mt_rand(0, 2)) === $this->last_action)
-        {
-            $action = mt_rand(0, 2);
-        }
+        while ( ( $action = mt_rand(0, 2) ) === $this->last_action ) {}
         $this->last_action = $action;
         
         if ($action === 0) {
