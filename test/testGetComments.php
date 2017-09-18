@@ -18,7 +18,7 @@ try {
 }
 try {
     $ig->request("/media/$media_id/comments")
-       ->addParam('method', 'GET');
+       ->addParams('method', 'GET');
 } catch (\Exception $e) {
     echo 'Something went wrong trying get comments'.$uid.': '.$e->getMessage()."\n";
 }
