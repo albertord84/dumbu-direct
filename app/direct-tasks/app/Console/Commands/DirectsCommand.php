@@ -126,37 +126,35 @@ class DirectsCommand extends Command
         $this->instagram->getRankedRecipients();
         $this->instagram->getRecentRecipients();
         $this->instagram->getMegaphoneLog();
-        $this->instagram->getV2Inbox();
-        $story = $this->instagram->getRecentActivity()->new_stories[0];
-        /*while (($action = mt_rand(0, 2)) === $this->last_action)
+        $this->instagram->getRecentActivity();
+        
+        while (($action = mt_rand(0, 2)) === $this->last_action)
         {
             $action = mt_rand(0, 2);
         }
         $this->last_action = $action;
         
         if ($action === 0) {
-            $this->getReelsTrayFeed();
-            $this->getRankedRecipients();
-            $this->instagram->getRecentRecipients();
-            $this->log("Chequeando recipientes recientes...");
+            $media_id = $this->instagram->getPopularFeed()->items[0]->id;
+            $this->instagram->comment($media_id, 'Eu gosto!');
             sleep(5);
             return;
         }
         if ($action === 1) {
-            $this->instagram->getDiscoverChannels();
-            $this->log("Chequeando nuevos canales...");
+            $media_id = $this->instagram->getPopularFeed()->items[0]->id;
+            $this->instagram->like($media_id);
             sleep(5);
             return;
         }
         if ($action === 2) {
-            $this->instagram->getDiscoverTopLive();
-            $this->log("Chequeando lo mas pegado...");
+            $media_id = $this->instagram->getPopularFeed()->items[0]->id;
+            $this->instagram->getMediaComments($media_id);
             sleep(5);
             return;
-        }*/
+        }
     }
 
-        protected function sendMessage($destProfileId, $message)
+    protected function sendMessage($destProfileId, $message)
     {
         try {
             $this->instagram->directMessage($destProfileId, $message);
