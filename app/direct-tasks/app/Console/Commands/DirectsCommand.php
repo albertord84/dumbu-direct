@@ -186,7 +186,10 @@ class DirectsCommand extends Command
             $this->simulateHumanInteraction();
             $this->popMessage($fileName);
             $this->setUserAsTexted($fileObj->pks[0]);
-            sleep(5);
+            $randomWait = mt_rand(30, 180);
+            $this->log(sprintf("Esperando %s segundos para enviar el siguiente mensaje...",
+                    $randomWait));
+            sleep($randomWait);
         }
     }
     
