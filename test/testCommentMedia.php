@@ -7,7 +7,7 @@ $password = $argv[2];
 $media_id = $argv[3]; // id del medio a comentar
 $msg = NULL; // $argv[4];
 $debug = true;
-$truncatedDebug = true;
+$truncatedDebug = false;
 
 // 
 // https://api.instagram.com/oembed/?url=https://www.instagram.com/p/BWiczYKFKbt/?taken-by=dumbu.08
@@ -27,20 +27,16 @@ function guid() {
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
 
-$message = "Ganhe milhares de seguidores qualificados por área" .
-        PHP_EOL . 
+$message = "Ganhe milhares de seguidores qualificados por área " .
         "de interesse ou geolocalização, turbine seu perfil!" .
         PHP_EOL . 
         "- 50% desconto o primeiro mes (use o código promocional INSTA50P)" .
         PHP_EOL . 
         "- 15 dias de teste gratis (use o código promocional INSTA15D)" .
         PHP_EOL . 
-        "Esta promoção é valida apenas essa semana!" .
-        PHP_EOL . 
-        "Acesse www.dumbu.pro." .
-        PHP_EOL . 
-        "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
-        PHP_EOL . 
+        "Esta promoção é valida apenas essa semana! " .
+        "Acesse www.dumbu.pro. " .
+        "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem " .
         "foi enviada por www.dumbu.pro.";
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
