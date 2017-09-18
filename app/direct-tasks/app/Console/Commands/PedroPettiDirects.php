@@ -36,7 +36,7 @@ class PedroPettiDirects extends DirectsCommand
         $this->password = 'Pp75005310';
         $this->suspended = FALSE;
         //$proxyNumber = mt_rand(0,5);
-        $proxyNumber = 9;
+        $proxyNumber = 6;
         $this->setProxyNumber($proxyNumber);
     }
 
