@@ -19,7 +19,7 @@ function guid() {
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
 
-$message = "%s ====== %s" .
+/*$message = "%s ====== %s" .
         PHP_EOL . PHP_EOL .
         "Ganhe milhares de seguidores qualificados por área" .
         PHP_EOL . PHP_EOL .
@@ -41,7 +41,9 @@ $message = "%s ====== %s" .
         PHP_EOL . PHP_EOL .
         "foi enviada por www.dumbu.pro." .
         PHP_EOL . PHP_EOL .
-        "============ %s ============";
+        "============ %s ============";*/
+
+$message = "Saudações para meus seguidores, tenha um ótimo dia!";
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {

@@ -127,7 +127,7 @@ class DirectsCommand extends Command
         $this->instagram->getRecentRecipients();
         $this->instagram->getMegaphoneLog();
         $this->instagram->getV2Inbox();
-        $this->instagram->getRecentActivity();
+        $story = $this->instagram->getRecentActivity()->new_stories[0];
         /*while (($action = mt_rand(0, 2)) === $this->last_action)
         {
             $action = mt_rand(0, 2);
