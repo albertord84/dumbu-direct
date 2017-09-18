@@ -19,5 +19,5 @@ try {
 try {
     $ig->deleteMedia($media_id);
 } catch (\Exception $e) {
-    echo 'Something went wrong trying get comments'.$uid.': '.$e->getMessage()."\n";
+    echo 'Something went wrong trying delete media: '.$e->getMessage()."\n";
 }
