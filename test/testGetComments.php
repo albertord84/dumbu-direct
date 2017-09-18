@@ -6,7 +6,7 @@ $username = $argv[1];
 $password = $argv[2];
 $media_id = $argv[3]; // id del medio
 $debug = true;
-$truncatedDebug = true;
+$truncatedDebug = false;
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
