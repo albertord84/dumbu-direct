@@ -30,12 +30,6 @@ class Kernel extends ConsoleKernel
 
     protected $stopHours = [];
     
-    public function __construct() {
-        parent::__construct();
-        
-        $this->loadStopHours();
-    }
-    
     protected function loadStopHours()
     {
         $stopHours = trim(file_get_contents(APPPATH . '/../../stop_hours'));
@@ -65,6 +59,7 @@ class Kernel extends ConsoleKernel
     {
         $outputLog = APPPATH . '/../../messages.log';
         
+        $this->loadStopHours();
         $this->delayMessages();
         
         $schedule->command('sendirects:dumbu08')
