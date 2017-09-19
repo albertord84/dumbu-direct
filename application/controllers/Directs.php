@@ -16,18 +16,14 @@ class Directs extends MY_Controller {
 
         if ($user_id != NULL) {
 
-            $this->load->library('directs/queue/manager');
-            $dqm = new Manager();
-            $added = $dqm->add($user_id, $this->getLocalDate(), $pks, $message);
-
-            if ($added) {
-                $last_direct = $dqm->get($user_id);
-                $data['last_direct'] = $last_direct;
-                $this->load->view('directs_dashboard', $data);
-            }
-            else {
-                show_error('Something wrong happened trying to enqueue the message', 500);
-            }
+            $this->load->library('task');
+            $task = [
+                'pk' => $user_id,
+                'username' => $this->session->username,
+                'dest' => $pks,
+                'message' => $message
+            ];
+            $this->task->create($task);
             
             return;
         }

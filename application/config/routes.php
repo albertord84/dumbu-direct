@@ -61,3 +61,6 @@ $route['compose'] = 'compose';
 $route['directs'] = 'directs';
 $route['users/(:any)'] = 'search/users/$1';
 $route['translate_uri_dashes'] = FALSE;
+
+// Rutas de prueba - Eliminadas en etapa de produccion
+$route['last/task'] = 'test/last';
