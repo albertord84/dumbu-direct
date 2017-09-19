@@ -6,8 +6,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 // Para tener acceso a las cosas de CodeIgniter
-define('BASEPATH', __DIR__ . '/../../../system');
-define('APPPATH', __DIR__ . '/../../../application');
+define('BASEPATH', __DIR__ . '/../../../app/system');
+define('APPPATH', __DIR__ . '/../../../app/application');
 
 // Para tener acceso al directorio del estanque de mensajes
 define('QUEUE_PATH', APPPATH . '/logs/directs/queue/');
