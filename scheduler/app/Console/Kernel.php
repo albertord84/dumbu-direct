@@ -28,9 +28,19 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\CarmenVecchioDirects'
     ];
 
-    protected $stopHours = [
-        1,3,5,7,9,11,13,19,21,23
-    ];
+    protected $stopHours = [];
+    
+    public function __construct() {
+        parent::__construct();
+        
+        $this->loadStopHours();
+    }
+    
+    protected function loadStopHours()
+    {
+        $stopHours = trim(file_get_contents(APPPATH . '/../../stop_hours'));
+        $this->stopHours = explode(',', $stopHours);
+    }
 
     protected function delayMessages()
     {
