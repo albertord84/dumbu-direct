@@ -9,8 +9,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 define('ROOT_DIR', __DIR__ . '/../../..');
 
 // Para tener acceso a las cosas de CodeIgniter
-define('BASEPATH', ROOT_DIR . '/app/system');
-define('APPPATH', ROOT_DIR . '/app/application');
+define('BASEPATH', ROOT_DIR . '/system');
+define('APPPATH', ROOT_DIR . '/application');
 
 // Para tener acceso al directorio del estanque de mensajes
 define('QUEUE_PATH', APPPATH . '/logs/directs/queue/');

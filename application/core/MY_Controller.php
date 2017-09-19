@@ -10,7 +10,7 @@ class MY_Controller extends CI_Controller {
         // Para el acceso a la API de Instagram
         set_time_limit(0);
         date_default_timezone_set('UTC');
-        require APPPATH . '/../../vendor/autoload.php';
+        require APPPATH . '/../vendor/autoload.php';
     }
 
     protected function postVar($varName) {
