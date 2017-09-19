@@ -43,7 +43,7 @@ class DirectsCommand extends Command
     {
         parent::__construct();
         date_default_timezone_set('America/Sao_Paulo');
-        require_once APPPATH.'/../../vendor/autoload.php';
+        require_once ROOT_DIR.'/vendor/autoload.php';
     }
 
     /**
