@@ -3,14 +3,12 @@
 namespace Illuminate\Cache;
 
 use Closure;
+use Illuminate\Support\Arr;
 use InvalidArgumentException;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Contracts\Cache\Factory as FactoryContract;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
-/**
- * @mixin \Illuminate\Contracts\Cache\Repository
- */
 class CacheManager implements FactoryContract
 {
     /**
@@ -49,7 +47,7 @@ class CacheManager implements FactoryContract
      * Get a cache store instance by name.
      *
      * @param  string|null  $name
-     * @return \Illuminate\Contracts\Cache\Repository
+     * @return mixed
      */
     public function store($name = null)
     {
@@ -77,7 +75,7 @@ class CacheManager implements FactoryContract
      */
     protected function get($name)
     {
-        return $this->stores[$name] ?? $this->resolve($name);
+        return isset($this->stores[$name]) ? $this->stores[$name] : $this->resolve($name);
     }
 
     /**
@@ -166,9 +164,9 @@ class CacheManager implements FactoryContract
 
         $memcached = $this->app['memcached.connector']->connect(
             $config['servers'],
-            $config['persistent_id'] ?? null,
-            $config['options'] ?? [],
-            array_filter($config['sasl'] ?? [])
+            array_get($config, 'persistent_id'),
+            array_get($config, 'options', []),
+            array_filter(array_get($config, 'sasl', []))
         );
 
         return $this->repository(new MemcachedStore($memcached, $prefix));
@@ -194,7 +192,7 @@ class CacheManager implements FactoryContract
     {
         $redis = $this->app['redis'];
 
-        $connection = $config['connection'] ?? 'default';
+        $connection = Arr::get($config, 'connection', 'default');
 
         return $this->repository(new RedisStore($redis, $this->getPrefix($config), $connection));
     }
@@ -207,11 +205,11 @@ class CacheManager implements FactoryContract
      */
     protected function createDatabaseDriver(array $config)
     {
-        $connection = $this->app['db']->connection($config['connection'] ?? null);
+        $connection = $this->app['db']->connection(Arr::get($config, 'connection'));
 
         return $this->repository(
             new DatabaseStore(
-                $connection, $config['table'], $this->getPrefix($config)
+                $connection, $this->app['encrypter'], $config['table'], $this->getPrefix($config)
             )
         );
     }
@@ -243,7 +241,7 @@ class CacheManager implements FactoryContract
      */
     protected function getPrefix(array $config)
     {
-        return $config['prefix'] ?? $this->app['config']['cache.prefix'];
+        return Arr::get($config, 'prefix') ?: $this->app['config']['cache.prefix'];
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Laravel\Tinker\Console;
 use Psy\Shell;
 use Psy\Configuration;
 use Illuminate\Console\Command;
-use Laravel\Tinker\ClassAliasAutoloader;
 use Symfony\Component\Console\Input\InputArgument;
 
 class TinkerCommand extends Command
@@ -38,7 +37,7 @@ class TinkerCommand extends Command
      *
      * @return void
      */
-    public function handle()
+    public function fire()
     {
         $this->getApplication()->setCatchExceptions(false);
 
@@ -54,15 +53,7 @@ class TinkerCommand extends Command
         $shell->addCommands($this->getCommands());
         $shell->setIncludes($this->argument('include'));
 
-        $path = $this->getLaravel()->basePath('vendor/composer/autoload_classmap.php');
-
-        $loader = ClassAliasAutoloader::register($shell, $path);
-
-        try {
-            $shell->run();
-        } finally {
-            $loader->unregister();
-        }
+        $shell->run();
     }
 
     /**

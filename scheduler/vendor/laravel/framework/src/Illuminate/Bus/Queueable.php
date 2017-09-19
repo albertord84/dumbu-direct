@@ -21,16 +21,9 @@ trait Queueable
     /**
      * The number of seconds before the job should be made available.
      *
-     * @var \DateTimeInterface|\DateInterval|int|null
+     * @var \DateTime|int|null
      */
     public $delay;
-
-    /**
-     * The jobs that should run if this job is successful.
-     *
-     * @var array
-     */
-    public $chained = [];
 
     /**
      * Set the desired connection for the job.
@@ -61,7 +54,7 @@ trait Queueable
     /**
      * Set the desired delay for the job.
      *
-     * @param  \DateTimeInterface|\DateInterval|int|null  $delay
+     * @param  \DateTime|int|null  $delay
      * @return $this
      */
     public function delay($delay)
@@ -69,34 +62,5 @@ trait Queueable
         $this->delay = $delay;
 
         return $this;
-    }
-
-    /**
-     * Set the jobs that should run if this job is successful.
-     *
-     * @param  array  $chain
-     * @return $this
-     */
-    public function chain($chain)
-    {
-        $this->chained = collect($chain)->map(function ($job) {
-            return serialize($job);
-        })->all();
-
-        return $this;
-    }
-
-    /**
-     * Dispatch the next job on the chain.
-     *
-     * @return void
-     */
-    public function dispatchNextJobInChain()
-    {
-        if (! empty($this->chained)) {
-            dispatch(tap(unserialize(array_shift($this->chained)), function ($next) {
-                $next->chained = $this->chained;
-            }));
-        }
     }
 }

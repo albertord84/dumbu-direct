@@ -83,6 +83,7 @@ class ExceptionCaster
     public static function castSilencedErrorContext(SilencedErrorContext $e, array $a, Stub $stub, $isNested)
     {
         $sPrefix = "\0".SilencedErrorContext::class."\0";
+        $xPrefix = "\0Exception\0";
 
         if (!isset($a[$s = $sPrefix.'severity'])) {
             return $a;
@@ -92,17 +93,12 @@ class ExceptionCaster
             $a[$s] = new ConstStub(self::$errorTypes[$a[$s]], $a[$s]);
         }
 
-        $trace = array(array(
+        $trace = array(
             'file' => $a[$sPrefix.'file'],
             'line' => $a[$sPrefix.'line'],
-        ));
-
-        if (isset($a[$sPrefix.'trace'])) {
-            $trace = array_merge($trace, $a[$sPrefix.'trace']);
-        }
-
-        unset($a[$sPrefix.'file'], $a[$sPrefix.'line'], $a[$sPrefix.'trace']);
-        $a[Caster::PREFIX_VIRTUAL.'trace'] = new TraceStub($trace, self::$traceArgs);
+        );
+        unset($a[$sPrefix.'file'], $a[$sPrefix.'line']);
+        $a[Caster::PREFIX_VIRTUAL.'trace'] = new TraceStub(array($trace));
 
         return $a;
     }
@@ -256,7 +252,7 @@ class ExceptionCaster
             $trace = array();
         }
 
-        if (!($filter & Caster::EXCLUDE_VERBOSE) && $trace) {
+        if (!($filter & Caster::EXCLUDE_VERBOSE)) {
             if (isset($a[Caster::PREFIX_PROTECTED.'file'], $a[Caster::PREFIX_PROTECTED.'line'])) {
                 self::traceUnshift($trace, $xClass, $a[Caster::PREFIX_PROTECTED.'file'], $a[Caster::PREFIX_PROTECTED.'line']);
             }

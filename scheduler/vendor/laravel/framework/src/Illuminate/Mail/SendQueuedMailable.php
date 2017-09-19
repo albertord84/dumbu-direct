@@ -61,14 +61,4 @@ class SendQueuedMailable
     {
         return get_class($this->mailable);
     }
-
-    /**
-     * Prepare the instance for cloning.
-     *
-     * @return void
-     */
-    public function __clone()
-    {
-        $this->mailable = clone $this->mailable;
-    }
 }

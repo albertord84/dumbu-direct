@@ -2,7 +2,6 @@
 
 namespace Illuminate\Auth\Access;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Contracts\Container\Container;
@@ -79,20 +78,12 @@ class Gate implements GateContract
     /**
      * Determine if a given ability has been defined.
      *
-     * @param  string|array  $ability
+     * @param  string  $ability
      * @return bool
      */
     public function has($ability)
     {
-        $abilities = is_array($ability) ? $ability : func_get_args();
-
-        foreach ($abilities as $ability) {
-            if (! isset($this->abilities[$ability])) {
-                return false;
-            }
-        }
-
-        return true;
+        return isset($this->abilities[$ability]);
     }
 
     /**
@@ -221,35 +212,19 @@ class Gate implements GateContract
     }
 
     /**
-     * Determine if all of the given abilities should be granted for the current user.
+     * Determine if the given ability should be granted for the current user.
      *
-     * @param  iterable|string  $abilities
+     * @param  string  $ability
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function check($abilities, $arguments = [])
+    public function check($ability, $arguments = [])
     {
-        return collect($abilities)->every(function ($ability) use ($arguments) {
-            try {
-                return (bool) $this->raw($ability, $arguments);
-            } catch (AuthorizationException $e) {
-                return false;
-            }
-        });
-    }
-
-    /**
-     * Determine if any one of the given abilities should be granted for the current user.
-     *
-     * @param  iterable|string  $abilities
-     * @param  array|mixed  $arguments
-     * @return bool
-     */
-    public function any($abilities, $arguments = [])
-    {
-        return collect($abilities)->contains(function ($ability) use ($arguments) {
-            return $this->check($ability, $arguments);
-        });
+        try {
+            return (bool) $this->raw($ability, $arguments);
+        } catch (AuthorizationException $e) {
+            return false;
+        }
     }
 
     /**
@@ -285,7 +260,7 @@ class Gate implements GateContract
             return false;
         }
 
-        $arguments = Arr::wrap($arguments);
+        $arguments = array_wrap($arguments);
 
         // First we will call the "before" callbacks for the Gate. If any of these give
         // back a non-null response, we will immediately return that result in order
@@ -370,10 +345,10 @@ class Gate implements GateContract
      */
     protected function resolveAuthCallback($user, $ability, array $arguments)
     {
-        if (isset($arguments[0]) &&
-            ! is_null($policy = $this->getPolicyFor($arguments[0])) &&
-            $callback = $this->resolvePolicyCallback($user, $ability, $arguments, $policy)) {
-            return $callback;
+        if (isset($arguments[0])) {
+            if (! is_null($policy = $this->getPolicyFor($arguments[0]))) {
+                return $this->resolvePolicyCallback($user, $ability, $arguments, $policy);
+            }
         }
 
         if (isset($this->abilities[$ability])) {
@@ -398,7 +373,7 @@ class Gate implements GateContract
         }
 
         if (! is_string($class)) {
-            return;
+            return null;
         }
 
         if (isset($this->policies[$class])) {
@@ -430,14 +405,10 @@ class Gate implements GateContract
      * @param  string  $ability
      * @param  array  $arguments
      * @param  mixed  $policy
-     * @return bool|callable
+     * @return callable
      */
     protected function resolvePolicyCallback($user, $ability, array $arguments, $policy)
     {
-        if (! is_callable([$policy, $this->formatAbilityToMethod($ability)])) {
-            return false;
-        }
-
         return function () use ($user, $ability, $arguments, $policy) {
             // This callback will be responsible for calling the policy's before method and
             // running this policy method if necessary. This is used to when objects are
@@ -531,15 +502,5 @@ class Gate implements GateContract
     public function abilities()
     {
         return $this->abilities;
-    }
-
-    /**
-     * Get all of the defined policies.
-     *
-     * @return array
-     */
-    public function policies()
-    {
-        return $this->policies;
     }
 }

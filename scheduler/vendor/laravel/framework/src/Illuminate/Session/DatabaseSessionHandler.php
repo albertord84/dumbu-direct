@@ -2,19 +2,16 @@
 
 namespace Illuminate\Session;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use SessionHandlerInterface;
-use Illuminate\Support\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\InteractsWithTime;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Contracts\Container\Container;
 
 class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareInterface
 {
-    use InteractsWithTime;
-
     /**
      * The database connection instance.
      *
@@ -140,7 +137,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
      *
      * @param  string  $sessionId
      * @param  string  $payload
-     * @return bool|null
+     * @return void
      */
     protected function performInsert($sessionId, $payload)
     {
@@ -173,7 +170,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
     {
         $payload = [
             'payload' => base64_encode($data),
-            'last_activity' => $this->currentTime(),
+            'last_activity' => Carbon::now()->getTimestamp(),
         ];
 
         if (! $this->container) {
@@ -264,7 +261,7 @@ class DatabaseSessionHandler implements SessionHandlerInterface, ExistenceAwareI
      */
     public function gc($lifetime)
     {
-        $this->getQuery()->where('last_activity', '<=', $this->currentTime() - $lifetime)->delete();
+        $this->getQuery()->where('last_activity', '<=', Carbon::now()->getTimestamp() - $lifetime)->delete();
     }
 
     /**

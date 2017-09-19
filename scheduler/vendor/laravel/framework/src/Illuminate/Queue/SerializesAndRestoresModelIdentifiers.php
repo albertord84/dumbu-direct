@@ -18,19 +18,11 @@ trait SerializesAndRestoresModelIdentifiers
     protected function getSerializedPropertyValue($value)
     {
         if ($value instanceof QueueableCollection) {
-            return new ModelIdentifier(
-                $value->getQueueableClass(),
-                $value->getQueueableIds(),
-                $value->getQueueableConnection()
-            );
+            return new ModelIdentifier($value->getQueueableClass(), $value->getQueueableIds());
         }
 
         if ($value instanceof QueueableEntity) {
-            return new ModelIdentifier(
-                get_class($value),
-                $value->getQueueableId(),
-                $value->getQueueableConnection()
-            );
+            return new ModelIdentifier(get_class($value), $value->getQueueableId());
         }
 
         return $value;
@@ -50,8 +42,8 @@ trait SerializesAndRestoresModelIdentifiers
 
         return is_array($value->id)
                 ? $this->restoreCollection($value)
-                : $this->getQueryForModelRestoration((new $value->class)->setConnection($value->connection))
-                    ->useWritePdo()->findOrFail($value->id);
+                : $this->getQueryForModelRestoration(new $value->class)
+                            ->useWritePdo()->findOrFail($value->id);
     }
 
     /**
@@ -66,7 +58,7 @@ trait SerializesAndRestoresModelIdentifiers
             return new EloquentCollection;
         }
 
-        $model = (new $value->class)->setConnection($value->connection);
+        $model = new $value->class;
 
         return $this->getQueryForModelRestoration($model)->useWritePdo()
                     ->whereIn($model->getQualifiedKeyName(), $value->id)->get();

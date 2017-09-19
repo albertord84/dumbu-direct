@@ -40,27 +40,11 @@ class Configuration
     const COLOR_MODE_DISABLED = 'disabled';
 
     private static $AVAILABLE_OPTIONS = array(
-        'codeCleaner',
-        'colorMode',
-        'configDir',
-        'dataDir',
-        'defaultIncludes',
-        'eraseDuplicates',
-        'errorLoggingLevel',
-        'historySize',
-        'loop',
-        'manualDbFile',
-        'pager',
-        'requireSemicolons',
-        'runtimeDir',
-        'startupMessage',
-        'tabCompletion',
-        'updateCheck',
-        'useBracketedPaste',
-        'usePcntl',
-        'useReadline',
-        'useUnicode',
-        'warnOnMultipleConfigs',
+        'defaultIncludes', 'useReadline', 'usePcntl', 'codeCleaner', 'pager',
+        'loop', 'configDir', 'dataDir', 'runtimeDir', 'manualDbFile',
+        'requireSemicolons', 'useUnicode', 'historySize', 'eraseDuplicates',
+        'tabCompletion', 'errorLoggingLevel', 'warnOnMultipleConfigs',
+        'colorMode', 'updateCheck', 'startupMessage',
     );
 
     private $defaultIncludes;
@@ -75,7 +59,6 @@ class Configuration
     private $manualDbFile;
     private $hasReadline;
     private $useReadline;
-    private $useBracketedPaste;
     private $hasPcntl;
     private $usePcntl;
     private $newCommands = array();
@@ -200,7 +183,7 @@ class Configuration
      */
     public function getLocalConfigFile()
     {
-        $localConfig = getcwd() . '/.psysh.php';
+        $localConfig = getenv('PWD') . '/.psysh.php';
 
         if (@is_file($localConfig)) {
             return $localConfig;
@@ -572,44 +555,6 @@ class Configuration
         }
 
         return 'Psy\Readline\Transient';
-    }
-
-    /**
-     * Enable or disable bracketed paste.
-     *
-     * Note that this only works with readline (not libedit) integration for now.
-     *
-     * @param bool $useBracketedPaste
-     */
-    public function setUseBracketedPaste($useBracketedPaste)
-    {
-        $this->useBracketedPaste = (bool) $useBracketedPaste;
-    }
-
-    /**
-     * Check whether to use bracketed paste with readline.
-     *
-     * When this works, it's magical. Tabs in pastes don't try to autcomplete.
-     * Newlines in paste don't execute code until you get to the end. It makes
-     * readline act like you'd expect when pasting.
-     *
-     * But it often (usually?) does not work. And when it doesn't, it just spews
-     * escape codes all over the place and generally makes things ugly :(
-     *
-     * If `useBracketedPaste` has been set to true, but the current readline
-     * implementation is anything besides GNU readline, this will return false.
-     *
-     * @return bool True if the shell should use bracketed paste
-     */
-    public function useBracketedPaste()
-    {
-        // For now, only the GNU readline implementation supports bracketed paste.
-        $supported = ($this->getReadlineClass() === 'Psy\Readline\GNUReadline');
-
-        return $supported && $this->useBracketedPaste;
-
-        // @todo mebbe turn this on by default some day?
-        // return isset($this->useBracketedPaste) ? ($supported && $this->useBracketedPaste) : $supported;
     }
 
     /**

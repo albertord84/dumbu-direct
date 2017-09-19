@@ -281,7 +281,7 @@ class Filesystem implements FilesystemInterface
         $path = Util::normalizePath($path);
         $this->assertPresent($path);
 
-        if (( ! $object = $this->getAdapter()->getMimetype($path)) || ! array_key_exists('mimetype', $object)) {
+        if ( ! $object = $this->getAdapter()->getMimetype($path)) {
             return false;
         }
 
@@ -296,7 +296,7 @@ class Filesystem implements FilesystemInterface
         $path = Util::normalizePath($path);
         $this->assertPresent($path);
 
-        if (( ! $object = $this->getAdapter()->getTimestamp($path)) || ! array_key_exists('timestamp', $object)) {
+        if ( ! $object = $this->getAdapter()->getTimestamp($path)) {
             return false;
         }
 
@@ -311,7 +311,7 @@ class Filesystem implements FilesystemInterface
         $path = Util::normalizePath($path);
         $this->assertPresent($path);
 
-        if (( ! $object = $this->getAdapter()->getVisibility($path)) || ! array_key_exists('visibility', $object)) {
+        if (($object = $this->getAdapter()->getVisibility($path)) === false) {
             return false;
         }
 
@@ -325,7 +325,7 @@ class Filesystem implements FilesystemInterface
     {
         $path = Util::normalizePath($path);
 
-        if (( ! $object = $this->getAdapter()->getSize($path)) || ! array_key_exists('size', $object)) {
+        if (($object = $this->getAdapter()->getSize($path)) === false || ! isset($object['size'])) {
             return false;
         }
 

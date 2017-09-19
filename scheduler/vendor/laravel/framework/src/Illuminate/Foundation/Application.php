@@ -7,7 +7,6 @@ use RuntimeException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Log\LogServiceProvider;
@@ -29,7 +28,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '5.5.4';
+    const VERSION = '5.4.27';
 
     /**
      * The base path for the Laravel installation.
@@ -177,10 +176,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->instance('app', $this);
 
         $this->instance(Container::class, $this);
-
-        $this->instance(PackageManifest::class, new PackageManifest(
-            new Filesystem, $this->basePath(), $this->getCachedPackagesPath()
-        ));
     }
 
     /**
@@ -233,7 +228,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a callback to run before a bootstrapper.
      *
      * @param  string  $bootstrapper
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @return void
      */
     public function beforeBootstrapping($bootstrapper, Closure $callback)
@@ -245,7 +240,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a callback to run after a bootstrapper.
      *
      * @param  string  $bootstrapper
-     * @param  \Closure  $callback
+     * @param  Closure  $callback
      * @return void
      */
     public function afterBootstrapping($bootstrapper, Closure $callback)
@@ -518,9 +513,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function detectEnvironment(Closure $callback)
     {
-        $args = $_SERVER['argv'] ?? null;
+        $args = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
 
-        return $this['env'] = (new EnvironmentDetector)->detect($callback, $args);
+        return $this['env'] = (new EnvironmentDetector())->detect($callback, $args);
     }
 
     /**
@@ -550,15 +545,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function registerConfiguredProviders()
     {
-        $providers = Collection::make($this->config['app.providers'])
-                        ->partition(function ($provider) {
-                            return Str::startsWith($provider, 'Illuminate\\');
-                        });
-
-        $providers->splice(1, 0, [$this->make(PackageManifest::class)->providers()]);
-
         (new ProviderRepository($this, new Filesystem, $this->getCachedServicesPath()))
-                    ->load($providers->collapse()->toArray());
+                    ->load($this->config['app.providers']);
     }
 
     /**
@@ -680,7 +668,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Register a deferred provider and service.
      *
      * @param  string  $provider
-     * @param  string|null  $service
+     * @param  string  $service
      * @return void
      */
     public function registerDeferredProvider($provider, $service = null)
@@ -704,21 +692,40 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Resolve the given type from the container.
      *
-     * (Overriding Container::make)
+     * (Overriding Container::makeWith)
      *
      * @param  string  $abstract
      * @param  array  $parameters
      * @return mixed
      */
-    public function make($abstract, array $parameters = [])
+    public function makeWith($abstract, array $parameters)
     {
         $abstract = $this->getAlias($abstract);
 
-        if (isset($this->deferredServices[$abstract]) && ! isset($this->instances[$abstract])) {
+        if (isset($this->deferredServices[$abstract])) {
             $this->loadDeferredProvider($abstract);
         }
 
-        return parent::make($abstract, $parameters);
+        return parent::makeWith($abstract, $parameters);
+    }
+
+    /**
+     * Resolve the given type from the container.
+     *
+     * (Overriding Container::make)
+     *
+     * @param  string  $abstract
+     * @return mixed
+     */
+    public function make($abstract)
+    {
+        $abstract = $this->getAlias($abstract);
+
+        if (isset($this->deferredServices[$abstract])) {
+            $this->loadDeferredProvider($abstract);
+        }
+
+        return parent::make($abstract);
     }
 
     /**
@@ -848,16 +855,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function getCachedServicesPath()
     {
         return $this->bootstrapPath().'/cache/services.php';
-    }
-
-    /**
-     * Get the path to the cached packages.php file.
-     *
-     * @return string
-     */
-    public function getCachedPackagesPath()
-    {
-        return $this->bootstrapPath().'/cache/packages.php';
     }
 
     /**
@@ -1094,8 +1091,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function registerCoreContainerAliases()
     {
-        foreach ([
-            'app'                  => [\Illuminate\Foundation\Application::class, \Illuminate\Contracts\Container\Container::class, \Illuminate\Contracts\Foundation\Application::class,  \Psr\Container\ContainerInterface::class],
+        $aliases = [
+            'app'                  => [\Illuminate\Foundation\Application::class, \Illuminate\Contracts\Container\Container::class, \Illuminate\Contracts\Foundation\Application::class],
             'auth'                 => [\Illuminate\Auth\AuthManager::class, \Illuminate\Contracts\Auth\Factory::class],
             'auth.driver'          => [\Illuminate\Contracts\Auth\Guard::class],
             'blade.compiler'       => [\Illuminate\View\Compilers\BladeCompiler::class],
@@ -1129,7 +1126,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'url'                  => [\Illuminate\Routing\UrlGenerator::class, \Illuminate\Contracts\Routing\UrlGenerator::class],
             'validator'            => [\Illuminate\Validation\Factory::class, \Illuminate\Contracts\Validation\Factory::class],
             'view'                 => [\Illuminate\View\Factory::class, \Illuminate\Contracts\View\Factory::class],
-        ] as $key => $aliases) {
+        ];
+
+        foreach ($aliases as $key => $aliases) {
             foreach ($aliases as $alias) {
                 $this->alias($key, $alias);
             }
@@ -1145,16 +1144,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         parent::flush();
 
-        $this->buildStack = [];
         $this->loadedProviders = [];
-        $this->bootedCallbacks = [];
-        $this->bootingCallbacks = [];
-        $this->deferredServices = [];
-        $this->reboundCallbacks = [];
-        $this->serviceProviders = [];
-        $this->resolvingCallbacks = [];
-        $this->afterResolvingCallbacks = [];
-        $this->globalResolvingCallbacks = [];
     }
 
     /**

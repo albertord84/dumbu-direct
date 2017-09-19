@@ -50,7 +50,6 @@ class RegisterControllerArgumentLocatorsPass implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds($this->controllerTag, true) as $id => $tags) {
             $def = $container->getDefinition($id);
-            $def->setPublic(true);
             $class = $def->getClass();
             $autowire = $def->isAutowired();
 

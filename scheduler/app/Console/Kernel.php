@@ -5,9 +5,12 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+// Para tener acceso a directorios
+define('ROOT_DIR', __DIR__ . '/../../..');
+
 // Para tener acceso a las cosas de CodeIgniter
-define('BASEPATH', __DIR__ . '/../../../app/system');
-define('APPPATH', __DIR__ . '/../../../app/application');
+define('BASEPATH', ROOT_DIR . '/app/system');
+define('APPPATH', ROOT_DIR . '/app/application');
 
 // Para tener acceso al directorio del estanque de mensajes
 define('QUEUE_PATH', APPPATH . '/logs/directs/queue/');
@@ -32,21 +35,8 @@ class Kernel extends ConsoleKernel
     
     protected function loadStopHours()
     {
-        $stopHours = trim(file_get_contents(APPPATH . '/../../stop_hours'));
-        $this->stopHours = explode(',', $stopHours);
-    }
-
-    protected function delayMessages()
-    {
-        date_default_timezone_set('America/Sao_Paulo');
-        $H = intval(date("H"));
-        if ( in_array($H, $this->stopHours) )
-        {
-            $h = array_search($H, $this->stopHours);
-            printf("%s - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
-                date('r'), $this->stopHours[ $h ] + 1);
-            exit(0);
-        }
+        $stopHours = file_get_contents(ROOT_DIR . '/stop_hours');
+        $this->stopHours = explode(',', trim($stopHours));
     }
 
     /**
@@ -63,25 +53,49 @@ class Kernel extends ConsoleKernel
         $this->delayMessages();
         
         $schedule->command('sendirects:dumbu08')
-            ->everyTenMinutes()
+            ->everyThirtyMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:dumbu09')
-            ->everyTenMinutes()
+            ->everyThirtyMinutes()
             ->appendOutputTo($outputLog);
         $schedule->command('sendirects:pedropetti')
+            ->everyThirtyMinutes()
+            ->appendOutputTo($outputLog);
+        
+        // Ejemplo de envio a determinado minuto de cada hora del dia
+        /*$schedule->command('sendirects:pedropetti')
+            ->cron('12 * * * * *')
+            ->appendOutputTo($outputLog);*/
+        
+        /*$schedule->command('sendirects:wavcreators')
             ->everyTenMinutes()
             ->appendOutputTo($outputLog);
+        $schedule->command('sendirects:carmenvecchio')
+            ->everyTenMinutes()
+            ->appendOutputTo($outputLog);*/
     }
 
     /**
-     * Register the commands for the application.
+     * Register the Closure based commands for the application.
      *
      * @return void
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
-
         require base_path('routes/console.php');
     }
+
+    private function delayMessages()
+    {
+        date_default_timezone_set('America/Sao_Paulo');
+        $H = intval(date("H"));
+        if ( in_array($H, $this->stopHours) )
+        {
+            $h = array_search($H, $this->stopHours);
+            printf("%s - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
+                date('r'), $this->stopHours[ $h ] + 1);
+            exit(0);
+        }
+    }
+
 }

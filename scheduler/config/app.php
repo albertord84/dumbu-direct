@@ -10,7 +10,6 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
-    |
     */
 
     'name' => env('APP_NAME', 'Laravel'),
@@ -167,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,5 +227,12 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+    
+    'directs' => [
+        // Esto puede ser un camino absoluto a un directorio.
+        // Ya sea relativo o absoluto, requiere permisos de escritura
+        // para el proceso del Apache.
+        'store' => __DIR__ . '/../../' . 'application/logs/directs'
+    ]
 
 ];

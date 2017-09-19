@@ -13,7 +13,7 @@ trait DatabaseMigrations
      */
     public function runDatabaseMigrations()
     {
-        $this->artisan('migrate:fresh');
+        $this->artisan('migrate');
 
         $this->app[Kernel::class]->setArtisan(null);
 

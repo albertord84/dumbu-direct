@@ -297,15 +297,6 @@ class PhpMatcherDumperTest extends TestCase
             array(),
             '',
             array(),
-            array('HEAD', 'GET')
-        ));
-        $headMatchCasesCollection->add('get_and_head', new Route(
-            '/get_and_head',
-            array(),
-            array(),
-            array(),
-            '',
-            array(),
             array('GET', 'HEAD')
         ));
         $headMatchCasesCollection->add('post_and_head', new Route(

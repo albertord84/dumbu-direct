@@ -191,23 +191,6 @@ class Builder
     }
 
     /**
-     * Add a where clause on the primary key to the query.
-     *
-     * @param  mixed  $id
-     * @return $this
-     */
-    public function whereKeyNot($id)
-    {
-        if (is_array($id) || $id instanceof Arrayable) {
-            $this->query->whereNotIn($this->model->getQualifiedKeyName(), $id);
-
-            return $this;
-        }
-
-        return $this->where($this->model->getQualifiedKeyName(), '!=', $id);
-    }
-
-    /**
      * Add a basic where clause to the query.
      *
      * @param  string|array|\Closure  $column
@@ -234,7 +217,7 @@ class Builder
     /**
      * Add an "or where" clause to the query.
      *
-     * @param  \Closure|array|string  $column
+     * @param  string|\Closure  $column
      * @param  string  $operator
      * @param  mixed  $value
      * @return \Illuminate\Database\Eloquent\Builder|static
@@ -292,7 +275,7 @@ class Builder
     /**
      * Find multiple models by their primary keys.
      *
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $ids
+     * @param  array  $ids
      * @param  array  $columns
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -644,8 +627,6 @@ class Builder
             }
 
             $lastId = $results->last()->{$alias};
-
-            unset($results);
         } while ($countResults == $count);
 
         return true;
@@ -745,7 +726,7 @@ class Builder
      * Save a new model and return the instance.
      *
      * @param  array  $attributes
-     * @return \Illuminate\Database\Eloquent\Model|$this
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(array $attributes = [])
     {
@@ -758,7 +739,7 @@ class Builder
      * Save a new model and return the instance. Allow mass-assignment.
      *
      * @param  array  $attributes
-     * @return \Illuminate\Database\Eloquent\Model|$this
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function forceCreate(array $attributes)
     {
@@ -882,7 +863,7 @@ class Builder
             }
 
             // Next we'll pass the scope callback to the callScope method which will take
-            // care of grouping the "wheres" properly so the logical order doesn't get
+            // care of groping the "wheres" correctly so the logical order doesn't get
             // messed up when adding scopes. Then we'll return back out the builder.
             $builder = $builder->callScope(
                 [$this->model, 'scope'.ucfirst($scope)],
@@ -906,11 +887,7 @@ class Builder
 
         $builder = clone $this;
 
-        foreach ($this->scopes as $identifier => $scope) {
-            if (! isset($builder->scopes[$identifier])) {
-                continue;
-            }
-
+        foreach ($this->scopes as $scope) {
             $builder->callScope(function (Builder $builder) use ($scope) {
                 // If the scope is a Closure we will just go ahead and call the scope with the
                 // builder instance. The "callScope" method will properly group the clauses
@@ -950,9 +927,9 @@ class Builder
         $originalWhereCount = is_null($query->wheres)
                     ? 0 : count($query->wheres);
 
-        $result = $scope(...array_values($parameters)) ?? $this;
+        $result = $scope(...array_values($parameters)) ?: $this;
 
-        if (count((array) $query->wheres) > $originalWhereCount) {
+        if (count($query->wheres) > $originalWhereCount) {
             $this->addNewWheresWithinGroup($query, $originalWhereCount);
         }
 

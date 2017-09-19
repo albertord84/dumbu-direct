@@ -1633,17 +1633,14 @@ class Process implements \IteratorAggregate
         $varCount = 0;
         $varCache = array();
         $cmd = preg_replace_callback(
-            '/"(?:(
+            '/"(
                 [^"%!^]*+
                 (?:
                     (?: !LF! | "(?:\^[%!^])?+" )
                     [^"%!^]*+
                 )++
-            ) | [^"]*+ )"/x',
+            )"/x',
             function ($m) use (&$envBackup, &$env, &$varCache, &$varCount, $uid) {
-                if (!isset($m[1])) {
-                    return $m[0];
-                }
                 if (isset($varCache[$m[0]])) {
                     return $varCache[$m[0]];
                 }
