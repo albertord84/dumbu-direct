@@ -25,7 +25,7 @@ class CarmenVecchioDirects extends DirectsCommand
      *
      * @return void
      */
-    public function __construct()
+    public function handle()
     {
         parent::__construct();
         $this->pk = '55324697';
@@ -34,6 +34,8 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->suspended = TRUE;
         $proxyNumber = mt_rand(0,5);
         $this->setProxyNumber($proxyNumber);
+        
+        parent::handle();
     }
 
 }

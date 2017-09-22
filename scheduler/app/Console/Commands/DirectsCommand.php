@@ -42,8 +42,6 @@ class DirectsCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set('America/Sao_Paulo');
-        require_once ROOT_DIR.'/vendor/autoload.php';
     }
 
     /**
@@ -53,8 +51,11 @@ class DirectsCommand extends Command
      */
     public function handle()
     {
-        set_time_limit(0);
-
+        if (!$this->hasPendingTasks()) {
+            $this->log(sprintf("No hay envios pendientes por ahora para %s", $this->signature));
+            return;
+        }
+        
         if ($this->suspended) {
             $this->log(sprintf("Tarea %s suspendida por ahora", $this->signature));
             return;
@@ -100,6 +101,15 @@ class DirectsCommand extends Command
         }
     }
     
+    protected function hasPendingTasks()
+    {
+        $cmd = sprintf("ls %s | grep -c %s",
+                QUEUE_PATH,
+                $this->pk);
+        $cmd_out = trim(shell_exec($cmd));
+        return intval($cmd_out) > 0;
+    }
+
     protected function checkAlreadyTexted($pk)
     {
         $cmd = sprintf('grep -c %s %s', $pk, 
@@ -195,7 +205,6 @@ class DirectsCommand extends Command
     
     protected function popMessage($fileName)
     {
-        //copy($fileName, OLD_QUEUE_PATH . basename($fileName));
         unlink($fileName);
         $this->log(sprintf("Sacado de la cola el mensaje %s", basename($fileName)));
     }
@@ -213,7 +222,8 @@ class DirectsCommand extends Command
     protected function getFirstTenFileNames()
     {
         $list = '/tmp/' . $this->guid();
-        $cmd = sprintf('ls %s | grep %s > %s && head %s && rm %s', QUEUE_PATH, 
+        $cmd = sprintf('ls %s | grep %s > %s && head %s && rm %s',
+                QUEUE_PATH,
                 $this->pk, $list, $list, $list);
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
@@ -227,7 +237,7 @@ class DirectsCommand extends Command
     
     protected function getProxiesList()
     {
-        $cmd = "grep -v '#' " . APPPATH . '/config/net_proxy';
+        $cmd = "grep -v '#' " . ROOT_DIR . '/net_proxy';
         $proxies = explode(PHP_EOL, trim(shell_exec($cmd)));
         return $proxies;
     }

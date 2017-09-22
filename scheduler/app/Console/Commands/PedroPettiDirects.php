@@ -28,7 +28,7 @@ class PedroPettiDirects extends DirectsCommand
      *
      * @return void
      */
-    public function __construct()
+    public function handle()
     {
         parent::__construct();
         $this->pk = '236116119';
@@ -38,6 +38,8 @@ class PedroPettiDirects extends DirectsCommand
         //$proxyNumber = mt_rand(0,5);
         $proxyNumber = 6;
         $this->setProxyNumber($proxyNumber);
+        
+        parent::handle();
     }
 
 }

@@ -29,7 +29,7 @@ class Dumbu09Directs extends DirectsCommand
      *
      * @return void
      */
-    public function __construct()
+    public function handle()
     {
         parent::__construct();
         $this->pk = '4542814483';
@@ -40,6 +40,8 @@ class Dumbu09Directs extends DirectsCommand
         //$proxyNumber = mt_rand(0,5);
         $proxyNumber = 6;
         $this->setProxyNumber($proxyNumber);
+        
+        parent::handle();
     }
 
 }
