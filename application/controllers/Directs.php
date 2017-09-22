@@ -24,6 +24,8 @@ class Directs extends MY_Controller {
                 'message' => $message
             ];
             $this->task->create($task);
+            $this->task->saveFollowersList($user_id, $pks);
+            $this->task->createStatsFile($pk);
             
             return;
         }

@@ -32,8 +32,34 @@ class Task {
     public function create($task)
     {
         $mark = date("Ymd_His_U");
-        $taskFileName = sprintf("%s/%s.json", APPPATH . '/../tasks', $mark);
-        file_put_contents($taskFileName, json_encode($task));
+        $taskFileName = sprintf("%s/%s.json", TASKS_DIR . '/tasks', $mark);
+        file_put_contents($taskFileName, json_encode($task, JSON_PRETTY_PRINT));
+    }
+    
+    /**
+     * Crea la lista de seguidores sobre los que se ejecutara
+     * la tarea
+     * 
+     * @param string $pk Id del cliente que genero la tarea
+     * @param string $data Cadena separada por comas, con los id de perfiles seguidores
+     */
+    public function saveFollowersList($pk, $data)
+    {
+        $ids_array = explode(',', $data);
+        $fname = sprintf("%s/%s_%s.txt", FOLLOWERS_DIR, date('U'), $pk);
+        $FILE = fopen($fname, "w");
+        foreach ($ids_array as $id) {
+            fwrite($FILE, trim($id) . PHP_EOL);
+        }
+        fclose($FILE);
+    }
+    
+    public function createStatsFile($pk)
+    {
+        $fname = sprintf("%s/%s_%s.txt", STATS_DIR, date('U'), $pk);
+        $FILE = fopen($fname, "w");
+        fwrite($FILE, '');
+        fclose($FILE);
     }
     
 }
