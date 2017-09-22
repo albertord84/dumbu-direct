@@ -5,17 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-// Para tener acceso a directorios
-define('ROOT_DIR', __DIR__ . '/../../..');
-
-// Para tener acceso a las cosas de CodeIgniter
-define('BASEPATH', ROOT_DIR . '/system');
-define('APPPATH', ROOT_DIR . '/application');
-
-// Para tener acceso al directorio del estanque de mensajes
-define('QUEUE_PATH', APPPATH . '/logs/directs/queue/');
-define('OLD_QUEUE_PATH', APPPATH . '/logs/directs/old/');
-
 class Kernel extends ConsoleKernel
 {
     /**
@@ -33,6 +22,31 @@ class Kernel extends ConsoleKernel
 
     protected $stopHours = [];
     
+    protected $outputLog = NULL;
+    
+    protected function init()
+    {
+        set_time_limit(0);
+
+        $this->loadConfig();
+
+        require_once ROOT_DIR . '/vendor/autoload.php';
+
+        date_default_timezone_set(TIMEZONE);
+
+        $this->outputLog = MESSAGES_LOG;
+
+        $this->loadStopHours();
+    }
+    
+    protected function loadConfig()
+    {
+        $contants = include base_path() . '/../config.php';
+        foreach ($contants as $contant => $value) {
+            defined($contant) OR define($contant, $value);
+        }
+    }
+
     protected function loadStopHours()
     {
         $stopHours = file_get_contents(ROOT_DIR . '/stop_hours');
@@ -47,32 +61,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $outputLog = APPPATH . '/../../messages.log';
-        
-        $this->loadStopHours();
-        $this->delayMessages();
-        
+        $this->init();
+        if ($this->delayMessages()) {
+            return;
+        }
+
         $schedule->command('sendirects:dumbu08')
             ->everyThirtyMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($this->outputLog);
         $schedule->command('sendirects:dumbu09')
             ->everyThirtyMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($this->outputLog);
         $schedule->command('sendirects:pedropetti')
             ->everyThirtyMinutes()
-            ->appendOutputTo($outputLog);
+            ->appendOutputTo($this->outputLog);
         
-        // Ejemplo de envio a determinado minuto de cada hora del dia
-        /*$schedule->command('sendirects:pedropetti')
-            ->cron('12 * * * * *')
-            ->appendOutputTo($outputLog);*/
-        
-        /*$schedule->command('sendirects:wavcreators')
-            ->everyTenMinutes()
-            ->appendOutputTo($outputLog);
-        $schedule->command('sendirects:carmenvecchio')
-            ->everyTenMinutes()
-            ->appendOutputTo($outputLog);*/
     }
 
     /**
@@ -87,14 +90,13 @@ class Kernel extends ConsoleKernel
 
     private function delayMessages()
     {
-        date_default_timezone_set('America/Sao_Paulo');
         $H = intval(date("H"));
         if ( in_array($H, $this->stopHours) )
         {
             $h = array_search($H, $this->stopHours);
-            printf("%s - Esperando 1h (hasta las %s:00) para reiniciar el envio...\n",
+            printf("%s - Esperando hasta las %s:00 para reiniciar el envio...\n",
                 date('r'), $this->stopHours[ $h ] + 1);
-            exit(0);
+            return TRUE;
         }
     }
 

@@ -227,12 +227,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-    
-    'directs' => [
-        // Esto puede ser un camino absoluto a un directorio.
-        // Ya sea relativo o absoluto, requiere permisos de escritura
-        // para el proceso del Apache.
-        'store' => __DIR__ . '/../../' . 'application/logs/directs'
-    ]
 
 ];

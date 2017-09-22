@@ -1,6 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Dumbu constants
+ */
+$contants = include __DIR__ . '/../../config.php';
+foreach ($contants as $constant => $value) {
+    defined($constant) OR define($constant, $value);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Display Debug backtrace
