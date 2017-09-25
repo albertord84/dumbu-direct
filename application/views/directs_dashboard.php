@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('assets/css/dumbu-direct.css'); ?>?<?php echo d_guid(); ?>">
     </head>
     <body data-ng-controller="MainController">
-        <div class="container">
+        <div class="directs-dashboard container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
                     <div id="logo" class="text-center">
@@ -24,6 +24,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                     <p class="text-center text-muted"><b>You sent this message...</b></p>
                     <h3 class="text-center"><?php echo $message; ?></h3>
+                    <p class="text-center text-muted"><b>to the followers:</b></p>
+                    <div class="row text-center followers-list">
+                        <?php foreach ($followers as $follower) { ?>
+                        <span class="follower-name panel panel-default"><?php echo $follower; ?></span>
+                        <?php } ?>
+                    </div>
                     <p class="text-center text-muted"><b>Your request will be processed soon...</b></p>
                     <p class="text-center text-muted small">If you keep this page opened, you will be notified</p>
                 </div>

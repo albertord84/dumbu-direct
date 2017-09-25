@@ -193,3 +193,12 @@ body .container {
     font-size: 100px;
 }
 
+.directs-dashboard .followers-list {
+    padding: 10px 10px 20px 10px;
+}
+
+.directs-dashboard .followers-list .follower-name {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}

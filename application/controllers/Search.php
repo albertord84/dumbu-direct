@@ -13,6 +13,7 @@ class Search extends MY_Controller {
             return;
         }
 
+        $data['session']['password'] = d_guid();
         $this->load->view('search_form', $data);
     }
 

@@ -3,6 +3,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
+    
+    private $instagram = NULL;
 
     public function __construct() {
         parent::__construct();
@@ -11,6 +13,13 @@ class MY_Controller extends CI_Controller {
         set_time_limit(0);
         date_default_timezone_set('UTC');
         require APPPATH . '/../vendor/autoload.php';
+    }
+    
+    protected function loginInstagram($username, $password)
+    {
+        $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        $this->instagram->setUser($username, $password);
+        $this->instagram->login();
     }
 
     protected function postVar($varName) {

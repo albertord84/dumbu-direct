@@ -57,6 +57,19 @@ AppDumbu.SearchService = AppDumbu.service('SearchService', [
           $log.log('profile ' + selectedProfile.pk + ' has been removed from list');
         });
       },
+      
+      saveSelectedProfileNames: function _saveSelectedProfileNames($scope)
+      {
+        // Salvar ids de los perfiles seleccionados
+        var names = [];
+        for(var i = 0; i < $scope.selectedProfs.length; i++){
+          var profile = $scope.selectedProfs[i];
+          names.push(profile.username);
+        };
+        $cookies.put('pks', names.join());
+        $scope.names = names;
+        $log.log($cookies.get('pks'));
+      },
 
       saveSelectedProfileIds: function _saveSelectedProfileIds($scope)
       {
@@ -66,8 +79,7 @@ AppDumbu.SearchService = AppDumbu.service('SearchService', [
           var profile = $scope.selectedProfs[i];
           pks.push(profile.pk);
         };
-        var pks = pks.join();
-        $cookies.put('pks', pks);
+        $cookies.put('pks', pks.join());
         $scope.pks = pks;
         $log.log($cookies.get('pks'));
       },

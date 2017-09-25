@@ -32,7 +32,7 @@ class Task {
     public function create($task)
     {
         $mark = date("Ymd_His_U");
-        $taskFileName = sprintf("%s/%s.json", TASKS_DIR . '/tasks', $mark);
+        $taskFileName = sprintf("%s/%s.json", TASKS_DIR, $mark);
         file_put_contents($taskFileName, json_encode($task, JSON_PRETTY_PRINT));
     }
     
@@ -45,7 +45,7 @@ class Task {
      */
     public function saveFollowersList($pk, $data)
     {
-        $ids_array = explode(',', $data);
+        $ids_array = $data;
         $fname = sprintf("%s/%s_%s.txt", FOLLOWERS_DIR, date('U'), $pk);
         $FILE = fopen($fname, "w");
         foreach ($ids_array as $id) {

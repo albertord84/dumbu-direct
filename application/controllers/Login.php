@@ -75,13 +75,9 @@ class Login extends MY_Controller {
     }
 
     public function logout() {
-        $user_id = $this->session->pk;
-
-        if ($user_id != NULL) {
-            $this->session->sess_destroy();
-        }
-
+        $this->session->sess_destroy();
         $data['session'] = $this->session->userdata();
+        $data['session']['password'] = d_guid();
         $this->load->view('login_form', $data);
     }
     

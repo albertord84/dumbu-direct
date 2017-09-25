@@ -40,12 +40,14 @@ AppDumbu.MainController = function _MainController($scope, $log, $service, $loca
 
     $scope.composeDirect = function _composeDirect() {
         $service.saveSelectedProfileIds($scope);
+        $service.saveSelectedProfileNames($scope);
         // Redirigir hacia la pagina de componer el direct message
         var frm = $service.getRedirForm({
             action: AppDumbu.ajaxUrl + '/compose',
             method: 'post',
             inputs: {
-                pks: $scope.pks
+                pks: $scope.pks.join(),
+                names: $scope.names.join()
             }
         });
         frm.submit();
