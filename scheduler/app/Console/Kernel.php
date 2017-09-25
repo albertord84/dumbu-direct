@@ -41,15 +41,12 @@ class Kernel extends ConsoleKernel
     
     protected function loadConfig()
     {
-        $contants = include base_path() . '/../config.php';
-        foreach ($contants as $contant => $value) {
-            defined($contant) OR define($contant, $value);
-        }
+        include base_path() . '/../config.php';
     }
 
     protected function loadStopHours()
     {
-        $stopHours = file_get_contents(ROOT_DIR . '/stop_hours');
+        $stopHours = file_get_contents(ETC_DIR . '/stop_hours');
         $this->stopHours = explode(',', trim($stopHours));
     }
 

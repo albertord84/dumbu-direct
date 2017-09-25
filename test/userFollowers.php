@@ -2,13 +2,9 @@
 $username = trim($argv[1]);
 $password = trim($argv[2]);
 $uid = trim($argv[3]);
-//$_creds = file_get_contents(__DIR__ . '/../app/application/config/instagram_credentials');
-//$creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
-//$username = trim($creds[0]);
-//$password = trim($creds[1]);
 $debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);

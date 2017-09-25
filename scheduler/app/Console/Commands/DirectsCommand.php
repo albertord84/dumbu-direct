@@ -237,7 +237,7 @@ class DirectsCommand extends Command
     
     protected function getProxiesList()
     {
-        $cmd = "grep -v '#' " . ROOT_DIR . '/net_proxy';
+        $cmd = "grep -v '#' " . ETC_DIR . '/net_proxy';
         $proxies = explode(PHP_EOL, trim(shell_exec($cmd)));
         return $proxies;
     }
