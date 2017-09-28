@@ -31,7 +31,6 @@ class Dumbu09Directs extends DirectsCommand
      */
     public function handle()
     {
-        parent::__construct();
         $this->pk = '4542814483';
         $this->username = 'dumbu.09';
         $this->password = 'dumbu2017';

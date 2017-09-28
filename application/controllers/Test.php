@@ -6,13 +6,10 @@ class Test extends MY_Controller {
 
     public function index()
     {
-        echo 'OK';
-    }
-    
-    public function last()
-    {
-        $this->load->library('task');
-        echo "OK " . $this->task::findLast();
-    }
+		$this->load->database();
+        $this->db->where('pk', '3a670825632');
+        $query = $this->db->get('client');
+        var_dump($query->num_rows());
+	}
 
 }

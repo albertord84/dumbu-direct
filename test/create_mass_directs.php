@@ -38,29 +38,22 @@ function guid() {
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
 
-$message = "%s ====== %s" .
-        PHP_EOL . PHP_EOL .
-        "Ganhe milhares de seguidores qualificados por área" .
-        PHP_EOL . PHP_EOL .
+$message = "Ganhe milhares de seguidores qualificados por área" .
+        PHP_EOL .
         "de interesse ou geolocalização, turbine seu perfil!" .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "- 50%% desconto o primeiro mes (use o código promocional INSTA50P)" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "- 15 dias de teste gratis (use o código promocional INSTA15D)" .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "Esta promoção é valida apenas essa semana!" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "Acesse www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
-        PHP_EOL . PHP_EOL .
+        PHP_EOL .
         "foi enviada por www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============";
+        PHP_EOL;
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
@@ -80,7 +73,7 @@ if ($handle) {
         $dest = trim($line);
         $data['uid'] = $ref_prof;
         $data['pks'][] = $dest;
-        $data['message'] = sprintf($message, guid(), guid(), guid(), guid(), guid());
+        $data['message'] = $message;
         $output_file_name = sprintf("%s_%s_%s_%s.json", $fn, $datetime, $ref_prof, $dest);
         file_put_contents($output_dir . '/' . $output_file_name, json_encode($data) . PHP_EOL);
         echo sprintf("Creado mensaje %s/%s" . PHP_EOL, $output_dir, $output_file_name);

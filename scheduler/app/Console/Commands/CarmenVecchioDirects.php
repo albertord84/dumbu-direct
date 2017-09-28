@@ -27,7 +27,6 @@ class CarmenVecchioDirects extends DirectsCommand
      */
     public function handle()
     {
-        parent::__construct();
         $this->pk = '55324697';
         $this->username = 'carmenvecchio';
         $this->password = 'filippo1988';

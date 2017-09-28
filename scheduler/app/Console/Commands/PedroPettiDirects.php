@@ -30,7 +30,6 @@ class PedroPettiDirects extends DirectsCommand
      */
     public function handle()
     {
-        parent::__construct();
         $this->pk = '236116119';
         $this->username = 'pbpetti';
         $this->password = 'Pp75005310';

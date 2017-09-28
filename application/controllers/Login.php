@@ -52,7 +52,6 @@ class Login extends MY_Controller {
             $resp = $this->verify_instagram($username, $password);
             
             $this->session->username = $username;
-            $this->session->password = $password;
 
             $r = [
                 'status' => 'OK',
@@ -60,22 +59,27 @@ class Login extends MY_Controller {
                 'username' => $username,
                 'pk' => $this->session->pk
             ];
-            echo json_encode($r);
 
+            $this->createClientAccount($username, $password, $this->session->pk);
+            echo json_encode($r);
             return;
+
         } catch (\Exception $ex) {
             $r = [
                 'status' => 'SOME_ERR', 
-                'response' => $resp,
+                'response' => $resp OR NULL,
                 'username' => $username
             ];
             echo json_encode($r);
+            $this->clearOldCredentials($username);
             return;
         }
     }
 
     public function logout() {
-        $this->session->sess_destroy();
+        $this->clearOldCredentials($this->session->username);
+        session_destroy();
+        $this->session->set_userdata([]);
         $data['session'] = $this->session->userdata();
         $data['session']['password'] = d_guid();
         $this->load->view('login_form', $data);

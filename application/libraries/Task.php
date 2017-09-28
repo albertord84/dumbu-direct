@@ -9,16 +9,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Task {
     
     /**
-     * Devuelve el consecutivo ultimo de la tareas en cola
-     */
-    public static function findLast()
-    {
-        $cmd = sprintf("ls %s/*.json | tail -n 1",
-                APPPATH . '/../tasks');
-        return trim(shell_exec($cmd));
-    }
-    
-    /**
      * Crea una tarea que se ejecutara en su momento
      * por el programador de tareas
      * 
@@ -32,8 +22,9 @@ class Task {
     public function create($task)
     {
         $mark = date("Ymd_His_U");
-        $taskFileName = sprintf("%s/%s.json", TASKS_DIR, $mark);
-        file_put_contents($taskFileName, json_encode($task, JSON_PRETTY_PRINT));
+        $taskFileName = sprintf("%s/%s_%s.json", TASKS_DIR, $mark,
+                $task['session_id']);
+        write_file($taskFileName, json_encode($task, JSON_PRETTY_PRINT));
     }
     
     /**
@@ -60,6 +51,23 @@ class Task {
         $FILE = fopen($fname, "w");
         fwrite($FILE, '');
         fclose($FILE);
+    }
+    
+    public function alreadyRegistered($session_id)
+    {
+        $cmd = sprintf('grep -c %s %s', $session_id, 
+                QUEUE_PATH . '/registered_tasks');
+        $cmd_output = trim(shell_exec($cmd));
+        if (intval($cmd_output) === 1) {
+            return TRUE;
+        }
+        else FALSE;
+    }
+
+    public function register($session_id)
+    {
+        shell_exec(sprintf("echo $session_id >> %s",
+                QUEUE_PATH . '/registered_tasks'));
     }
     
 }

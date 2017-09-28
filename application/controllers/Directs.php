@@ -5,11 +5,12 @@ class Directs extends MY_Controller {
 
     public function index()
     {
-        $message = $this->input->post('message');
+        $data = [];
         
+        $message = $this->input->post('message');
+        $session_id = $this->session->__ci_last_regenerate;
         $pks = $this->session->pks;
         
-        $data['session'] = $this->session->userdata();
         $data['message'] = $message;
         
         $user_id = $this->session->pk;
@@ -18,20 +19,20 @@ class Directs extends MY_Controller {
 
             $this->load->library('task');
             $task = [
-                'ci_last_regenerate' => $this->session->__ci_last_regenerate,
+                'session_id' => $session_id,
                 'pk' => $user_id,
                 'username' => $this->session->username,
-                'dest' => $pks,
+                'password' => $this->session->password,
+                'pks' => $pks,
                 'message' => $message
             ];
             $this->task->create($task);
-            $this->task->saveFollowersList($user_id, $pks);
             $this->task->createStatsFile($user_id);
+            if (!$this->task->alreadyRegistered($session_id)) {
+                $this->task->register($session_id);
+            }
             
             $data['followers'] = $this->session->followers;
-            
-            $data['task'] = $task;
-            $this->session->task = $task;
             
             $this->load->view('directs_dashboard', $data);
             return;

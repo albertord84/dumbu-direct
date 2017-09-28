@@ -13,11 +13,12 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        '\App\Console\Commands\Dumbu08Directs',
+        //'App\Console\Commands\ClientDirects',
+        //'\App\Console\Commands\Dumbu08Directs',
         '\App\Console\Commands\Dumbu09Directs',
         '\App\Console\Commands\PedroPettiDirects',
-        '\App\Console\Commands\WavCreatorsDirects',
-        '\App\Console\Commands\CarmenVecchioDirects'
+        /*'\App\Console\Commands\WavCreatorsDirects',
+        '\App\Console\Commands\CarmenVecchioDirects'*/
     ];
 
     protected $stopHours = [];
@@ -63,9 +64,13 @@ class Kernel extends ConsoleKernel
             return;
         }
 
-        $schedule->command('sendirects:dumbu08')
-            ->everyThirtyMinutes()
+        $schedule->command('sendirects:clients')
+            ->everyFiveMinutes()
             ->appendOutputTo($this->outputLog);
+        
+        /*$schedule->command('sendirects:dumbu08')
+            ->everyThirtyMinutes()
+            ->appendOutputTo($this->outputLog);*/
         $schedule->command('sendirects:dumbu09')
             ->everyThirtyMinutes()
             ->appendOutputTo($this->outputLog);
