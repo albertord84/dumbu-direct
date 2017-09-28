@@ -4,8 +4,8 @@ $_creds = file_get_contents( __DIR__ . '/../app/application/config/instagram_cre
 $creds = explode(':', $_creds);
 set_time_limit(0);
 require __DIR__ . '/../vendor/autoload.php';
-$username = trim($creds[0]);
-$password = trim($creds[1]);
+$username = $argv[1];
+$password = $argv[2];
 $debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);

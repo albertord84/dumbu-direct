@@ -222,7 +222,7 @@ class DirectsCommand extends Command
     protected function getFirstTenFileNames()
     {
         $list = '/tmp/' . $this->guid();
-        $cmd = sprintf('ls %s | grep %s > %s && head %s && rm %s',
+        $cmd = sprintf('ls %s | grep %s > %s && head -n 1 %s && rm %s',
                 ROOT_DIR . '/var/queue',
                 $this->pk, $list, $list, $list);
         $cmd_output = shell_exec($cmd);
