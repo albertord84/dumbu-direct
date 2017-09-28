@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         //'App\Console\Commands\ClientDirects',
         //'\App\Console\Commands\Dumbu08Directs',
         '\App\Console\Commands\Dumbu09Directs',
-        '\App\Console\Commands\PedroPettiDirects',
+        //'\App\Console\Commands\PedroPettiDirects',
         /*'\App\Console\Commands\WavCreatorsDirects',
         '\App\Console\Commands\CarmenVecchioDirects'*/
     ];
