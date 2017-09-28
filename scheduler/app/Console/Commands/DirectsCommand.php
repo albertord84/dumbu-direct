@@ -223,14 +223,14 @@ class DirectsCommand extends Command
     {
         $list = '/tmp/' . $this->guid();
         $cmd = sprintf('ls %s | grep %s > %s && head %s && rm %s',
-                QUEUE_PATH,
+                ROOT_DIR . '/var/queue',
                 $this->pk, $list, $list, $list);
         $cmd_output = shell_exec($cmd);
         $firstTenFileNames = explode( PHP_EOL, trim( $cmd_output ) );
         for ($i = 0; $i < count($firstTenFileNames); $i++)
         {
             $f = $firstTenFileNames[ $i ];
-            $firstTenFileNames[ $i ] = QUEUE_PATH . $f;
+            $firstTenFileNames[ $i ] = ROOT_DIR . '/var/queue/' . $f;
         }
         return $firstTenFileNames;
     }
