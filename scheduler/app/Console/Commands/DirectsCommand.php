@@ -104,7 +104,7 @@ class DirectsCommand extends Command
     protected function hasPendingTasks()
     {
         $cmd = sprintf("ls %s | grep -c %s",
-                QUEUE_PATH,
+                ROOT_DIR . '/var/queue',
                 $this->pk);
         $cmd_out = trim(shell_exec($cmd));
         return intval($cmd_out) > 0;
@@ -113,7 +113,7 @@ class DirectsCommand extends Command
     protected function checkAlreadyTexted($pk)
     {
         $cmd = sprintf('grep -c %s %s', $pk, 
-                OLD_QUEUE_PATH . '/already.texted.list');
+                ROOT_DIR . '/var/old/already.texted.list');
         $cmd_output = trim(shell_exec($cmd));
         if (intval($cmd_output) === 1) {
             $this->log(sprintf("El cliente %s ya ha recibido mensajes...", $pk));
@@ -125,7 +125,7 @@ class DirectsCommand extends Command
     protected function setUserAsTexted($pk)
     {
         $cmd = sprintf("echo %s >> %s", $pk,
-                OLD_QUEUE_PATH . '/already.texted.list');
+                ROOT_DIR . '/var/old/already.texted.list');
         shell_exec($cmd);
     }
     
