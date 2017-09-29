@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         //*'\App\Console\Commands\Dumbu09Directs',
         //'\App\Console\Commands\PedroPettiDirects',
         //*'\App\Console\Commands\WavCreatorsDirects',
-        //'\App\Console\Commands\CarmenVecchioDirects'
+        '\App\Console\Commands\CarmenVecchioDirects'
     ];
 
     protected $stopHours = [];
@@ -71,6 +71,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('sendirects:dumbu08')
             ->everyTenMinutes()
             ->appendOutputTo($this->outputLog);
+        $schedule->command('sendirects:carmenvecchio')
+            ->everyTenMinutes()
+           ->appendOutputTo($this->outputLog);
         //$schedule->command('sendirects:dumbu09')
         //    ->cron('*/7 * * * * *')
         //    ->appendOutputTo($this->outputLog);
