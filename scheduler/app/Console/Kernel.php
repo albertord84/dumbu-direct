@@ -14,11 +14,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //'App\Console\Commands\ClientDirects',
-        //'\App\Console\Commands\Dumbu08Directs',
-        '\App\Console\Commands\Dumbu09Directs',
-        '\App\Console\Commands\PedroPettiDirects',
-        /*'\App\Console\Commands\WavCreatorsDirects',
-        '\App\Console\Commands\CarmenVecchioDirects'*/
+        '\App\Console\Commands\Dumbu08Directs',
+        //*'\App\Console\Commands\Dumbu09Directs',
+        //'\App\Console\Commands\PedroPettiDirects',
+        //*'\App\Console\Commands\WavCreatorsDirects',
+        //'\App\Console\Commands\CarmenVecchioDirects'
     ];
 
     protected $stopHours = [];
@@ -64,19 +64,19 @@ class Kernel extends ConsoleKernel
             return;
         }
 
-        /*$schedule->command('sendirects:clients')
-            ->everyFiveMinutes()
-            ->appendOutputTo($this->outputLog);*/
+        //$schedule->command('sendirects:clients')
+        //    ->everyFiveMinutes()
+        //    ->appendOutputTo($this->outputLog);
         
-        /*$schedule->command('sendirects:dumbu08')
+        $schedule->command('sendirects:dumbu08')
             ->everyThirtyMinutes()
-            ->appendOutputTo($this->outputLog);*/
-        $schedule->command('sendirects:dumbu09')
-            ->cron('*/7 * * * * *')
             ->appendOutputTo($this->outputLog);
-        $schedule->command('sendirects:pedropetti')
-            ->cron('*/7 * * * * *')
-            ->appendOutputTo($this->outputLog);
+        //$schedule->command('sendirects:dumbu09')
+        //    ->cron('*/7 * * * * *')
+        //    ->appendOutputTo($this->outputLog);
+        //$schedule->command('sendirects:pedropetti')
+        //    ->cron('*/7 * * * * *')
+        //   ->appendOutputTo($this->outputLog);*/
         
     }
 
