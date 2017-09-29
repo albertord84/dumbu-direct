@@ -30,7 +30,7 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->pk = '55324697';
         $this->username = 'carmenvecchio';
         $this->password = 'filippo88';
-        $this->suspended = TRUE;
+        //$this->suspended = TRUE;
         $proxyNumber = mt_rand(0,5);
         $this->setProxyNumber($proxyNumber);
         
