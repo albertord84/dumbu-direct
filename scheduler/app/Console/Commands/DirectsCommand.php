@@ -195,11 +195,11 @@ class DirectsCommand extends Command
             $randomWait = mt_rand(30, 180);
             $this->log(sprintf("Esperando %s segundos para enviar el mensaje...",
                     $randomWait));
+            sleep($randomWait);
             $this->sendMessage($fileObj->pks[0], $fileObj->message);
             $this->simulateHumanInteraction();
             $this->popMessage($fileName);
             $this->setUserAsTexted($fileObj->pks[0]);
-            sleep($randomWait);
         }
     }
     
