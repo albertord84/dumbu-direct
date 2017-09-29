@@ -38,13 +38,29 @@ function guid() {
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
 
-$message = "Ganhe milhares de seguidores por mês, promova seu perfil!" .
+/*$message = "Ganhe milhares de seguidores por mês, promova seu perfil!" .
         PHP_EOL . PHP_EOL .
         "Gratuito durante um mês (use o código promocional AMIGOSDOPEDRO)" .
         PHP_EOL . PHP_EOL .
         "Esta promoção é válida apenas esta semana!" .
         PHP_EOL . PHP_EOL .
-        "Vá para http://instadumbu.com";
+        "Vá para http://instadumbu.com";*/
+$message = "Ganhe milhares de seguidores qualificados por área" .
+        PHP_EOL .
+        "de interesse ou geolocalização, turbine seu perfil!" .
+        PHP_EOL .
+        "- 50%% desconto o primeiro mes (use o código promocional INSTA50P)" .
+        PHP_EOL .
+        "- 15 dias de teste gratis (use o código promocional INSTA15D)" .
+        PHP_EOL .
+        "Esta promoção é valida apenas essa semana!" .
+        PHP_EOL .
+        "Acesse www.dumbu.pro." .
+        PHP_EOL .
+        "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
+        PHP_EOL .
+        "foi enviada por www.dumbu.pro." .
+        PHP_EOL;
 
 // {"datetime":"20170710_150238","uid":"3670825632","pks":["4239955376"],"message":""}
 
