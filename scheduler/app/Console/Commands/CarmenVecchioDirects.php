@@ -31,7 +31,7 @@ class CarmenVecchioDirects extends DirectsCommand
         $this->username = 'carmenvecchio';
         $this->password = 'filippo88';
         //$this->suspended = TRUE;
-        $this->setProxyNumber(8);
+        //$this->setProxyNumber(8);
         
         parent::handle();
     }
