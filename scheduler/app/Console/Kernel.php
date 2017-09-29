@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
         //    ->appendOutputTo($this->outputLog);
         
         $schedule->command('sendirects:dumbu08')
-            ->everyThirtyMinutes()
+            ->everyTenMinutes()
             ->appendOutputTo($this->outputLog);
         //$schedule->command('sendirects:dumbu09')
         //    ->cron('*/7 * * * * *')
