@@ -1,11 +1,12 @@
 #!/bin/sh
 
+# PROJECT_DIR y BASE_URL deben establecerse antes de
+# llamar el script en el cron
+
 TMP_OUTPUT=/tmp/dumbu_scheduler
 
-PROJECT_DIR=/home/yordano/Projects/dumbu-direct2
-
-SCHED_URL=http://127.0.0.1/projects/dumbu-direct2/web/index.php/scheduler
-SCHED_SPECIAL_URL=http://127.0.0.1/projects/dumbu-direct2/web/index.php/scheduler/special
+SCHED_URL=$BASE_URL/index.php/scheduler
+SCHED_SPECIAL_URL=$BASE_URL/index.php/scheduler/special
 
 SCHED_LOG=$PROJECT_DIR/var/messages.log
 
