@@ -1,0 +1,22 @@
+#!/bin/sh
+
+TMP_OUTPUT=/tmp/dumbu_scheduler
+
+PROJECT_DIR=/home/yordano/Projects/dumbu-direct2
+
+SCHED_URL=http://127.0.0.1/projects/dumbu-direct2/web/index.php/scheduler
+SCHED_SPECIAL_URL=http://127.0.0.1/projects/dumbu-direct2/web/index.php/scheduler/special
+
+SCHED_LOG=$PROJECT_DIR/var/messages.log
+
+HTTP_PROXY=""
+HTTPS_PROXY=""
+
+SESSIONS_DIR=$PROJECT_DIR/vendor/mgp25/instagram-php/sessions/
+
+/usr/bin/wget -O $TMP_OUTPUT $SCHED_URL && cat $TMP_OUTPUT >> $SCHED_LOG && rm $TMP_OUTPUT
+sleep 10
+/usr/bin/wget -O $TMP_OUTPUT $SCHED_SPECIAL_URL && cat $TMP_OUTPUT >> $SCHED_LOG && rm $TMP_OUTPUT
+
+exit 0
+

@@ -1,0 +1,208 @@
+body .container {
+  margin-top: 10px;
+}
+
+#search-container, #compose-container {
+  margin-top: 10px;
+}
+
+#search-container nav ul.nav li a {
+  font-size: 12px;
+}
+
+#logo {
+  color: #666;
+  width:100%;
+}
+
+#logo h1 {
+  font-size: 60px;
+  text-shadow: 1px 2px 3px #999;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+#logo p{
+  padding-bottom: 20px;
+  opacity: 0.5;
+}
+
+#search-form {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#search-form >.form-group >.input-group > .form-control {
+  height: 40px;
+}
+
+#search-form >.form-group >.input-group > .input-group-btn > .btn{
+  height: 40px;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+#search-form >.form-group >.input-group > .input-group-btn > .btn .glyphicon{
+  margin-right:12px;
+}
+
+
+#search-form >.form-group >.input-group > .form-control {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+#search-form >.form-group >.input-group > .form-control:focus {
+  border-color: #33A444;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
+}
+
+#search-form .form-group img.async-loading {
+    position: absolute;
+    z-index: 9000;
+    margin: 8px 0 0 -32px;
+}
+
+/* Necesario porque el typeahead desbarata formularios */
+
+.twitter-typeahead {
+  float: left;
+  width: 100%;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {
+  width: 100%;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.form-group .input-group .twitter-typeahead input.form-control {
+  height: 40px;
+}
+
+.card-img-top {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 10px;
+}
+
+.selected-profs .panel {
+  max-width: 250px;
+}
+
+.selected-profs .panel-heading {
+  background: none;
+  background-image: none;
+  background-color: transparent;
+}
+
+.compose-direct {
+  top: 10px;
+  right: 10px;
+  float: right;
+  position: absolute;
+  opacity: .5;
+}
+
+.bg-white {
+  background: none;
+  background-color: white;
+}
+
+.pos-fixed {
+  position: fixed;
+}
+
+#logo p a, #logo p a:hover, #logo p a:link {
+  color: inherit;
+  text-decoration: none;
+}
+
+#loading-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #868686;
+    opacity: 0.6;
+    filter: alpha(opacity=30);
+}
+
+#loading-element {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -50px 0 0 -50px;
+    font-size: 100px;
+}
+
+.directs-dashboard .followers-list {
+    padding: 10px 10px 20px 10px;
+}
+
+.directs-dashboard .followers-list .follower-name {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+#compose-container div.error {
+    margin-bottom: 15px;
+}
