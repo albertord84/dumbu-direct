@@ -303,7 +303,8 @@ class Scheduler extends CI_Controller {
         $message = $this->getMessage($msg_id);
         $pk = $this->getUser($message->user_id)->pk;
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
-        $followers = trim(shell_exec("head -n 5 $followers_file"));
+        $c = mt_rand(1, 5);
+        $followers = trim(shell_exec("head -n $c $followers_file"));
         if ($followers == '') { return NULL; }
         $followers_array = explode(PHP_EOL, $followers);
         printf("Se enviara el mensaje a los seguidores: [%s]\n",
