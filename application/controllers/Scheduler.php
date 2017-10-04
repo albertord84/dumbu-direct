@@ -205,7 +205,9 @@ class Scheduler extends CI_Controller {
                 $this->randomWait();
                 $this->sendSpecialMessage($message->id, $followers);
                 $this->setMessageProcessing($message->id, 0);
-                $this->setMessageSent($message->id);
+                if ($this->getSpecialRecipientsCount($pk)===0) {
+                    $this->setMessageSent($message->id);
+                }
                 $this->popAlreadyTexted($pk, $followers);
                 $this->insertSpecialMessageStat($message->id, $followers);
             } catch (Exception $ex) {
@@ -310,6 +312,13 @@ class Scheduler extends CI_Controller {
         printf("Se enviara el mensaje a los seguidores: [%s]\n",
                 implode(',', $followers_array));
         return $followers_array;
+    }
+
+    public function getSpecialRecipientsCount($pk)
+    {
+        $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
+        $count = trim(shell_exec("cat $followers_file | wc -l"));
+        return intval($count);
     }
     
     public function randomGreeting()

@@ -13,7 +13,10 @@ class Compose extends CI_Controller {
         if ($this->session->username !== NULL) {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
-            $this->load->view('compose_direct_message', []);
+            $this->load->view('compose_direct_message', [
+                'follower_ids' => $this->session->follower_ids,
+                'follower_names' => $this->session->follower_names
+            ]);
         } else {
             $this->load->view('login');
         }
