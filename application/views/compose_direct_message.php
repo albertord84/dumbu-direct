@@ -38,7 +38,7 @@ $uuid = substr(md5(date('ds')), 0, 10);
                     <?php } ?>
                     <div class="span4 well">
                         <form id="formCompose" accept-charset="UTF-8"
-                              action="<?php echo site_url('submit/msg'); ?>" method="POST">
+                              action="<?php echo site_url('user/dashboard'); ?>" method="POST">
                             <fieldset data-ng-disabled="processing">
                                 <div class="row">
                                     <div class="col-xs-12">

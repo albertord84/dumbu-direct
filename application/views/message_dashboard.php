@@ -32,18 +32,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div id="logo" class="text-center">
                         <h1>DUMBU</h1>
                     </div>
+                    <?php if ($message!==NULL) { ?>
                     <p class="text-center text-muted"><b>You sent this message...</b></p>
                     <h3 class="text-center"><?php echo $message; ?></h3>
-                    <?php if (isset($admin)) { ?>
+                    <?php } ?>
+                    <?php if ($follower_names === NULL) { ?>
                     <p class="text-center text-muted"><b>to the followers:</b></p>
                     <div class="row text-center followers-list">
                         <?php foreach ($follower_names as $follower_name) { ?>
                         <span class="follower-name panel panel-default"><?php echo $follower_name; ?></span>
                         <?php } ?>
                     </div>
-                    <?php } ?>
                     <p class="text-center text-muted"><b>Your request will be processed soon...</b></p>
                     <p class="text-center text-muted small">If you keep this page opened, you will be notified</p>
+                    <?php } ?>
                 </div>
             </div>
         </div>

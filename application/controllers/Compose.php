@@ -113,7 +113,14 @@ class Compose extends CI_Controller {
         if ($username == NULL) {
             $this->load->view('login');
         }
-
+        if ($this->input->method()=='get') {
+            $this->load->view('message_dashboard', [
+                'username' => $username,
+                'message' => NULL,
+                'follower_names' => NULL
+            ]);
+            return;
+        }
         $message = trim($this->input->post('message'));
         if ($message !== NULL || $message !== '') {
             while (file_exists(ROOT_DIR . '/var/task.lock')) {

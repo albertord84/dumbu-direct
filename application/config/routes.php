@@ -14,7 +14,7 @@ $route['search'] = 'search';
 $route['users/(:any)'] = 'search/users/$1';
 
 $route['compose'] = 'compose';
-$route['submit/msg'] = 'compose/createtask';
+$route['user/dashboard'] = 'compose/createtask';
 
 $route['scheduler'] = 'scheduler';
 $route['scheduler/special'] = 'scheduler/special';
