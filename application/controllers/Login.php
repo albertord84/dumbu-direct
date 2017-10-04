@@ -89,7 +89,9 @@ class Login extends CI_Controller {
     }
 
     public function logout() {
-        $this->cleanInstagramApiSession($this->session->username);
+        if ($this->session->username !== NULL) {
+            $this->cleanInstagramApiSession($this->session->username);
+        }
         session_destroy();
         $this->session->set_userdata([]);
         $this->load->view('login');
