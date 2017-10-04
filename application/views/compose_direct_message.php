@@ -47,13 +47,6 @@ $uuid = substr(md5(date('ds')), 0, 10);
                                                   placeholder="Type in your direct message..."
                                                   rows="5" form="formCompose"
                                                   data-ng-model="msgText"></textarea>
-                                        <?php if ($admin) { ?>
-                                        <div class="checkbox text-muted">
-                                            <label><input type="checkbox" value="massive"
-                                                name="massive"
-                                                data-ng-disabled="!msgText">Massive</label>
-                                        </div>
-                                        <?php } ?>
                                         <input type="hidden" name="message"
                                                value="{{msgText}}">
                                     </div>

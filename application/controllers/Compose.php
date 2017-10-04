@@ -13,9 +13,7 @@ class Compose extends CI_Controller {
         if ($this->session->username !== NULL) {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
-            $this->load->view('compose_direct_message', [
-                'admin' => in_array($this->input->server('REMOTE_ADDR'), $this->permitted_ips)
-            ]);
+            $this->load->view('compose_direct_message', []);
         } else {
             $this->load->view('login');
         }
@@ -127,8 +125,7 @@ class Compose extends CI_Controller {
                 $this->load->view('compose_direct_message', [
                     'error' => sprintf("This message: \"%s...\" "
                             . "was previously sent.<br><b>Avoid spam or service rejection.</b>",
-                            substr($message, 0, 15)),
-                    'admin' => in_array($this->input->server('REMOTE_ADDR'), $this->permitted_ips)
+                            substr($message, 0, 15))
                 ]);
                 $this->unlockTask();
                 return;
