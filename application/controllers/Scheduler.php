@@ -278,6 +278,7 @@ class Scheduler extends CI_Controller {
             'failed' => 0,
             'sent_at' => \Carbon\Carbon::now()->timestamp
         ]);
+        printf("Se actualizo el mensaje con id %s a estado: ENVIADO\n", $msg_id);
     }
     
     public function lastSpecialMessages() {

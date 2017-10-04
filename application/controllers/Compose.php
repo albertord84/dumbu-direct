@@ -9,7 +9,7 @@ class Compose extends CI_Controller {
     public $permitted_ips = [ '127.0.0.1' ];
 
     public function index() {
-        $this->getPermittedIps();
+        //$this->getPermittedIps();
         if ($this->session->username !== NULL) {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
@@ -110,19 +110,11 @@ class Compose extends CI_Controller {
     }
 
     public function createTask() {
-        $this->getPermittedIps();
+        //$this->getPermittedIps();
         set_time_limit(0);
         $username = $this->session->username;
         if ($username == NULL) {
             $this->load->view('login');
-        }
-        if ($this->input->method()=='get') {
-            $this->load->view('message_dashboard', [
-                'username' => $username,
-                'message' => NULL,
-                'follower_names' => NULL
-            ]);
-            return;
         }
         $message = trim($this->input->post('message'));
         if ($message !== NULL || $message !== '') {
