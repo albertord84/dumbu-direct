@@ -331,6 +331,7 @@ class Scheduler extends CI_Controller {
             3 => "Como vai tudo?"
         ];
         $n = mt_rand(0, count($greetings) - 1);
+        printf("Saludo aleatorio escogido: \"%s\"", $greetings[$n]);
         return $greetings[$n];
     }
     
