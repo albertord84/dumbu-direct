@@ -84,6 +84,6 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
-defined('TIME_ZONE')           OR define('TIME_ZONE', 'America/Havana');
+defined('TIME_ZONE')           OR define('TIME_ZONE', trim(file_get_contents(ROOT_DIR.'/etc/timezone')));
 defined('INSTAGRAM_SESSIONS')  OR define('INSTAGRAM_SESSIONS', ROOT_DIR . '/vendor/mgp25/instagram-php/sessions');
 defined('FOLLOWERS_LIST_DIR')  OR define('FOLLOWERS_LIST_DIR', ROOT_DIR . '/var/followers');
