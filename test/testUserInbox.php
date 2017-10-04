@@ -19,10 +19,11 @@ try {
         if ($i == 10) exit(0);
         $item = $threads[ $i ]->items[0];
         $inviter = $threads[ $i ]->inviter->username;
+        $pk = $threads[ $i ]->inviter->pk;
         $timestamp = date('Y-m-d H:i:s', $item->timestamp / 1000000);
         $text = $item->text;
-        echo sprintf("%s ==> %s - \"%s\" escribio: \"%s...\"" . PHP_EOL, 
-                intval($i) + 1, $timestamp, $inviter, substr($text, 0, 20));
+        echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\"" . PHP_EOL, 
+                intval($i) + 1, $timestamp, $inviter, $pk, substr($text, 0, 20));
     }
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
