@@ -16,14 +16,19 @@ try {
 try {
     $threads = $ig->getV2Inbox()->inbox->threads;
     for ($i = 0; $i < count($threads); $i++) {
-        if ($i == 10) exit(0);
+        if ($i == 20) exit(0);
         $item = $threads[ $i ]->items[0];
         $inviter = $threads[ $i ]->inviter->username;
         $pk = $threads[ $i ]->inviter->pk;
         $timestamp = date('Y-m-d H:i:s', $item->timestamp / 1000000);
         $text = $item->text;
-        echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\"" . PHP_EOL, 
-                intval($i) + 1, $timestamp, $inviter, $pk, substr($text, 0, 20));
+        $recips = [];
+        foreach ($threads[ $i ]->users as $recip) {
+            $recips[] = $recip->pk;
+        }
+        echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\" a [%s]" . PHP_EOL, 
+                intval($i) + 1, $timestamp, $inviter, $pk, substr($text, 0, 20),
+                implode(',', $recips));
     }
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
