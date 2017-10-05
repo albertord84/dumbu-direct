@@ -103,18 +103,18 @@ class Scheduler extends CI_Controller {
         $followers = $this->getMessageRecipients($msg_id);
         if (count($followers)==0) {
             printf("El mensaje \"%s...\" ya se envio antes a los seguidores seleccionados\n",
-                    substr(trim($message->msg_text), 0, 15));
+                trim(substr($message->msg_text, 0, 15)));
             return;
         }
         $this->loginInstagram($user);
         try {
             $this->instagram->directMessage($followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
-                substr(trim($message->msg_text), 0, 15), implode(',', $followers));
+                trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
         }
         catch (Exception $ex) {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
-                substr(trim($message->msg_text), 0, 15), $ex->getMessage());
+                trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
             $this->setMessageFailed($msg_id);
             //$this->cleanInstagramApiSession($user->username);
             throw new Exception($msg, 500);
@@ -189,13 +189,13 @@ class Scheduler extends CI_Controller {
             $pk = $this->getUser($user_id)->pk;
             if (!$this->hasDefinedFollowers($pk)) {
                 printf("No se ha definido lista de seguidores del mensaje: \"%s...\"\n",
-                    substr(trim($message->msg_text), 0, 15));
+                    trim(substr($message->msg_text, 0, 15)));
                 continue;
             }
             $followers = $this->getSpecialMessageRecipients($message->id);
             if ($followers == NULL) {
                 printf("Ya se envio este mensaje \"%s...\" a toda la lista de seguidores\n",
-                    substr(trim($message->msg_text), 0, 15));
+                    trim(substr($message->msg_text, 0, 15)));
                 $this->setMessageSent($message->id);
                 continue;
             }
@@ -211,7 +211,7 @@ class Scheduler extends CI_Controller {
                 $this->insertSpecialMessageStat($message->id, $followers);
             } catch (Exception $ex) {
                 printf("No se pudo enviar el mensaje especial \"%s...\"\n",
-                    substr(trim($message->msg_text), 0, 15));
+                    trim(substr($message->msg_text, 0, 15)));
                 printf("CAUSA: \"%s...\"\n", $ex->getMessage());
                 continue;
             }
@@ -347,10 +347,10 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
-                substr(trim($message->msg_text), 0, 15), implode(',', $followers));
+                trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
         } catch (Exception $ex) {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
-                substr(trim($message->msg_text), 0, 15), $ex->getMessage());
+                trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
             //$this->cleanInstagramApiSession($user->username);
             throw new Exception($msg, 500);
         }
