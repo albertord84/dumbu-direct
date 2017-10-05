@@ -85,7 +85,7 @@ class Scheduler extends CI_Controller {
     public function randomWait()
     {
         $secs = mt_rand(10, 30);
-        printf("Esperando %s segs para el siguiente envio\n", $secs);
+        printf("Esperando %s segs para enviar\n", $secs);
         sleep($secs);
     }
     
