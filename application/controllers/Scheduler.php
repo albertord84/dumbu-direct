@@ -202,7 +202,6 @@ class Scheduler extends CI_Controller {
             try {
                 $this->getInstagram();
                 $this->setMessageProcessing($message->id, 1);
-                $this->randomWait();
                 $this->sendSpecialMessage($message->id, $followers);
                 $this->setMessageProcessing($message->id, 0);
                 if ($this->getSpecialRecipientsCount($pk)===0) {
@@ -342,7 +341,9 @@ class Scheduler extends CI_Controller {
         $user = $this->getUser($message->user_id);
         $this->loginInstagram($user);
         try {
+            $this->randomWait();
             $this->instagram->directMessage($followers, $this->randomGreeting());
+            $this->randomWait();
             $this->instagram->directMessage($followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
                 substr(trim($message->msg_text), 0, 15), implode(',', $followers));
