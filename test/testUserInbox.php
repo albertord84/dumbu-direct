@@ -16,7 +16,7 @@ try {
 try {
     $threads = $ig->getV2Inbox()->inbox->threads;
     for ($i = 0; $i < count($threads); $i++) {
-        if ($i == 20) exit(0);
+        if ($i == 100) exit(0);
         $item = $threads[ $i ]->items[0];
         $inviter = $threads[ $i ]->inviter->username;
         $pk = $threads[ $i ]->inviter->pk;
