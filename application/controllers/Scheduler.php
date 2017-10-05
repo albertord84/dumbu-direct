@@ -285,7 +285,7 @@ class Scheduler extends CI_Controller {
         $this->db->where('processing', 0);
         $this->db->where('sent', 0);
         $this->db->where('mass', 1);
-        $this->db->limit(5);
+        $this->db->limit(3);
         $query = $this->db->get('message');
         $messages = $query->result();
         if (count($messages) == 0) {
