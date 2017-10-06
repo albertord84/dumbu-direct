@@ -186,7 +186,7 @@ class Scheduler extends CI_Controller {
         foreach ($messages as $message) {
             $user_id = $message->user_id;
             $pk = $this->getUser($user_id)->pk;
-            if (!$this->hasDefinedFollowers($pk)) {x
+            if (!$this->hasDefinedFollowers($pk)) {
                 printf("No se ha definido lista de seguidores del mensaje: \"%s...\"\n",
                     trim(substr($message->msg_text, 0, 15)));
                 continue;
