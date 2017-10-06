@@ -349,9 +349,6 @@ class Scheduler extends CI_Controller {
             if (count($stats) === 0) {
                 $_followers[] = $follower;
             }
-            else {
-                $this->popAlreadyTexted($pk, $stats[0]->follower_id);
-            }
         }
         return count($_followers) > 0 ? $_followers : NULL;
     }
