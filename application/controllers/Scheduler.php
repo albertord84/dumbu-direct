@@ -94,6 +94,7 @@ class Scheduler extends CI_Controller {
         $this->load->database();
         $this->db->where('id', $msg_id);
         $this->db->update('message', [ 'failed' => 1 ]);
+        printf("El mensaje %s se establecio como FALLIDO\n", $msg_id);
     }
 
     public function sendMessage($msg_id)
