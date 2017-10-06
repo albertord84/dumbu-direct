@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 
     public $instagram = NULL;
-    
+
     public $postdata = NULL;
 
     public function index() {
@@ -33,7 +33,7 @@ class Login extends CI_Controller {
         ];
         $this->db->insert('client', $data);
     }
-    
+
     public function getXhrParam($param)
     {
         // Tiene que ser asi, porque el POST generado por AngularJS
@@ -46,13 +46,18 @@ class Login extends CI_Controller {
     }
 
     public function auth() {
+        set_time_limit(0);
+        
         if ($this->session->username !== NULL) {
             $this->load->view('search_followers');
         }
 
         $username = $this->getXhrParam('username');
         $password = $this->getXhrParam('password');
-        
+
+        $this->cleanInstagramApiSession($username);
+        sleep(5);
+
         $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
         $instagram->setUser($username, $password);
 
@@ -79,7 +84,7 @@ class Login extends CI_Controller {
                 ->set_status_header($response['success'] ? 200 : 500)
                 ->set_output(json_encode($response));
     }
-    
+
     public function cleanInstagramApiSession($username)
     {
         $dir = INSTAGRAM_SESSIONS . '/' . $username;
@@ -93,6 +98,7 @@ class Login extends CI_Controller {
             $this->cleanInstagramApiSession($this->session->username);
         }
         session_destroy();
+        $this->session->username = NULL;
         $this->session->set_userdata([]);
         $this->load->view('login');
     }

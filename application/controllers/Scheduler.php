@@ -22,12 +22,12 @@ class Scheduler extends CI_Controller {
         printf("%s - Terminado el procesamiento de mensajes.\n", $this->now());
         return;
     }
-    
+
     public function now()
     {
         return trim(shell_exec("date \"+%d/%b %r\""));
     }
-    
+
     public function denyIfNotPermitted()
     {
         $this->getPermittedIps();
@@ -88,7 +88,7 @@ class Scheduler extends CI_Controller {
         printf("Esperando %s segs para enviar\n", $secs);
         sleep($secs);
     }
-    
+
     public function setMessageFailed($msg_id)
     {
         $this->load->database();
@@ -116,12 +116,10 @@ class Scheduler extends CI_Controller {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
                 trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
             $this->setMessageFailed($msg_id);
-            //$this->cleanInstagramApiSession($user->username);
             throw new Exception($msg, 500);
         }
-        //$this->cleanInstagramApiSession($user->username);
     }
-    
+
     public function cleanInstagramApiSession($username)
     {
         $dir = INSTAGRAM_SESSIONS . '/' . $username;
@@ -170,11 +168,11 @@ class Scheduler extends CI_Controller {
         }
         $this->unlockMessage();
     }
-    
+
     public function processSpecialMessages()
     {
         while(file_exists(ROOT_DIR . '/var/message.lock')) {
-            printf("Se quedo bloqueado el acceso a la cola de mensajes\n");
+            printf("Esta bloqueado el acceso a la cola de mensajes\n");
             return;
         }
         $this->lockMessage();
@@ -187,7 +185,7 @@ class Scheduler extends CI_Controller {
         foreach ($messages as $message) {
             $user_id = $message->user_id;
             $pk = $this->getUser($user_id)->pk;
-            if (!$this->hasDefinedFollowers($pk)) {
+            if (!$this->hasDefinedFollowers($pk)) {x
                 printf("No se ha definido lista de seguidores del mensaje: \"%s...\"\n",
                     trim(substr($message->msg_text, 0, 15)));
                 continue;
@@ -210,6 +208,8 @@ class Scheduler extends CI_Controller {
                 $this->popAlreadyTexted($pk, $followers);
                 $this->insertSpecialMessageStat($message->id, $followers);
             } catch (Exception $ex) {
+                $this->setMessageProcessing($message->id, 0);
+                $this->setMessageFailed($message->id);
                 printf("No se pudo enviar el mensaje especial \"%s...\"\n",
                     trim(substr($message->msg_text, 0, 15)));
                 printf("CAUSA: \"%s...\"\n", $ex->getMessage());
@@ -279,10 +279,11 @@ class Scheduler extends CI_Controller {
         ]);
         printf("Se actualizo el mensaje con id %s a estado: ENVIADO\n", $msg_id);
     }
-    
+
     public function lastSpecialMessages() {
         $this->load->database();
         $this->db->where('processing', 0);
+        $this->db->where('failed', 0);
         $this->db->where('sent', 0);
         $this->db->where('mass', 1);
         $this->db->limit(3);
@@ -299,7 +300,7 @@ class Scheduler extends CI_Controller {
         $exists_followers_file = file_exists(FOLLOWERS_LIST_DIR . "/$pk.txt");
         return $exists_followers_file;
     }
-    
+
     public function getSpecialMessageRecipients($msg_id)
     {
         $message = $this->getMessage($msg_id);
@@ -320,7 +321,7 @@ class Scheduler extends CI_Controller {
         $count = trim(shell_exec("cat $followers_file | wc -l"));
         return intval($count);
     }
-    
+
     public function randomGreeting()
     {
         $greetings = [
@@ -335,7 +336,7 @@ class Scheduler extends CI_Controller {
         printf("Saludo aleatorio escogido: \"%s\"\n", $greetings[$n]);
         return $greetings[$n];
     }
-    
+
     public function sendSpecialMessage($msg_id, $followers)
     {
         $message = $this->getMessage($msg_id);
@@ -351,11 +352,10 @@ class Scheduler extends CI_Controller {
         } catch (Exception $ex) {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
                 trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
-            //$this->cleanInstagramApiSession($user->username);
             throw new Exception($msg, 500);
         }
     }
-    
+
     public function popAlreadyTexted($pk, $followers)
     {
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
@@ -366,7 +366,7 @@ class Scheduler extends CI_Controller {
         printf("Sacados de la lista de destinatarios los perfiles [%s]\n",
             implode(',', $followers));
     }
-    
+
     public function followerAlreadyStat($pk, $msg_id)
     {
         $this->load->database();
@@ -380,7 +380,7 @@ class Scheduler extends CI_Controller {
             return FALSE;
         }
     }
-    
+
     public function insertSpecialMessageStat($msg_id, $followers)
     {
         $message = $this->getMessage($msg_id);
