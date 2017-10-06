@@ -1,16 +1,11 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Scheduler extends CI_Controller {
 
     public $instagram = NULL;
 
-    public $permitted_ips = [ '127.0.0.1' ];
-
     public function index() {
         set_time_limit(0);
-        $this->denyIfNotPermitted();
         printf("\n%s - Procesando mensajes...\n", $this->now());
         try {
             $this->processMessages();
@@ -26,29 +21,6 @@ class Scheduler extends CI_Controller {
     public function now()
     {
         return trim(shell_exec("date \"+%d/%b %r\""));
-    }
-
-    public function denyIfNotPermitted()
-    {
-        $this->getPermittedIps();
-        $ip = $this->input->server('REMOTE_ADDR');
-        if (!in_array($ip, $this->permitted_ips)) {
-            show_error('Access not permitted', 500);
-        }
-    }
-
-    public function getPermittedIps()
-    {
-        if (file_exists(ROOT_DIR . '/etc/permitted_ips')) {
-            $data = read_file(ROOT_DIR . '/etc/permitted_ips');
-            $lines = explode(PHP_EOL, $data);
-            foreach ($lines as $ip) {
-                if (trim($ip) == '' || $ip == '127.0.0.1') {
-                    continue;
-                }
-                $this->permitted_ips[] = $ip;
-            }
-        }
     }
 
     public function getInstagram()
@@ -422,7 +394,6 @@ class Scheduler extends CI_Controller {
     public function special()
     {
         set_time_limit(0);
-        $this->denyIfNotPermitted();
         printf("\n%s - Procesando mensajes especiales...\n", $this->now());
         try {
             $this->processSpecialMessages();
