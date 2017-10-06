@@ -338,16 +338,19 @@ class Scheduler extends CI_Controller {
         return $greetings[$n];
     }
     
-    public function alreadyTextedWithSpecial($followers)
+    public function alreadyTextedWithSpecial($pk, $followers)
     {
         $_followers = [];
         foreach ($followers as $follower) {
             $this->load->database();
             $this->db->where('follower_id', $follower);
             $query = $this->db->get('stat');
-            $ids = $query->result();
-            if (count($ids) === 0) {
+            $stats = $query->result();
+            if (count($stats) === 0) {
                 $_followers[] = $follower;
+            }
+            else {
+                $this->popAlreadyTexted($pk, $stats[0]->follower_id);
             }
         }
         return count($_followers) > 0 ? $_followers : NULL;
@@ -359,7 +362,7 @@ class Scheduler extends CI_Controller {
         $user = $this->getUser($message->user_id);
         $this->loginInstagram($user);
         try {
-            $_followers = $this->alreadyTextedWithSpecial($followers);
+            $_followers = $this->alreadyTextedWithSpecial($user->pk, $followers);
             if ($_followers == NULL) {
                 printf("Estos seguidores [%s] ya fueron texteados con promociones\n",
                     implode(',', $followers));
