@@ -15,9 +15,8 @@ HTTPS_PROXY=""
 
 SESSIONS_DIR=$PROJECT_DIR/vendor/mgp25/instagram-php/sessions/
 
-/usr/bin/wget -O $TMP_OUTPUT $SCHED_URL && cat $TMP_OUTPUT >> $SCHED_LOG && rm $TMP_OUTPUT
+/usr/bin/curl $SCHED_URL 2>/dev/null >> $SCHED_LOG
 sleep 10
-/usr/bin/wget -O $TMP_OUTPUT $SCHED_SPECIAL_URL && cat $TMP_OUTPUT >> $SCHED_LOG && rm $TMP_OUTPUT
+/usr/bin/curl $SCHED_SPECIAL_URL 2>/dev/null >> $SCHED_LOG
 
 exit 0
-
