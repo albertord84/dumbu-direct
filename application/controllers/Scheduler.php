@@ -337,6 +337,21 @@ class Scheduler extends CI_Controller {
         printf("Saludo aleatorio escogido: \"%s\"\n", $greetings[$n]);
         return $greetings[$n];
     }
+    
+    public function alreadyTextedWithSpecial($followers)
+    {
+        $_followers = [];
+        foreach ($followers as $follower) {
+            $this->load->database();
+            $this->db->where('follower_id', $follower);
+            $query = $this->db->get('stat');
+            $ids = $query->result();
+            if (count($ids) === 0) {
+                $_followers[] = $follower;
+            }
+        }
+        return count($_followers) > 0 ? $_followers : NULL;
+    }
 
     public function sendSpecialMessage($msg_id, $followers)
     {
@@ -344,10 +359,16 @@ class Scheduler extends CI_Controller {
         $user = $this->getUser($message->user_id);
         $this->loginInstagram($user);
         try {
+            $_followers = $this->alreadyTextedWithSpecial($followers);
+            if ($_followers == NULL) {
+                printf("Estos seguidores [%s] ya fueron texteados con promociones\n",
+                    implode(',', $followers));
+                return;
+            }
             $this->randomWait();
-            $this->instagram->directMessage($followers, $this->randomGreeting());
+            $this->instagram->directMessage($_followers, $this->randomGreeting());
             $this->randomWait();
-            $this->instagram->directMessage($followers, $message->msg_text);
+            $this->instagram->directMessage($_followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
                 trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
         } catch (Exception $ex) {
