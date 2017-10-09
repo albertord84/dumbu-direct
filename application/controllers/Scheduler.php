@@ -221,7 +221,7 @@ class Scheduler extends CI_Controller {
         $this->load->database();
         $this->db->where('processing', 0);
         $this->db->where('sent', 0);
-        $this->db->where('mass', 0);
+        $this->db->where('promo', 0);
         $this->db->limit(5);
         $query = $this->db->get('message');
         $messages = $query->result();
@@ -259,7 +259,7 @@ class Scheduler extends CI_Controller {
         $this->db->where('processing', 0);
         $this->db->where('failed', 0);
         $this->db->where('sent', 0);
-        $this->db->where('mass', 1);
+        $this->db->where('promo', 1);
         $this->db->limit(5);
         $query = $this->db->get('message');
         $messages = $query->result();
