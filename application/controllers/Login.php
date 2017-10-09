@@ -70,19 +70,30 @@ class Login extends CI_Controller {
             if (!$this->userExists($username)) {
                 $this->insertToDb($username, $password, $instagram->account_id);
             }
+            else {
+                $this->session->is_admin = $this->userIsAdmin($username);
+            }
             $response = [
                 'success' => TRUE,
                 'pk' => $instagram->account_id,
                 'username' => $username
             ];
         } catch (Exception $e) {
-            $this->cleanInstagramApiSession($username);
             $response = [ 'success' => FALSE, 'message' => $e->getMessage() ];
         }
 
         $this->output->set_content_type('application/json')
                 ->set_status_header($response['success'] ? 200 : 500)
                 ->set_output(json_encode($response));
+    }
+    
+    public function userIsAdmin($username)
+    {
+        $this->load->database();
+        $this->db->where('username', $username);
+        $query = $this->db->get('client');
+        $users = $query->result();
+        return $users[0]->privs === 1;
     }
 
     public function cleanInstagramApiSession($username)
