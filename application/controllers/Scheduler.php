@@ -85,6 +85,7 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
                 trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
+            $this->updateMessageStats($user->id, $msg_id, $followers);
         }
         catch (Exception $ex) {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
@@ -116,6 +117,17 @@ class Scheduler extends CI_Controller {
             return $follower_ids;
         } else {
             return NULL;
+        }
+    }
+    
+    public function updateMessageStats($user_id, $msg_id, $followers)
+    {
+        $this->load->database();
+        foreach ($followers as $follower) {
+            $this->db->where('user_id', $user_id);
+            $this->db->where('follower_id', $follower);
+            $this->db->where('msg_id', $msg_id);
+            $this->db->update('dt', \Carbon\Carbon::now()->getTimestamp());
         }
     }
 
