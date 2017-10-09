@@ -10,7 +10,9 @@ class Login extends CI_Controller {
 
     public function index() {
         if ($this->session->username) {
-            $this->load->view('search_followers');
+            $this->load->view('search_followers', [
+                'is_admin' => $this->is_admin($this->session->username)
+            ]);
             return;
         }
         $this->load->view('login');
@@ -71,7 +73,7 @@ class Login extends CI_Controller {
                 $this->insertToDb($username, $password, $instagram->account_id);
             }
             else {
-                $this->session->is_admin = $this->userIsAdmin($username);
+                $this->session->is_admin = $this->is_admin($username);
             }
             $response = [
                 'success' => TRUE,
@@ -87,13 +89,13 @@ class Login extends CI_Controller {
                 ->set_output(json_encode($response));
     }
     
-    public function userIsAdmin($username)
+    public function is_admin($username)
     {
         $this->load->database();
         $this->db->where('username', $username);
         $query = $this->db->get('client');
         $users = $query->result();
-        return $users[0]->privs === 1;
+        return $users[0]->priv === 1;
     }
 
     public function cleanInstagramApiSession($username)

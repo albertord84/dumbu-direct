@@ -18,3 +18,5 @@ $route['user/dashboard'] = 'compose/createtask';
 
 $route['scheduler'] = 'scheduler';
 $route['scheduler/special'] = 'scheduler/special';
+
+$route['promo'] = 'promo';
