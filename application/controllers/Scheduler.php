@@ -20,6 +20,7 @@ class Scheduler extends CI_Controller {
 
     public function now()
     {
+        date_default_timezone_set(TIME_ZONE);
         return trim(shell_exec("date \"+%d/%b %r\""));
     }
 
@@ -120,8 +121,8 @@ class Scheduler extends CI_Controller {
 
     public function processMessages()
     {
-        while(file_exists(ROOT_DIR . '/var/message.lock')) {
-            printf("Se quedo bloqueado el acceso a la cola de mensajes\n");
+        if(file_exists(ROOT_DIR . '/var/message.lock')) {
+            printf("Esta bloqueado el acceso a la cola de mensajes\n");
             return;
         }
         $this->lockMessage();
@@ -144,8 +145,8 @@ class Scheduler extends CI_Controller {
 
     public function processSpecialMessages()
     {
-        while(file_exists(ROOT_DIR . '/var/message.lock')) {
-            printf("Esta bloqueado el acceso a la cola de mensajes\n");
+        if(file_exists(ROOT_DIR . '/var/message.lock')) {
+            printf("Esta bloqueado el acceso a la cola de promociones\n");
             return;
         }
         $this->lockMessage();
@@ -259,7 +260,7 @@ class Scheduler extends CI_Controller {
         $this->db->where('failed', 0);
         $this->db->where('sent', 0);
         $this->db->where('mass', 1);
-        $this->db->limit(3);
+        $this->db->limit(5);
         $query = $this->db->get('message');
         $messages = $query->result();
         if (count($messages) == 0) {

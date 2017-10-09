@@ -28,11 +28,13 @@ $capsule->setAsGlobal();
 // Setup the Eloquent ORM
 $capsule->bootEloquent();
 
-$messages = Capsule::table('message')->get();
+$messages = Capsule::table('client')->get();
 
-echo "ID - Text".PHP_EOL;
+echo "ID - Name".PHP_EOL;
 foreach ($messages as $message) {
 	printf("%s - %s\n",
 		$message->id,
-		$message->msg_text);
+		$message->username);
 }
+
+print_r($messages[0]);
