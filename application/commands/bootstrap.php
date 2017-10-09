@@ -1,32 +1,28 @@
 <?php
 
+// Asegurarme de que no se interrumpa la conexion.
 set_time_limit(0);
 
-// Esto debe apuntar a la raiz del proyecto
+// Esto debe apuntar a la raiz del proyecto. De esto dependen
+// muchas cosas.
 define('ROOT_DIR', __DIR__ . '/../..');
 
-// Requerido para reusar el codigo de CodeIgniter
+// Constantes requeridas para reusar codigo de CodeIgniter.
 define('BASEPATH', ROOT_DIR . '/system');
+defined('ENVIRONMENT') OR define('ENVIRONMENT', 'devel');
 
-// Reusando las constantes de CodeIgniter
+// Reusando constantes de CodeIgniter
 require ROOT_DIR . '/application/config/constants.php';
 
+// Para acceso a las bibliotecas en vendor.
 require ROOT_DIR . '/vendor/autoload.php';
-
-// Esto se require porque la misma configuracion de acceso
-// a datos se comparte con CodeIgniter que hace uso de esta
-// constante
-defined('ENVIRONMENT') OR define('ENVIRONMENT', 'devel');
 
 // Configuracion de acceso a la base de datos compartida
 // con CodeIgniter
 require ROOT_DIR . '/etc/database';
 
-// $db proviene del archivo ROOT_DIR . '/etc/database'
-// que define el acceso a la base de datos compartida
-// con CodeIgniter. Aqui lo convierto en objeto para
-// hacer mas bonito su uso. Un objeto gusta mas que un
-// arreglo.
+// Convertir a objeto el arreglo que contiene los
+// datos de la conexion a la base de datos.
 $dbConfig = json_decode(json_encode($db['default']));
 
 // Proviene de 'constants.php'

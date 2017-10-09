@@ -5,10 +5,14 @@
  */
 class Command {
 
+    public static $schema = NULL;
     public $instagram = NULL;
 
     function __construct() {
-        
+    }
+    
+    protected function init()
+    {
     }
 
     protected function now() {
@@ -57,6 +61,21 @@ class Command {
     public function messagesLocked()
     {
         return file_exists(ROOT_DIR . '/var/message.lock');
+    }
+    
+    public function lastMessages($promo = FALSE)
+    {
+        $messages = self::$schema->table('message')
+                ->where('processing', 0)
+                ->where('failed', 0)
+                ->where('sent', 0);
+        
+        if ($promo) {
+            return $messages->where('promo', 1)->take(5)->get();
+        }
+        else {
+            return $messages->where('promo', 0)->take(5)->get();
+        }
     }
 
 }

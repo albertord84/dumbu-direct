@@ -386,7 +386,8 @@ class Scheduler extends CI_Controller {
             $data = [
                 'user_id' => $message->user_id,
                 'follower_id' => $follower,
-                'msg_id' => $message->id
+                'msg_id' => $message->id,
+                'dt' => \Carbon\Carbon::now()->getTimestamp()
             ];
             $this->db->insert('stat', $data);
         }
