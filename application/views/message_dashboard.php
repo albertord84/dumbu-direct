@@ -18,14 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <body data-ng-controller="dashboard">
         <div class="directs-dashboard container">
             <div class="row">
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="<?php echo site_url('compose'); ?>"><i class="fa fa-pencil" aria-hidden="true"></i></a></li>
-                            <li><a href="<?php echo site_url('logout'); ?>"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-                        </ul>
-                    </div>
-                </nav>
+                <?php include __DIR__ . '/navbar.php'; ?>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">

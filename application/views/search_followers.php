@@ -17,13 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </head>
     <body data-ng-controller="search">
         <div id="search-container" class="container">
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?php echo site_url('logout') ?>"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-            </nav>
+            <?php include __DIR__ . '/navbar.php'; ?>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="row">
                     <div class="form-container">

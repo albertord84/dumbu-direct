@@ -8,9 +8,9 @@ class Search extends CI_Controller {
 
     public function index() {
         if ($this->session->username !== NULL) {
-            //sleep(10);
-            //$this->cleanInstagramApiSession($this->session->username);
-            $this->load->view('search_followers');
+            $this->load->view('search_followers', [
+                'is_admin' => $this->session->is_admin != NULL
+            ]);
         } else {
             $this->load->view('login');
         }

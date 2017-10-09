@@ -95,7 +95,8 @@ class Login extends CI_Controller {
         $this->db->where('username', $username);
         $query = $this->db->get('client');
         $users = $query->result();
-        return $users[0]->priv === 1;
+        $is_admin = $users[0]->priv == 1;
+        return $is_admin;
     }
 
     public function cleanInstagramApiSession($username)
