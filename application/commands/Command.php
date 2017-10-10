@@ -56,6 +56,7 @@ class Command {
         else {
             printf("Interrumpido. CAUSA: %s\n", $msg);
         }
+        die();
     }
     
     public function messagesLocked()

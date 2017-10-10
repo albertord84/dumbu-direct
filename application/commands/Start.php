@@ -8,12 +8,10 @@ Command::$schema = $schema;
 if ($action === 'messages') {
     $messageQueue = new MessageQueue();
     $messageQueue->process();
-    printf("\n%s\n", count($messageQueue->lastMessages()));
 }
 else if ($action === 'promotion') {
     $promoQueue = new PromotionQueue();
     $promoQueue->process();
-    printf("\n%s\n", count($promoQueue->lastMessages(TRUE)));
 }
 else {
     printf("\nEspecifique la accion correcta:\n\n");

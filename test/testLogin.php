@@ -10,6 +10,7 @@ try {
     $ig->setUser($username, $password);
     $ig->login();
 } catch (\Exception $e) {
-    echo 'Something went wrong trying to login: '.$e->getMessage()."\n";
+    printf("Something went wrong trying to login: MESSAGE: \"%s\"\n",
+            $e->getMessage());
     exit(0);
 }

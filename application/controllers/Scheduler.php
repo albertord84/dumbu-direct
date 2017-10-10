@@ -356,11 +356,21 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($_followers, $message->msg_text);
             printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
                 trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
+            $this->updateMessageDate($msg_id);
         } catch (Exception $ex) {
             $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
                 trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
             throw new Exception($msg, 500);
         }
+    }
+    
+    public function updateMessageDate($msg_id)
+    {
+        $this->load->database();
+        $this->db->where('id', $msg_id);
+        $this->db->update('message', [
+            'sent_at' => \Carbon\Carbon::now()->timestamp
+        ]);
     }
 
     public function popAlreadyTexted($pk, $followers)
