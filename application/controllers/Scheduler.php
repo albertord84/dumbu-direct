@@ -155,14 +155,14 @@ class Scheduler extends CI_Controller {
         $this->unlockMessage();
     }
     
-    public function checkDailyLimit($user_id = 4)
+    public function checkDailyLimit($user_id)
     {
         $day_start = \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
         $this->load->database();
         $sql = "SELECT COUNT(*) AS count FROM stat WHERE user_id = ? AND dt >= ?";
         $query = $this->db->query($sql, array($user_id, $day_start));
         $result = $query->result();
-        echo $result[0]->count;
+        return $result[0]->count;
     }
 
     public function processSpecialMessages()
@@ -277,18 +277,23 @@ class Scheduler extends CI_Controller {
     }
 
     public function lastSpecialMessages() {
+        $msg_list = [];
         $this->load->database();
         $this->db->where('processing', 0);
         $this->db->where('failed', 0);
         $this->db->where('sent', 0);
         $this->db->where('promo', 1);
-        $this->db->limit(5);
+        $this->db->limit(15);
         $query = $this->db->get('message');
         $messages = $query->result();
-        if (count($messages) == 0) {
-            return NULL;
+        if (count($messages) == 0) { return NULL; }
+        foreach ($messages as $message) {
+            $limit = $this->checkDailyLimit($message->user_id);
+            if ($limit < 200) { $msg_list[] = $message; }
+            if (count($msg_list) == 5) { break; }
         }
-        return $messages;
+        if (count($msg_list) == 0) { return NULL; }
+        return $msg_list;
     }
 
     public function hasDefinedFollowers($pk)
