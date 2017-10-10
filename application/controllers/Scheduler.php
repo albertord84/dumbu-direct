@@ -154,6 +154,15 @@ class Scheduler extends CI_Controller {
         }
         $this->unlockMessage();
     }
+    
+    public function checkDailyLimit($user_id = 4)
+    {
+        $day_start = \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
+        $this->load->database();
+        $sql = "SELECT COUNT(*) FROM stat WHERE user_id = ? AND dt >= ?";
+        $query = $this->db->query($sql, array($user_id, $day_start));
+        var_dump($query);
+    }
 
     public function processSpecialMessages()
     {
