@@ -161,7 +161,7 @@ class Scheduler extends CI_Controller {
         $this->load->database();
         $sql = "SELECT COUNT(*) FROM stat WHERE user_id = ? AND dt >= ?";
         $query = $this->db->query($sql, array($user_id, $day_start));
-        var_dump($query->get());
+        var_dump($query->result());
     }
 
     public function processSpecialMessages()
