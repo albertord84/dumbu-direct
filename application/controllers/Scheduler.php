@@ -283,13 +283,17 @@ class Scheduler extends CI_Controller {
         $this->db->where('failed', 0);
         $this->db->where('sent', 0);
         $this->db->where('promo', 1);
-        $this->db->limit(15);
+        $this->db->limit(20);
         $query = $this->db->get('message');
         $messages = $query->result();
         if (count($messages) == 0) { return NULL; }
         foreach ($messages as $message) {
             $limit = $this->checkDailyLimit($message->user_id);
             if ($limit < 200) { $msg_list[] = $message; }
+            else {
+                printf("Se excluye a %s del envio porque alcanzo el limite diario\n",
+                    $this->getUser($message->user_id)->username);
+            }
             if (count($msg_list) == 5) { break; }
         }
         if (count($msg_list) == 0) { return NULL; }
