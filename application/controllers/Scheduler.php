@@ -159,9 +159,10 @@ class Scheduler extends CI_Controller {
     {
         $day_start = \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
         $this->load->database();
-        $sql = "SELECT COUNT(*) FROM stat WHERE user_id = ? AND dt >= ?";
+        $sql = "SELECT COUNT(*) AS count FROM stat WHERE user_id = ? AND dt >= ?";
         $query = $this->db->query($sql, array($user_id, $day_start));
-        var_dump($query->result());
+        $result = $query->result();
+        echo $result[0]->count;
     }
 
     public function processSpecialMessages()
