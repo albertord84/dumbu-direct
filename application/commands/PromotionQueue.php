@@ -38,18 +38,20 @@ class PromotionQueue extends Command {
                 $this->sendGreeting($followers);
                 $this->randomWait();
                 $this->sendMessage($message->id, $followers);
+                $this->insertStat($message->id, $followers);
                 $this->popAlreadyTexted($user->pk, $_followers);
                 $this->setMessageProcessing($message->id, 0);
             }
             catch (Exception $ex) {
                 $this->setMessageFailed($message->id, 1);
+                $this->setMessageProcessing($message->id, 0);
                 $this->unlockMessage();
                 $this->interrupt($ex->getMessage());
             }
             printf("* Procesado el mensaje %s...\n", $message->id);
         }
         $this->unlockMessage();
-        printf("%s - TERMINADO EL PROCESAMIENTO DE LAS PROMOCIONES...\n", $this->now());
+        printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
     }
 
 }
