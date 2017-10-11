@@ -18,6 +18,7 @@ class PromotionQueue extends Command {
             printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
             return;
         }
+        $this->getInstagram();
         foreach ($messages as $message) {
             printf("* Procesando mensaje %s...\n", $message->id);
             $this->setMessageProcessing($message->id, 1);
@@ -26,7 +27,6 @@ class PromotionQueue extends Command {
                 printf("* Procesado el mensaje %s...\n", $message->id);
                 continue;
             }
-            $this->getInstagram();
             try {
                 $this->loginInstagram($user->username, $user->password);
                 $followers = $this->promoRecipients($message->id);

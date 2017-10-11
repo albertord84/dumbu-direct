@@ -20,6 +20,7 @@ class Command {
     }
 
     public function getInstagram() {
+        if ($this->instagram !== NULL) { return $this->instagram; }
         $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
         printf("- Obtenida instancia del objeto Instagram\n");
     }
