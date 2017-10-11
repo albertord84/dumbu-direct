@@ -20,11 +20,11 @@ class PromotionQueue extends Command {
         }
         $this->getInstagram();
         foreach ($messages as $message) {
-            printf("* Procesando mensaje %s...\n", $message->id);
+            printf("* Procesando promocion %s...\n", $message->id);
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
-            if ($this->dailyLimitPassed($user->id)) {
-                printf("* Procesado el mensaje %s...\n", $message->id);
+            if ($this->dailyLimitPassed($user->id) || $this->promoRecipientsCount($user->pk)==0) {
+                printf("* Procesada la promocion %s...\n", $message->id);
                 continue;
             }
             try {
