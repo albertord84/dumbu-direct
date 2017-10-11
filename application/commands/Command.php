@@ -21,22 +21,17 @@ class Command {
 
     public function getInstagram() {
         $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        printf("- Obtenida instancia del objeto Instagram\n");
     }
     
     public function alreadyTexted($pk, $msg_id)
     {
-        $data = self::$schema->select('select id from stat where follower_id = ? and msg_id = ?', [
-            $pk, $msg_id
-        ]);
-        return count($data) > 0 ? TRUE : FALSE;
-    }
-    
-    public function messageRecipients($msg_id)
-    {
-        $data = self::$schema->select('select follower_id from stat where msg_id = ?', [
-            $msg_id
-        ]);
-        return $data;
+        $db = self::$schema;
+        $count = $db::table('stat')
+                ->where('follower_id', $pk)
+                ->where('msg_id', $msg_id)
+                ->count();
+        return $count > 0 ? TRUE : FALSE;
     }
     
     public function promoRecipients($msg_id)
@@ -48,7 +43,7 @@ class Command {
         $followers = trim(shell_exec("head -n $c $followers_file"));
         if ($followers == '') { return NULL; }
         $promo_recip = explode(PHP_EOL, $followers);
-        printf("Se enviara promocion a seguidores: [%s]\n", implode(',', $promo_recip));
+        printf("- Se enviara promocion a seguidores: [%s]\n", implode(',', $promo_recip));
         return $promo_recip;
     }
     
@@ -56,6 +51,8 @@ class Command {
     {
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
         $count = trim(shell_exec("cat $followers_file | wc -l"));
+        printf("- La promocion tiene %s seguidores pendientes...\n",
+            $count);
         return intval($count);
     }
     
@@ -63,6 +60,20 @@ class Command {
     {
         $exists_followers_file = file_exists(FOLLOWERS_LIST_DIR . "/$pk.txt");
         return $exists_followers_file;
+    }
+    
+    public function purgePromoRecipientsList($msg_id, &$followers)
+    {
+        $count = count($followers);
+        for ($i = 0; $i < $count; $i++) {
+            $already_texted = $this->alreadyTexted($followers[$i], $msg_id);
+            if ($already_texted) {
+                printf("- Sacando de la lista al seguidor %s porque ya recibio promocion\n",
+                        $followers[$i]);
+                array_splice($followers, $i, 1);
+                $count--;
+            }
+        }
     }
     
     /**
@@ -82,9 +93,8 @@ class Command {
                 'msg_id' => $message->id,
                 'dt' => \Carbon\Carbon::now()->getTimestamp()
             ];
-            self::$schema->insert("insert into stat (user_id, follower_id, msg_id, dt) "
-                    . "values (?, ?, ?, ?)",
-                    $data);
+            $db = self::$schema;
+            $db::table('stat')->insert($data);
         }
     }
     
@@ -95,7 +105,7 @@ class Command {
             $cmd = "sed -i '/$follower/d' " . $followers_file;
             shell_exec($cmd);
         }
-        printf("Sacados de la lista de destinatarios los perfiles [%s]\n",
+        printf("- Sacados de la lista de destinatarios los perfiles [%s]\n",
             implode(',', $followers));
     }
 
@@ -119,8 +129,22 @@ class Command {
         ];
         $n = mt_rand(0, count($greetings[$lang]) - 1);
         $greeting = $greetings[$lang][$n];
-        printf("Saludo aleatorio escogido: \"%s\"\n", $greeting);
+        printf("- Saludo aleatorio escogido: \"%s\"\n", $greeting);
         return $greeting;
+    }
+    
+    public function sendGreeting($followers)
+    {
+        try {
+            $greeting = $this->randomGreeting();
+            $this->instagram->directMessage($followers, $greeting);
+            printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
+        }
+        catch (Exception $ex) {
+            $msg = sprintf("- Error al enviar el saludo inicial; ERROR: \"%s\"\n",
+                $ex->getMessage());
+            throw new Exception($msg);
+        }
     }
     
     public function sendMessage($msg_id, $followers)
@@ -128,106 +152,154 @@ class Command {
         $message = $this->getMessage($msg_id);
         try {
             $this->instagram->directMessage($followers, $message->msg_text);
+            $msg = sprintf("- Se envio el mensaje \"%s...\"; a los seguidores [%s]\n",
+                trim(substr($message->msg_text, 0, 15)), implode(", ", $followers));
         }
         catch (Exception $ex) {
-            $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
+            $msg = sprintf("- Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
                 trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
             $this->setMessageFailed($msg_id, 1);
+            $this->setMessageProcessing($msg_id, 0);
             throw new Exception($msg, 500);
         }
     }
     
     public function setMessageFailed($msg_id, $failed = 0)
     {
-        self::$schema->update('update message set failed = ? where id = ?', [
-            $failed, $msg_id
-        ]);
+        $db = self::$schema;
+        $db::table('message')
+                ->where('id', $msg_id)
+                ->update(['failed' => $failed]);
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $sent == 0 ? 'NO FALLIDO' : 'FALLIDO');
     }
     
     public function setMessageSent($msg_id, $sent = 0)
     {
-        self::$schema->update('update message set sent = ? where id = ?', [
-            $sent, $msg_id
-        ]);
+        $db = self::$schema;
+        $db::table('message')
+                ->where('id', $msg_id)
+                ->update(['sent' => $sent]);
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $sent == 0 ? 'NO ENVIADO' : 'ENVIADO');
     }
     
     public function setMessageProcessing($msg_id, $processing = 0)
     {
-        self::$schema->update('update message set processing = ? where id = ?', [
-            $processing, $msg_id
-        ]);
+        $db = self::$schema;
+        $db::table('message')
+                ->where('id', $msg_id)
+                ->update(['processing' => $processing]);
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $processing == 0 ? 'PROCESANDO' : 'PROCESADO');
+    }
+    
+    public function isOldMsg($msg_id, $minutes = 10)
+    {
+        $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
+        $db = self::$schema;
+        $sent_at = $db::table('message')->where('id', $msg_id)->value('sent_at');
+        if ($sent_at <= $before) {
+            return TRUE;
+        }
+        else {
+            FALSE;
+        }
     }
     
     public function getMessage($msg_id)
     {
-        $data = self::$schema->select('select * from message where id = ?', [
-            $msg_id
-        ]);
-        if (count($data)==0) { return NULL; }
-        return $data[0];
+        $db = self::$schema;
+        $message = $db::table('message')->where('id', $msg_id)->first();
+        return $message;
     }
     
     public function getUser($user_id)
     {
-        $data = self::$schema->select('select * from client where id = ?', [
-            $user_id
-        ]);
-        if (count($data)==0) { return NULL; }
-        return $data[0];
+        $db = self::$schema;
+        $user = $db::table('client')->where('id', $user_id)->first();
+        printf("- Obtenidos datos del usuario %s\n", $user->username);
+        return $user;
     }
 
     public function loginInstagram($username, $password) {
         try {
             $this->instagram->setUser($username, $password);
             $this->instagram->login();
-            printf("Iniciada sesión en Instagram como %s\n", $username);
+            printf("- Iniciada sesión en Instagram como %s\n", $username);
         } catch (Exception $ex) {
-            $msg = sprintf("No se pudo iniciar sesion para \"%s\". CAUSA: \"%s\"", $username, $ex->getMessage());
+            $msg = sprintf("- No se pudo iniciar sesion para \"%s\". CAUSA: \"%s\"\n", $username, $ex->getMessage());
             throw new Exception($msg);
         }
     }
 
     public function randomWait() {
         $secs = mt_rand(10, 30);
-        printf("Esperando %s segs para continuar\n", $secs);
+        printf("- Esperando %s segs para continuar\n", $secs);
         sleep($secs);
     }
     
     public function lockMessage() {
         file_put_contents(ROOT_DIR . '/var/message.lock', '');
+        printf("- Bloqueada la cola de mensajes...\n");
     }
     
     public function unlockMessage() {
-        unlink(ROOT_DIR . '/var/message.lock');
+        if (file_exists(ROOT_DIR . '/var/message.lock')) {
+            unlink(ROOT_DIR . '/var/message.lock');
+            printf("- Desbloqueada la cola de mensajes...\n");
+            return;
+        }
+        printf("- La cola de mensajes no estaba bloqueada...\n");
     }
     
     public function interrupt($msg = '')
     {
         if ($msg === '') {
-            printf("Interrumpido!!!\n");
+            printf("INTERRUMPIDO!!!\n");
         }
         else {
-            printf("Interrumpido. CAUSA: %s\n", $msg);
+            printf("INTERRUMPIDO. CAUSA: %s\n", $msg);
         }
         die();
     }
     
     public function messagesLocked()
     {
-        return file_exists(ROOT_DIR . '/var/message.lock');
+        $is_locked = file_exists(ROOT_DIR . '/var/message.lock');
+        printf("- La cola de mensajes esta %s\n", $is_locked ? 'BLOQUEADA' : 'LIBERADA');
+        return $is_locked;
+    }
+    
+    public function oldestPromoList($minutes = 10, $count = 5)
+    {
+        $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
+        $db = self::$schema;
+        $messages = $db::table('message')
+                ->where('promo', 1)
+                ->where('processing', 0)
+                ->where('failed', 0)
+                ->where('sent', 0)
+                ->where('sent_at', '<=', $before)
+                ->take($count)
+                ->get();
+        printf("- Devolviendo lista de las %s promociones mas antiguas...\n", $count);
+        return $messages;
     }
     
     public function lastMessages($promo = FALSE)
     {
-        $messages = self::$schema->table('message')
+        $db = self::$schema;
+        $messages = $db::table('message')
                 ->where('processing', 0)
                 ->where('failed', 0)
                 ->where('sent', 0);
         
         if ($promo) {
-            return $messages->where('promo', 1)->take(5)->get();
+            return $this->oldestPromoList();
         }
         else {
+            printf("- Devolviendo lista de los ultimos 5 mensajes...\n");
             return $messages->where('promo', 0)->take(5)->get();
         }
     }
@@ -239,10 +311,12 @@ class Command {
     
     public function dailyLimitPassed($user_id, $limit = 200)
     {
-        $data = self::$schema->select('select count(*) as sent from stat where user_id = ? and dt >= ?', [
-            $user_id, $this->dayStart()
-        ]);
-        return $data[0]->sent < $limit ? TRUE : FALSE;
+        $db = self::$schema;
+        $_limit = $db::table('stat')
+                ->where('user_id', $user_id)
+                ->where('dt', '>=', $this->dayStart())
+                ->count();
+        return $_limit < $limit ? FALSE : TRUE;
     }
 
 }

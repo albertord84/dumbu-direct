@@ -9,7 +9,6 @@ class Compose extends CI_Controller {
     public $permitted_ips = [ '127.0.0.1' ];
 
     public function index() {
-        //$this->getPermittedIps();
         if ($this->session->username !== NULL) {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
