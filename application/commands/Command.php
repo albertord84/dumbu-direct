@@ -149,6 +149,14 @@ class Command {
         }
     }
     
+    public function updateSentDate($msg_id)
+    {
+        $db = self::$schema;
+        $db::table('message')
+            ->where('id', $msg_id)
+            ->update([ 'sent_at' => \Carbon\Carbon::now()->timestamp ]);
+    }
+    
     public function sendMessage($msg_id, $followers)
     {
         $message = $this->getMessage($msg_id);

@@ -38,6 +38,7 @@ class PromotionQueue extends Command {
                 $this->sendGreeting($followers);
                 $this->randomWait();
                 $this->sendMessage($message->id, $followers);
+                $this->updateSentDate($message->id);
                 $this->insertStat($message->id, $followers);
                 $this->popAlreadyTexted($user->pk, $_followers);
                 $this->setMessageProcessing($message->id, 0);
