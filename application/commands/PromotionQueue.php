@@ -20,6 +20,12 @@ class PromotionQueue extends Command {
         foreach ($messages as $message) {
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
+            if ($this->dailyLimitPassed($user->id)) {
+                printf("- El usuario %s ya llego al limite de mensajes diarios\n",
+                        $user->username);
+                $this->unlockMessage();
+                return;
+            }
             $this->getInstagram();
             try {
                 $this->loginInstagram($user->username, $user->password);

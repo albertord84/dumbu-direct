@@ -259,7 +259,7 @@ class Command {
             printf("INTERRUMPIDO!!!\n");
         }
         else {
-            printf("INTERRUMPIDO. CAUSA: %s\n", $msg);
+            printf("INTERRUMPIDO!!! CAUSA: %s\n", $msg);
         }
         die();
     }
