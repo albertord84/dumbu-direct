@@ -281,7 +281,7 @@ class Command {
         return $is_locked;
     }
     
-    public function oldestPromoList($minutes = 10, $count = 5)
+    public function oldestPromoList($minutes = 9, $count = 5)
     {
         $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
         $db = self::$schema;

@@ -15,6 +15,7 @@ class PromotionQueue extends Command {
         if (count($messages) === 0) {
             printf("- No hay promociones en cola por ahora\n");
             $this->unlockMessage();
+            printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
             return;
         }
         foreach ($messages as $message) {
@@ -22,8 +23,8 @@ class PromotionQueue extends Command {
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
             if ($this->dailyLimitPassed($user->id)) {
-                $this->unlockMessage();
-                return;
+                printf("* Procesado el mensaje %s...\n", $message->id);
+                continue;
             }
             $this->getInstagram();
             try {
