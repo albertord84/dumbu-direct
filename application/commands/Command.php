@@ -96,7 +96,7 @@ class Command {
             $db = self::$schema;
             $db::table('stat')->insert($data);
         }
-        printf("- registrado el envio para los seguidores [%s]\n",
+        printf("- Registrado el envio para los seguidores [%s]\n",
             implode(',', $followers));
     }
     
