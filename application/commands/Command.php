@@ -87,7 +87,6 @@ class Command {
         $message = $this->getMessage($msg_id);
         foreach ($followers as $follower) {
             if (trim($follower)=='') { continue; }
-            if ($this->alreadyTexted($follower, $msg_id)) { continue; }
             $data = [
                 'user_id' => $message->user_id,
                 'follower_id' => $follower,
