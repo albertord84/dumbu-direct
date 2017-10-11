@@ -23,7 +23,14 @@ class PromotionQueue extends Command {
             printf("* Procesando promocion %s...\n", $message->id);
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
-            if ($this->dailyLimitPassed($user->id) || $this->promoRecipientsCount($user->pk)==0) {
+            if ($this->promoRecipientsCount($user->pk)==0) {
+                $this->setMessageProcessing($message->id, 0);
+                $this->setMessageSent($message->id, 1);
+                printf("* Terminado el envio de la promocion a todos los seguidores...\n");
+                continue;
+            }
+            if ($this->dailyLimitPassed($user->id)) {
+                $this->setMessageProcessing($message->id, 0);
                 printf("* Procesada la promocion %s...\n", $message->id);
                 continue;
             }
