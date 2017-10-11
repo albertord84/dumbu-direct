@@ -28,6 +28,7 @@ class PromotionQueue extends Command {
             try {
                 $this->loginInstagram($user->username, $user->password);
                 $followers = $this->promoRecipients($message->id);
+                $_followers = array_values($followers);
                 $this->purgePromoRecipientsList($message->id, $followers);
                 if (count($followers)===0) {
                     $this->setMessageProcessing($msg_id, 0);
@@ -36,7 +37,7 @@ class PromotionQueue extends Command {
                 $this->sendGreeting($followers);
                 $this->randomWait();
                 $this->sendMessage($message->id, $followers);
-                $this->randomWait();
+                $this->popAlreadyTexted($user->pk, $_followers);
             }
             catch (Exception $ex) {
                 $this->unlockMessage();
