@@ -18,6 +18,7 @@ class PromotionQueue extends Command {
             return;
         }
         foreach ($messages as $message) {
+            printf("* Procesando mensaje %s...\n", $message->id);
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
             if ($this->dailyLimitPassed($user->id)) {
@@ -31,7 +32,7 @@ class PromotionQueue extends Command {
                 $_followers = array_values($followers);
                 $this->purgePromoRecipientsList($message->id, $followers);
                 if (count($followers)===0) {
-                    $this->setMessageProcessing($msg_id, 0);
+                    $this->setMessageProcessing($message->id, 0);
                     continue;
                 }
                 $this->sendGreeting($followers);
@@ -45,6 +46,7 @@ class PromotionQueue extends Command {
                 $this->unlockMessage();
                 $this->interrupt($ex->getMessage());
             }
+            printf("* Procesado el mensaje %s...\n", $message->id);
         }
         $this->unlockMessage();
         printf("%s - TERMINADO EL PROCESAMIENTO DE LAS PROMOCIONES...\n", $this->now());
