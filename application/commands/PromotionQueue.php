@@ -8,7 +8,7 @@ class PromotionQueue extends Command {
     
     public function process()
     {
-        printf("%s - Procesando mensajes promocionales...\n", $this->now());
+        printf("%s - PROCESANDO MENSAJES PROMOCIONALES...\n", $this->now());
         if ($this->messagesLocked()) { $this->interrupt('- Esta bloqueada la cola de mensajes'); }
         $this->lockMessage();
         $messages = $this->lastMessages(TRUE);
@@ -21,8 +21,6 @@ class PromotionQueue extends Command {
             $this->setMessageProcessing($message->id, 1);
             $user = $this->getUser($message->user_id);
             if ($this->dailyLimitPassed($user->id)) {
-                printf("- El usuario %s ya llego al limite de mensajes diarios\n",
-                        $user->username);
                 $this->unlockMessage();
                 return;
             }
@@ -46,7 +44,7 @@ class PromotionQueue extends Command {
             $this->setMessageProcessing($message->id, 0);
         }
         $this->unlockMessage();
-        printf("%s - Se termino el procesamiento de las promociones...\n", $this->now());
+        printf("%s - TERMINADO EL PROCESAMIENTO DE LAS PROMOCIONES...\n", $this->now());
     }
 
 }

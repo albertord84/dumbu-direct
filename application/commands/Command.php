@@ -316,6 +316,7 @@ class Command {
                 ->where('user_id', $user_id)
                 ->where('dt', '>=', $this->dayStart())
                 ->count();
+        printf("- El usuario ya llego al limite de mensajes diarios\n");
         return $_limit < $limit ? FALSE : TRUE;
     }
 
