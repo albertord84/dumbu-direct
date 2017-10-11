@@ -43,7 +43,7 @@ class PromotionQueue extends Command {
             catch (Exception $ex) {
                 $this->interrupt($ex->getMessage());
             }
-            $this->setMessageProcessing($msg_id, 0);
+            $this->setMessageProcessing($message->id, 0);
         }
         $this->unlockMessage();
     }

@@ -152,7 +152,7 @@ class Command {
         $message = $this->getMessage($msg_id);
         try {
             $this->instagram->directMessage($followers, $message->msg_text);
-            $msg = sprintf("- Se envio el mensaje \"%s...\"; a los seguidores [%s]\n",
+            printf("- Se envio el mensaje \"%s...\"; a los seguidores [%s]\n",
                 trim(substr($message->msg_text, 0, 15)), implode(", ", $followers));
         }
         catch (Exception $ex) {
@@ -191,7 +191,7 @@ class Command {
                 ->where('id', $msg_id)
                 ->update(['processing' => $processing]);
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
-                $processing == 0 ? 'PROCESANDO' : 'PROCESADO');
+                $processing == 0 ? 'PROCESADO' : 'PROCESANDO');
     }
     
     public function isOldMsg($msg_id, $minutes = 10)
