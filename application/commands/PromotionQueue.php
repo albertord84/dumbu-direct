@@ -39,6 +39,7 @@ class PromotionQueue extends Command {
                 $this->randomWait();
             }
             catch (Exception $ex) {
+                $this->unlockMessage();
                 $this->interrupt($ex->getMessage());
             }
             $this->setMessageProcessing($message->id, 0);
