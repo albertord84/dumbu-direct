@@ -46,6 +46,7 @@ class PromotionQueue extends Command {
             $this->setMessageProcessing($message->id, 0);
         }
         $this->unlockMessage();
+        printf("%s - Se termino el procesamiento de las promociones...\n", $this->now());
     }
 
 }
