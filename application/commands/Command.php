@@ -297,6 +297,19 @@ class Command {
         return $messages;
     }
     
+    public function messageRecipients($msg_id)
+    {
+        $db = self::$schema;
+        $recipients = $db::table('stat')
+                ->where('msg_id', $msg_id)
+                ->pluck('follower_id');
+        if (count($recipients) == 0) {
+            return NULL;
+        } else {
+            return $recipients;
+        }
+    }
+    
     public function lastMessages($promo = FALSE)
     {
         $db = self::$schema;
