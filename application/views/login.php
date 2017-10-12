@@ -31,16 +31,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <fieldset data-ng-disabled="authenticating">
                   <div class="form-group">
                     <label for="username" class="control-label">Username</label>
-                    <input type="email" class="form-control" id="username" valid-email
+                    <input type="text" class="form-control" id="username" 
                            name="username" value="" required="" autocomplete="off"
                            data-ng-model="username" title="Please enter you username"
-                           placeholder="example@gmail.com">
+                           placeholder="my_instagram_usr_01">
                     <span class="help-block"></span>
                   </div>
                   <div class="form-group">
                     <label for="password" class="control-label">Password</label>
                     <input type="password" class="form-control" id="password"
                            name="password" value="" required="" autocomplete="off"
+                           placeholder="Some secret..."
                            data-ng-model="password" title="Please enter your password">
                     <span class="help-block"></span>
                   </div>

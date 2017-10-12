@@ -9,6 +9,7 @@ class Search extends CI_Controller {
     public function index() {
         if ($this->session->username !== NULL) {
             $this->load->view('search_followers', [
+                'username' => $this->session->username,
                 'is_admin' => $this->session->is_admin != NULL
             ]);
         } else {

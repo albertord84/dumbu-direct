@@ -20,3 +20,4 @@ $route['scheduler'] = 'scheduler';
 $route['scheduler/special'] = 'scheduler/special';
 
 $route['promo'] = 'promo';
+$route['promo/browse'] = 'promo/browse';

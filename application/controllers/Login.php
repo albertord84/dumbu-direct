@@ -11,7 +11,8 @@ class Login extends CI_Controller {
     public function index() {
         if ($this->session->username) {
             $this->load->view('search_followers', [
-                'is_admin' => $this->is_admin($this->session->username)
+                'is_admin' => $this->is_admin($this->session->username),
+                'username' => $this->session->username
             ]);
             return;
         }

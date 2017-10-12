@@ -13,6 +13,8 @@ class Compose extends CI_Controller {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
             $this->load->view('compose_direct_message', [
+                'username' => $this->session->username,
+                'is_admin' => $this->session->is_admin != NULL,
                 'follower_ids' => $this->session->follower_ids,
                 'follower_names' => $this->session->follower_names
             ]);
