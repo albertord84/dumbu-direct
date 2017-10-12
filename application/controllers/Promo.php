@@ -126,8 +126,8 @@ class Promo extends CI_Controller {
         if ($this->session->is_admin) {
             $this->load->database();
             $data = [
-                'user_id' => $this->input-get('sender'),
-                'msg_text' => $this->input-get('promo'),
+                'user_id' => $this->input->post('sender_id'),
+                'msg_text' => $this->input->post('promo'),
                 'sent' => 2,
                 'promo' => 1,
                 'processing' => 0,

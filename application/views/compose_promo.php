@@ -49,13 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <input type="text" class="form-control input-lg typeahead"
                                                id="sender-name" data-ng-model="sender"
                                                name="sender" placeholder="Search name of the promotion sender...">
+                                        <input type="hidden" name="sender_id"
+                                               value="{{senderId}}">
                                     </div>
                                 </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"
                                                 type="submit" 
-                                                data-ng-disabled="!promoText || !sender">Enqueue the promotion</button>
+                                                data-ng-disabled="!promoText || !senderId">Enqueue the promotion</button>
                                     </div>
                                 </div>
                             </fieldset>

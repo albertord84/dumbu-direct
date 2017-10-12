@@ -67,8 +67,7 @@ angular.module('dumbu')
             
             selectSender: function ($scope, sender)
             {
-                var user_id = sender.id;
-                $scope.sender = user_id;
+                $scope.senderId = sender.id;
                 $scope.$digest();
             }
 
