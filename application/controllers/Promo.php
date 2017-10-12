@@ -101,4 +101,48 @@ class Promo extends CI_Controller {
         }
     }
     
+    public function sender($username) {
+        if ($this->session->is_admin) {
+            $this->load->database();
+            $this->db->like('username', $username);
+            $this->db->limit(10);
+            $senders = $this->db->get('client')->result();
+            $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($senders, JSON_PRETTY_PRINT));
+            return;
+        }
+        else {
+            $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'success' => FALSE,
+                    'message' => 'Access not allowed for your privileges level'
+                ], JSON_PRETTY_PRINT));
+        }
+    }
+    
+    public function add() {
+        if ($this->session->is_admin) {
+            $this->load->database();
+            $data = [
+                'user_id' => $this->input-get('sender'),
+                'msg_text' => $this->input-get('promo'),
+                'sent' => 2,
+                'promo' => 1,
+                'processing' => 0,
+                'failed' => 0,
+                'sent_at' => 0
+            ];
+            $this->db->insert('message', $data);
+            $this->load->view('browse_promo', [
+                'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
+                'username' => $this->session->username
+            ]);
+            return;
+        }
+        else {
+            show_error('You have not enough privileges to access here...', 500);
+        }
+    }
 }

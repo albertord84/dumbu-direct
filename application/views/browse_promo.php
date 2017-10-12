@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css') . '?' . d_guid(); ?>">
     </head>
-    <body data-ng-controller="promo">
+    <body data-ng-controller="promoBrowser">
         <div id="promos-container" class="container">
             <?php include __DIR__ . '/navbar.php'; ?>
             <div class="row">
@@ -52,13 +52,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <th>Promotional text</th>
                                             <th></th>
                                         </tr>
-                                        <tr data-ng-repeat="activePromo in activePromos">
-                                            <td data-ng-bind="activePromo.sender.username"></td>
+                                        <tr data-ng-repeat="activePromo in activePromos" class="promo">
+                                            <td>
+                                                <a href data-ng-click="selectSender()" class="promo-action text-info" title="Change sender"><i class="fa fa-user"></i></a>&nbsp;
+                                                <span data-ng-bind="activePromo.sender.username"></span>
+                                            </td>
                                             <td class="text-muted">
                                                 <span data-ng-bind="activePromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
                                             </td>
-                                            <td></td>
+                                            <td>
+                                                <a href data-ng-click="collectFollowers()" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
+                                                &nbsp;
+                                                <a href data-ng-click="editPromo()" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
+                                                &nbsp;
+                                                <a href data-ng-click="removePromo()" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -73,16 +82,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            data-ng-if="sentPromos.length>0">
                                         <tr>
                                             <th>Sender</th>
-                                            <th>Promotional text</th>
+                                            <th>Promotion sent</th>
+                                            <th>Finish date</th>
                                             <th></th>
                                         </tr>
-                                        <tr data-ng-repeat="sentPromo in sentPromos">
-                                            <td data-ng-bind="sentPromo.sender.username"></td>
+                                        <tr data-ng-repeat="sentPromo in sentPromos" class="promo">
+                                            <td>
+                                                <span data-ng-bind="sentPromo.sender.username"></span>
+                                            </td>
                                             <td class="text-muted">
                                                 <span data-ng-bind="sentPromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
                                             </td>
-                                            <td></td>
+                                            <td data-ng-bind="sentPromo.sent_at | ts2human"></td>
+                                            <td>
+                                                <a href data-ng-click="promoStats()" class="promo-action" title="View stats"><i class="fa fa-bar-chart"></i></a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -97,16 +112,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            data-ng-if="failedPromos.length>0">
                                         <tr>
                                             <th>Sender</th>
-                                            <th>Promotional text</th>
+                                            <th>Failed promotional text</th>
+                                            <th>Failure date</th>
                                             <th></th>
                                         </tr>
-                                        <tr data-ng-repeat="failedPromo in failedPromos">
+                                        <tr data-ng-repeat="failedPromo in failedPromos" class="promo">
                                             <td data-ng-bind="failedPromo.sender.username"></td>
                                             <td class="text-muted">
                                                 <span data-ng-bind="failedPromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
                                             </td>
-                                            <td></td>
+                                            <td data-ng-bind="failedPromo.sent_at | ts2human"></td>
+                                            <td><a href data-ng-click="enqueuePromo()" class="promo-action" title="Enqueue again"><i class="fa fa-retweet"></i></a></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -123,13 +140,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
         <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/controller/promo.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/service/promo.js') . '?' . d_guid(); ?>"></script>
         <img src="<?php echo base_url('img/loading.gif') . '?' . d_guid(); ?>" class="hidden loading" />
         <script>
-                                                Dumbu.siteUrl = "<?php echo site_url(); ?>";
-                                                Dumbu.baseUrl = "<?php echo base_url(); ?>";
+            Dumbu.siteUrl = "<?php echo site_url(); ?>";
+            Dumbu.baseUrl = "<?php echo base_url(); ?>";
         </script>
     </body>
 </html>

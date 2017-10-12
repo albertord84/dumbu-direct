@@ -22,6 +22,8 @@ $route['scheduler/special'] = 'scheduler/special';
 $route['promo'] = 'promo';
 $route['promo/browse'] = 'promo/browse';
 
+$route['promo/new'] = 'promo/add';
 $route['promo/active'] = 'promo/active';
 $route['promo/sent'] = 'promo/sent';
 $route['promo/failed'] = 'promo/failed';
+$route['promo/sender/(:any)'] = 'promo/sender/$1';

@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css') . '?' . d_guid(); ?>">
     </head>
-    <body data-ng-controller="promo">
+    <body data-ng-controller="promoComposer">
         <div id="compose-promo-container" class="container">
             <?php include __DIR__ . '/navbar.php'; ?>
             <div class="row">
@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php } ?>
                     <div class="span4 well">
                         <form id="formCompose" accept-charset="UTF-8"
-                              action="<?php echo site_url('user/dashboard'); ?>" method="POST">
+                              action="<?php echo site_url('promo/new'); ?>" method="POST">
                             <fieldset data-ng-disabled="processing">
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -39,16 +39,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                   id="message" name="_m"
                                                   placeholder="Type in the promotion text..."
                                                   rows="5" form="formCompose"
-                                                  data-ng-model="msgText"></textarea>
-                                        <input type="hidden" name="message"
-                                               value="{{msgText}}">
+                                                  data-ng-model="promoText"></textarea>
+                                        <input type="hidden" name="promo"
+                                               value="{{promoText}}">
+                                    </div>
+                                </div><br>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input type="text" class="form-control input-lg typeahead"
+                                               id="sender-name" data-ng-model="sender"
+                                               name="sender" placeholder="Search name of the promotion sender...">
                                     </div>
                                 </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"
                                                 type="submit" 
-                                                data-ng-disabled="!msgText">Enqueue the promotion</button>
+                                                data-ng-disabled="!promoText || !sender">Enqueue the promotion</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -63,6 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
+        <script src="<?php echo base_url('js/lib/typeahead.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/handlebars.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/controller/promo.js') . '?' . d_guid(); ?>"></script>

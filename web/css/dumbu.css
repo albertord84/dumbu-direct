@@ -215,3 +215,15 @@ body .container {
     border-top: none;
     background-color: #fff;
 }
+
+#promos-container .promo-tabs .tab-pane table .promo a.promo-action {
+    text-decoration: none;
+}
+
+#promos-container .promo-tabs .tab-pane table .promo a.promo-action:link {
+    opacity: .4;
+}
+
+#promos-container .promo-tabs .tab-pane table .promo a.promo-action:hover {
+    opacity: 1;
+}
