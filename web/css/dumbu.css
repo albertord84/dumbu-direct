@@ -206,3 +206,12 @@ body .container {
 #compose-container div.error {
     margin-bottom: 15px;
 }
+
+#promos-container .promo-tabs .tab-pane table {
+    margin-top: 10px;
+}
+
+#promos-container .promo-tabs .tab-pane table th {
+    border-top: none;
+    background-color: #fff;
+}

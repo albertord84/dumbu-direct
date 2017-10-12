@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$uuid = substr(md5(date('ds')), 0, 10);
 ?>
 <!DOCTYPE html>
 <html data-ng-app="dumbu">

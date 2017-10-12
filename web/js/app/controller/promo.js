@@ -1,12 +1,11 @@
 angular.module('dumbu')
 
-.controller('login', [
-  '$scope', '$log', 'loginService',
-  function ($scope, $log, loginService)
-  {
-    $scope.auth = function ()
+.controller('promo', [
+    '$scope', '$log', 'promoService',
+    function ($scope, $log, promoService)
     {
-      loginService.auth($scope);
-    };
-  }
+        promoService.getActive($scope);
+        promoService.getSent($scope);
+        promoService.getFailed($scope);
+    }
 ]);

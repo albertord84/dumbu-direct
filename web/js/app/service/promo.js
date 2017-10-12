@@ -2,35 +2,37 @@
 
 angular.module('dumbu')
 
-.service('loginService', [
-  '$log', '$http', '$location', '$timeout',
-  function ($log, $http, $location, $timeout)
-  {
-    var self = {
+.service('promoService', [
+    '$log', '$http', '$location', '$timeout', '$resource',
+    function ($log, $http, $location, $timeout, $resource)
+    {
+        var self = {
 
-      auth: function ($scope)
-      {
-        $log.log('login user ' + $scope.username);
-        Dumbu.blockUI();
-        $http.post(Dumbu.siteUrl + '/auth', {
-          username: $scope.username,
-          password: $scope.password
-        }).then(function (response){
-          $log.log(response.data);
-          Dumbu.unblockUI();
-          $timeout(function (){
-            window.location = Dumbu.siteUrl + '/search';
-          }, 1000);
-        }, function (){
-          $log.log(arguments);
-          Dumbu.unblockUI();
-          swal('Authentication error!',
-            'Something is wrong with the provided Instagram credentials',
-            'error');
-        });
-      }
+            getActive: function ($scope)
+            {
+                var Promo = $resource(Dumbu.siteUrl + '/promo/active');
+                var promos = Promo.query(function () {
+                    $scope.activePromos = promos;
+                });
+            },
 
-    };
-    return self;
-  }
+            getSent: function ($scope)
+            {
+                var Promo = $resource(Dumbu.siteUrl + '/promo/sent');
+                var promos = Promo.query(function () {
+                    $scope.sentPromos = promos;
+                });
+            },
+
+            getFailed: function ($scope)
+            {
+                var Promo = $resource(Dumbu.siteUrl + '/promo/failed');
+                var promos = Promo.query(function () {
+                    $scope.failedPromos = promos;
+                });
+            }
+
+        };
+        return self;
+    }
 ]);
