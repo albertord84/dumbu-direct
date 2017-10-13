@@ -152,7 +152,8 @@ angular.module('dumbu')
             {
                 swal({
                     title: 'Are you sure?',
-                    html: "You are going to remove this promotion",
+                    html: "You are going to remove this promotion:<br><br>"+
+                            "<b class=\"text-muted\">"+promo.msg_text.substring(0,30)+"...</b>",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
