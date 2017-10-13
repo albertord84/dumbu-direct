@@ -30,22 +30,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                       novalidate="novalidate" name="loginForm">
                                     <fieldset data-ng-disabled="authenticating">
                                         <div class="form-group">
-                                            <label for="username" class="control-label">Username</label>
-                                            <input type="text" class="form-control" id="username" 
+                                            <input type="text" class="form-control input-lg" id="username" 
                                                    name="username" value="" required="" autocomplete="off"
                                                    data-ng-model="username" title="Please, enter you username"
-                                                   placeholder="my_instagram_user_01">
+                                                   placeholder="Instagram username...">
                                             <span class="help-block"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="password" class="control-label">Password</label>
-                                            <input type="password" class="form-control" id="password"
+                                            <input type="password" class="form-control input-lg" id="password"
                                                    name="password" value="" required="" autocomplete="off"
-                                                   placeholder="Some secret..."
+                                                   placeholder="Password..."
                                                    data-ng-model="password" title="Please enter your password">
                                             <span class="help-block"></span>
                                         </div>
-                                        <button type="button" class="btn btn-success btn-block"
+                                        <button type="button" class="btn btn-lg btn-success btn-block"
                                                 data-ng-click="auth()" id="bt-auth"
                                                 data-ng-disabled="loginForm.$invalid">Log in</button>
                                     </fieldset>
