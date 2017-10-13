@@ -34,7 +34,7 @@ angular.module('dumbu')
             {
                 $('#loginForm input.input-lg').keypress(function(eventData){
                     if (eventData.keyCode !== 13) return;
-                    if ($(this).hasClass('ng-valid')) {
+                    if ($('#loginForm').hasClass('ng-valid')) {
                         $('#bt-auth').click();
                     }
                 });
