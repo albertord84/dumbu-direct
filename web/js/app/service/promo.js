@@ -1,4 +1,4 @@
-/* global Dumbu, Bloodhound */
+/* global Dumbu, Bloodhound, _ */
 
 angular.module('dumbu')
 
@@ -66,11 +66,65 @@ angular.module('dumbu')
                     }
                 });
             },
+
+            senderChangeTypeahead: function($scope)
+            {
+                var datasource = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    remote: {
+                        url: Dumbu.siteUrl + '/promo/sender/%QUERY',
+                        wildcard: '%QUERY'
+                    }
+                });
+
+                $('#sender-name').typeahead(null, {
+                    name: 'sender-names',
+                    hint: true,
+                    highlight: true,
+                    display: 'username',
+                    source: datasource,
+                    minLength: 3
+                });
+
+                $('#sender-name').on({
+                    'typeahead:selected': function (e, datum) {
+                        $scope.newSender = datum;
+                    },
+                    'typeahead:asyncrequest': function (jq, query, dsName) {
+                        $('.async-loading').removeClass('hidden');
+                    },
+                    'typeahead:asyncreceive': function (jq, query, dsName) {
+                        $('.async-loading').addClass('hidden');
+                    }
+                });
+            },
             
             selectSender: function ($scope, sender)
             {
                 $scope.senderId = sender.id;
                 $scope.$digest();
+            },
+
+            replaceSender: function ($scope)
+            {
+                $('div.sender-select').modal('hide');
+                Dumbu.blockUI();
+                var Promo = $resource(Dumbu.siteUrl + '/promo/:msgId/:userId', {
+                    msgId: $scope.selectedPromo.id,
+                    userId: $scope.newSender.id
+                });
+                Promo.save(function(){
+                    $timeout(function(){
+                        var i = _.findIndex($scope.activePromos, function(o){
+                            return o.id === $scope.selectedPromo.id;
+                        });
+                        $scope.activePromos[i].sender = $scope.newSender;
+                        Dumbu.unblockUI();
+                    }, 1000);
+                }, function(){
+                    Dumbu.unblockUI();
+                });
             },
 
             moreActive: function($scope)
@@ -91,6 +145,36 @@ angular.module('dumbu')
                     }, 1000);
                 }, function () {
                     Dumbu.unblockUI();
+                });
+            },
+            
+            removePromo: function(promo, $scope)
+            {
+                swal({
+                    title: 'Are you sure?',
+                    html: "You are going to remove this promotion",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonText: 'Yes, do it!'
+                }).then(function () {
+                    Dumbu.blockUI();
+                    var Promo = $resource(Dumbu.siteUrl + '/promo/:id', {
+                        id: promo.id
+                    });
+                    Promo.delete(function () {
+                        $timeout(function(){
+                            $scope.activeCount--;
+                            _.remove($scope.activePromos, function(o){
+                                return o.id === promo.id;
+                            });
+                            Dumbu.unblockUI();
+                        }, 1000);
+                    }, function () {
+                        Dumbu.unblockUI();
+                    });
                 });
             }
 

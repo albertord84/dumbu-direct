@@ -23,9 +23,15 @@ class Promo extends CI_Controller {
     }
 
     public function active($page = 0) {
+        $words = $this->input->get('words');
         if ($this->session->is_admin) {
             $this->load->database();
             $this->db->where('sent', 0);
+            if ($words != NULL) {
+                foreach (explode(' ', $words) as $word) {
+                    $this->db->like('msg_text', $word);
+                }
+            }
             $this->db->or_where('sent', 2);
             if ($page == 0) {
                 $this->db->limit(5);
@@ -145,11 +151,53 @@ class Promo extends CI_Controller {
                 'sent_at' => 0
             ];
             $this->db->insert('message', $data);
-            $this->load->view('browse_promo', [
-                'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
-                'username' => $this->session->username
-            ]);
+            redirect('/promo/browse', 'location');
             return;
+        }
+        else {
+            show_error('You have not enough privileges to access here...', 500);
+        }
+    }
+    
+    public function change_sender($msg_id, $user_id) {
+        if ($this->session->is_admin) {
+            $this->load->database();
+            $this->db->where('id', $msg_id);
+            $this->db->update('message', [ 'user_id' => $user_id ]);
+            $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(['success'=>TRUE], JSON_PRETTY_PRINT));
+            return;
+        }
+        else {
+            show_error('You have not enough privileges to access here...', 500);
+        }
+    }
+    
+    private function delete($msg_id)
+    {
+        $this->load->database();
+        $this->db->where('id', $msg_id);
+        $this->db->delete('message');
+        $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode(['success'=>TRUE], JSON_PRETTY_PRINT));
+        return;
+    }
+
+    public function rest($msg_id)
+    {
+        if ($this->session->is_admin) {
+            $method = $this->input->method();
+            if ($method == 'post') {
+                echo 'Not implemented yet...';
+            }
+            else if ($method == 'get') {
+                echo 'Not implemented yet...';
+            }
+            else if ($method == 'delete') {
+                $this->delete($msg_id);
+            }
         }
         else {
             show_error('You have not enough privileges to access here...', 500);

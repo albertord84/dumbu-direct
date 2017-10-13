@@ -27,3 +27,7 @@ $route['promo/active/(:any)'] = 'promo/active/$1';
 $route['promo/sent'] = 'promo/sent';
 $route['promo/failed'] = 'promo/failed';
 $route['promo/sender/(:any)'] = 'promo/sender/$1';
+$route['promo/(:num)/(:num)'] = 'promo/change_sender/$1/$2';
+
+$route['promo/(:num)'] = 'promo/rest/$1';
+

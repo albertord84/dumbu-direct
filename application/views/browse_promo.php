@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </tr>
                                         <tr data-ng-repeat="activePromo in activePromos" class="promo">
                                             <td>
-                                                <a href data-ng-click="selectSender()" class="promo-action text-info" title="Change sender"><i class="fa fa-user"></i></a>&nbsp;
+                                                <a href data-ng-click="changeSenderDialog(activePromo)" class="promo-action text-info" title="Change sender"><i class="fa fa-user"></i></a>&nbsp;
                                                 <span data-ng-bind="activePromo.sender.username"></span>
                                             </td>
                                             <td class="text-muted">
@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 &nbsp;
                                                 <a href data-ng-click="editPromo()" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
                                                 &nbsp;
-                                                <a href data-ng-click="removePromo()" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                                <a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
                                             </td>
                                         </tr>
                                     </table>
@@ -136,6 +136,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
         </div>
+        <div class="modal fade sender-select">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title"><b>Choose the new sender</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg typeahead"
+                                        id="sender-name" data-ng-model="newSender"
+                                        name="sender" placeholder="Type sender name...">
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row text-center">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <button class="btn btn-success btn-lg btn-block"
+                                        data-ng-click="replaceSender()">Accept</button>
+                                </div>
+                                <div class="col-xs-6">
+                                    <button class="btn btn-danger btn-lg btn-block"
+                                        data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/angular.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
@@ -144,6 +176,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
         <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/jquery.blockUI.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/typeahead.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/handlebars.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/controller/promo.js') . '?' . d_guid(); ?>"></script>
