@@ -22,12 +22,19 @@ class Promo extends CI_Controller {
         ]);
     }
 
-    public function active() {
+    public function active($page = 0) {
         if ($this->session->is_admin) {
             $this->load->database();
             $this->db->where('sent', 0);
             $this->db->or_where('sent', 2);
-            $this->db->limit(5);
+            if ($page == 0) {
+                $this->db->limit(5);
+            }
+            else if ($page > 0) {
+                $this->db->limit($page * 5, 5);
+            }
+            $count_sql = "select count(*) as messages from message where sent=0 or sent=2";
+            $count = current($this->db->query($count_sql)->result())->messages;
             $promos = $this->db->get('message')->result();
             foreach ($promos as $promo) {
                 $q = $this->db->query('select id, username, pk from client where id = ?', [ $promo->user_id ])
@@ -36,7 +43,10 @@ class Promo extends CI_Controller {
             }
             $this->output->set_content_type('application/json')
                 ->set_status_header(200)
-                ->set_output(json_encode($promos, JSON_PRETTY_PRINT));
+                ->set_output(json_encode([
+                    'promos' => $promos,
+                    'count' => $count
+                ], JSON_PRETTY_PRINT));
             return;
         }
         else {

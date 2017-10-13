@@ -11,8 +11,10 @@ angular.module('dumbu')
             getActive: function ($scope)
             {
                 var Promo = $resource(Dumbu.siteUrl + '/promo/active');
-                var promos = Promo.query(function () {
-                    $scope.activePromos = promos;
+                var promos = Promo.get(function () {
+                    $scope.activePromos = promos.promos;
+                    $scope.activeCount = promos.count;
+                    $scope.activePage = Math.round(promos.count / 5);
                 });
             },
 
@@ -69,6 +71,27 @@ angular.module('dumbu')
             {
                 $scope.senderId = sender.id;
                 $scope.$digest();
+            },
+
+            moreActive: function($scope)
+            {
+                Dumbu.blockUI();
+                var Promo = $resource(Dumbu.siteUrl + '/promo/active/:page', {
+                    page: $scope.activePage
+                });
+                var promos = Promo.get(function () {
+                    $timeout(function(){
+                        for (var i = 0; i < promos.promos.length; i++) {
+                            var promo = promos.promos[i];
+                            $scope.activePromos.push(promo);
+                        }
+                        $scope.activeCount = promos.count;
+                        $scope.activePage++;
+                        Dumbu.unblockUI();
+                    }, 1000);
+                }, function () {
+                    Dumbu.unblockUI();
+                });
             }
 
         };

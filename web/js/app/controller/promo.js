@@ -7,6 +7,11 @@ angular.module('dumbu')
         promoService.getActive($scope);
         promoService.getSent($scope);
         promoService.getFailed($scope);
+
+        $scope.moreActive = function()
+        {
+            promoService.moreActive($scope);
+        }
     }
 ])
 

@@ -23,7 +23,7 @@ $route['promo'] = 'promo';
 $route['promo/browse'] = 'promo/browse';
 
 $route['promo/new'] = 'promo/add';
-$route['promo/active'] = 'promo/active';
+$route['promo/active/(:any)'] = 'promo/active/$1';
 $route['promo/sent'] = 'promo/sent';
 $route['promo/failed'] = 'promo/failed';
 $route['promo/sender/(:any)'] = 'promo/sender/$1';

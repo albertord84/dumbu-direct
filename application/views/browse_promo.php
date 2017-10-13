@@ -70,6 +70,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </td>
                                         </tr>
                                     </table>
+                                    <div class="row text-center" data-ng-if="activePromos.length < activeCount">
+                                        <div class="text-muted"><a href class="btn btn-xs btn-primary" data-ng-click="moreActive()">Mas...</a></div>
+                                    </div>
                                 </div>
                                 <div id="sent" class="tab-pane fade">
                                     <div class="row text-center" data-ng-if="!sentPromos">
@@ -140,6 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
         <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/jquery.blockUI.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/controller/promo.js') . '?' . d_guid(); ?>"></script>
