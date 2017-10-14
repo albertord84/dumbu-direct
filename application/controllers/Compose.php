@@ -81,7 +81,10 @@ class Compose extends CI_Controller {
             'user_id' => $user_id,
             'msg_text' => $message,
             'sent' => 0,
-            'mass' => $this->input->post('massive') == NULL ? 0 : 1
+            'promo' => 0,
+            'processing' => 0,
+            'failed' => 0,
+            'sent_at' => 0
         ];
         $this->db->insert('message', $data);
         return $data;

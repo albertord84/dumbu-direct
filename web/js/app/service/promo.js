@@ -1,4 +1,4 @@
-/* global Dumbu, Bloodhound, _ */
+/* global Dumbu, Bloodhound, _, swal, moment */
 
 angular.module('dumbu')
 
@@ -186,6 +186,6 @@ angular.module('dumbu')
 
 .filter('ts2human', function(){
     return function(x) {
-        return moment(x*1000).format('MMM DD, HH:mm:ss')
-    }
+        return moment(x*1000).format('MMM DD, HH:mm:ss');
+    };
 });

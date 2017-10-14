@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Scheduler extends CI_Controller {
 
     public $instagram = NULL;
@@ -8,7 +10,8 @@ class Scheduler extends CI_Controller {
         set_time_limit(0);
         printf("\n%s - Procesando mensajes...\n", $this->now());
         try {
-            $this->processMessages();
+            $this->messages();
+            $this->promos();
         } catch (Exception $ex) {
             show_error('Error al procesar los mensajes: ' .
                     $ex->getMessage(), 500);
@@ -16,83 +19,6 @@ class Scheduler extends CI_Controller {
         }
         printf("%s - Terminado el procesamiento de mensajes.\n", $this->now());
         return;
-    }
-
-    public function now()
-    {
-        date_default_timezone_set(TIME_ZONE);
-        return trim(shell_exec("date \"+%d/%b %r\""));
-    }
-
-    public function getInstagram()
-    {
-        $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-    }
-
-    public function getMessage($msg_id)
-    {
-        $this->load->database();
-        $this->db->where('id', $msg_id);
-        $query = $this->db->get('message');
-        $result = $query->result();
-        if (count($result) == 1) {
-            return $result[0];
-        } else {
-            throw new Exception('No se pudo obtener el mensaje con id ' .
-                $msg_id, 500);
-        }
-    }
-
-    public function loginInstagram($user)
-    {
-        try {
-            $this->instagram->setUser($user->username, $user->password);
-            $this->instagram->login();
-            printf("Iniciada sesión en Instagram como %s\n", $user->username);
-        } catch (Exception $ex) {
-            throw new Exception('No se pudo iniciar sesión para ' .
-                $user->username, 500);
-        }
-    }
-
-    public function randomWait()
-    {
-        $secs = mt_rand(10, 30);
-        printf("Esperando %s segs para enviar\n", $secs);
-        sleep($secs);
-    }
-
-    public function setMessageFailed($msg_id)
-    {
-        $this->load->database();
-        $this->db->where('id', $msg_id);
-        $this->db->update('message', [ 'failed' => 1 ]);
-        printf("El mensaje %s se establecio como FALLIDO\n", $msg_id);
-    }
-
-    public function sendMessage($msg_id)
-    {
-        $message = $this->getMessage($msg_id);
-        $user = $this->getUser($message->user_id);
-        $followers = $this->getMessageRecipients($msg_id);
-        if (count($followers)==0) {
-            printf("El mensaje \"%s...\" ya se envio antes a los seguidores seleccionados\n",
-                trim(substr($message->msg_text, 0, 15)));
-            return;
-        }
-        $this->loginInstagram($user);
-        try {
-            $this->instagram->directMessage($followers, $message->msg_text);
-            printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
-                trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
-            $this->updateMessageStats($user->id, $msg_id, $followers);
-        }
-        catch (Exception $ex) {
-            $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
-                trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
-            $this->setMessageFailed($msg_id);
-            throw new Exception($msg, 500);
-        }
     }
 
     public function cleanInstagramApiSession($username)
@@ -103,201 +29,25 @@ class Scheduler extends CI_Controller {
         }
     }
 
-    public function getMessageRecipients($msg_id)
-    {
-        $this->load->database();
-        $this->db->where('msg_id', $msg_id);
-        $query = $this->db->get('stat');
-        $result = $query->result();
-        if (count($result) > 0) {
-            $follower_ids = [];
-            foreach ($result as $r) {
-                $follower_ids[] = $r->follower_id;
-            }
-            return $follower_ids;
-        } else {
-            return NULL;
-        }
-    }
-    
-    public function updateMessageStats($user_id, $msg_id, $followers)
-    {
-        $this->load->database();
-        foreach ($followers as $follower) {
-            $this->db->where('user_id', $user_id);
-            $this->db->where('follower_id', $follower);
-            $this->db->where('msg_id', $msg_id);
-            $this->db->update('dt', \Carbon\Carbon::now()->getTimestamp());
-        }
-    }
-
-    public function processMessages()
-    {
-        if(file_exists(ROOT_DIR . '/var/message.lock')) {
-            printf("Esta bloqueado el acceso a la cola de mensajes\n");
-            return;
-        }
-        $this->lockMessage();
-        $message_ids = $this->lastMessageIds();
-        if ($message_ids == NULL) {
-            printf("No hay mensajes en cola por ahora\n");
-            $this->unlockMessage();
-            return;
-        }
-        foreach ($message_ids as $msg_id) {
-            $this->getInstagram();
-            $this->setMessageProcessing($msg_id, 1);
-            $this->randomWait();
-            $this->sendMessage($msg_id);
-            $this->setMessageSent($msg_id);
-            $this->setMessageProcessing($msg_id, 0);
-        }
-        $this->unlockMessage();
-    }
-    
-    public function checkDailyLimit($user_id)
-    {
-        $day_start = \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
-        $this->load->database();
-        $sql = "SELECT COUNT(*) AS count FROM stat WHERE user_id = ? AND dt >= ?";
-        $query = $this->db->query($sql, array($user_id, $day_start));
-        $result = $query->result();
-        return $result[0]->count;
-    }
-
-    public function processSpecialMessages()
-    {
-        if(file_exists(ROOT_DIR . '/var/message.lock')) {
-            printf("Esta bloqueado el acceso a la cola de promociones\n");
-            return;
-        }
-        $this->lockMessage();
-        $messages = $this->lastSpecialMessages();
-        if ($messages == NULL) {
-            printf("No hay mensajes especiales en cola por ahora\n");
-            $this->unlockMessage();
-            return;
-        }
-        foreach ($messages as $message) {
-            $user_id = $message->user_id;
-            $pk = $this->getUser($user_id)->pk;
-            if (!$this->hasDefinedFollowers($pk)) {
-                printf("No se ha definido lista de seguidores del mensaje: \"%s...\"\n",
-                    trim(substr($message->msg_text, 0, 15)));
-                continue;
-            }
-            $followers = $this->getSpecialMessageRecipients($message->id);
-            if ($followers == NULL) {
-                printf("Ya se envio este mensaje \"%s...\" a toda la lista de seguidores\n",
-                    trim(substr($message->msg_text, 0, 15)));
-                $this->setMessageSent($message->id);
-                continue;
-            }
-            try {
-                $this->getInstagram();
-                $this->setMessageProcessing($message->id, 1);
-                $this->sendSpecialMessage($message->id, $followers);
-                $this->setMessageProcessing($message->id, 0);
-                if ($this->getSpecialRecipientsCount($pk)===0) {
-                    $this->setMessageSent($message->id);
-                }
-                $this->popAlreadyTexted($pk, $followers);
-                $this->insertSpecialMessageStat($message->id, $followers);
-            } catch (Exception $ex) {
-                $this->setMessageProcessing($message->id, 0);
-                $this->setMessageFailed($message->id);
-                printf("No se pudo enviar el mensaje especial \"%s...\"\n",
-                    trim(substr($message->msg_text, 0, 15)));
-                printf("CAUSA: \"%s...\"\n", $ex->getMessage());
-                continue;
-            }
-        }
-        $this->unlockMessage();
-    }
-
-    public function getUser($user_id) {
-        $this->load->database();
-        $this->db->where('id', $user_id);
-        $query = $this->db->get('client');
-        $result = $query->result();
-        if (count($result) == 1) {
-            return $result[0];
-        } else {
-            throw new Exception('No se pudo obtener los datos del usuario con id ' .
-                $message->user_id, 500);
-        }
-    }
-
-    public function lockMessage() {
-        write_file(ROOT_DIR . '/var/message.lock', '');
-    }
-
-    public function unlockMessage() {
-        $lock_file = ROOT_DIR . '/var/message.lock';
-        if (file_exists($lock_file)) {
-            unlink($lock_file);
-        }
-    }
-
-    public function lastMessageIds() {
-        $this->load->database();
-        $this->db->where('processing', 0);
-        $this->db->where('sent', 0);
-        $this->db->where('promo', 0);
-        $this->db->limit(5);
-        $query = $this->db->get('message');
-        $messages = $query->result();
-        $resp = [];
-        if (count($messages) == 0) {
-            return NULL;
-        }
-        foreach ($messages as $message) {
-            $resp[] = $message->id;
-        }
-        return $resp;
-    }
-
     public function setMessageProcessing($msg_id, $status)
     {
-        $this->load->database();
         $this->db->where('id', $msg_id);
         $this->db->update('message', [ 'processing' => $status ]);
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $status == 0 ? 'PROCESADO' : 'PROCESANDO');
     }
 
-    public function setMessageSent($msg_id)
+    public function setMessageSent($msg_id, $sent = 0)
     {
-        $this->load->database();
+        date_default_timezone_set(TIME_ZONE);
         $this->db->where('id', $msg_id);
         $this->db->update('message', [
             'sent' => 1,
             'failed' => 0,
             'sent_at' => \Carbon\Carbon::now()->timestamp
         ]);
-        printf("Se actualizo el mensaje con id %s a estado: ENVIADO\n", $msg_id);
-    }
-
-    public function lastSpecialMessages() {
-        $msg_list = [];
-        $this->load->database();
-        $this->db->where('processing', 0);
-        $this->db->where('failed', 0);
-        $this->db->where('sent', 0);
-        $this->db->where('promo', 1);
-        $this->db->limit(20);
-        $query = $this->db->get('message');
-        $messages = $query->result();
-        if (count($messages) == 0) { return NULL; }
-        foreach ($messages as $message) {
-            $limit = $this->checkDailyLimit($message->user_id);
-            if ($limit < 200) { $msg_list[] = $message; }
-            else {
-                printf("Se excluye a %s del envio porque alcanzo el limite diario\n",
-                    $this->getUser($message->user_id)->username);
-            }
-            if (count($msg_list) == 5) { break; }
-        }
-        if (count($msg_list) == 0) { return NULL; }
-        return $msg_list;
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $sent == 0 ? 'NO ENVIADO' : 'ENVIADO');
     }
 
     public function hasDefinedFollowers($pk)
@@ -306,7 +56,156 @@ class Scheduler extends CI_Controller {
         return $exists_followers_file;
     }
 
-    public function getSpecialMessageRecipients($msg_id)
+    public function messageFollowers($user_id = 1, $msg_id = 32)
+    {
+        $stats = $this->db->where('user_id', $user_id)
+            ->where('msg_id', $msg_id)->get('stat')->result();
+        $ids = [];
+        foreach ($stats as $stat) {
+            $ids[] = $stat->follower_id;
+        }
+        printf("- Seguidores seleccionados [%s]\n", implode(',', $ids));
+        return $ids;
+    }
+    
+    public function updateMessageStat($user_id, $msg_id, $followers)
+    {
+        date_default_timezone_set(TIME_ZONE);
+        foreach ($followers as $follower) {
+            $this->db->where('msg_id', $msg_id)
+                ->where('user_id', $user_id)
+                ->where('follower_id', $follower)
+                ->update('stat', [
+                    'dt' => \Carbon\Carbon::now()->timestamp
+                ]);
+        }
+    }
+
+    public function messages()
+    {
+        set_time_limit(0);
+        $this->load->database();
+        printf("%s - PROCESANDO MENSAJES ENVIADOS DESDE LA WEB...\n", $this->now());
+        if ($this->messagesLocked()) { $this->interrupt('- Esta bloqueada la cola de mensajes'); }
+        $this->lockMessage();
+        $messages = $this->lastMessages();
+        if (count($messages) === 0) {
+            printf("- No hay mensajes en cola por ahora\n");
+            $this->unlockMessage();
+            printf("%s - TERMINADO EL PROCESAMIENTO DE MENSAJES...\n", $this->now());
+            return;
+        }
+        foreach ($messages as $msg) {
+            try {
+                $user = $this->getUser($msg->user_id);
+                if ($this->dailyLimitPassed($user->id)) {
+                    printf("* Procesado el mensaje %s...\n", $msg->id);
+                    continue;
+                }
+                $followers = $this->messageFollowers($msg->user_id, $msg->id);
+                $this->getInstagram();
+                $this->loginInstagram($user->username, $user->password);
+                $this->setMessageProcessing($msg->id, 1);
+                $this->sendGreeting($followers);
+                $this->randomWait();
+                $this->sendMessage($msg->id, $followers);
+                $this->updateMessageStat($msg->user_id, $msg->id, $followers);
+                $this->setMessageSent($msg->id, 1);
+                $this->setMessageProcessing($msg->id, 0);
+                $this->updateSentDate($msg->id);
+            } catch (Exception $ex) {
+                $this->setMessageFailed($msg->id, 1);
+                $this->setMessageProcessing($msg->id, 0);
+                $this->unlockMessage();
+                $this->interrupt($ex->getMessage());
+            }
+        }
+        $this->unlockMessage();
+        printf("%s - TERMINADO EL PROCESAMIENTO DE MENSAJES...\n", $this->now());
+    }
+
+    public function promos()
+    {
+        set_time_limit(0);
+        $this->load->database();
+        printf("%s - PROCESANDO MENSAJES PROMOCIONALES...\n", $this->now());
+        if ($this->messagesLocked()) { $this->interrupt('- Esta bloqueada la cola de mensajes'); }
+        $this->lockMessage();
+        $messages = $this->lastMessages(TRUE);
+        if (count($messages) === 0) {
+            printf("- No hay promociones en cola por ahora\n");
+            $this->unlockMessage();
+            printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
+            return;
+        }
+        $this->getInstagram();
+        foreach ($messages as $message) {
+            printf("* Procesando promocion %s...\n", $message->id);
+            $this->setMessageProcessing($message->id, 1);
+            $user = $this->getUser($message->user_id);
+            if ($this->promoRecipientsCount($user->pk)==0) {
+                $this->setMessageProcessing($message->id, 0);
+                $this->setMessageSent($message->id, 1);
+                printf("* Terminado el envio de la promocion a todos los seguidores...\n");
+                continue;
+            }
+            if ($this->dailyLimitPassed($user->id)) {
+                $this->setMessageProcessing($message->id, 0);
+                printf("* Procesada la promocion %s...\n", $message->id);
+                continue;
+            }
+            try {
+                $this->loginInstagram($user->username, $user->password);
+                $followers = $this->promoRecipients($message->id);
+                $_followers = array_values($followers);
+                $this->purgePromoRecipientsList($message->id, $followers);
+                if (count($followers)===0) {
+                    $this->setMessageProcessing($message->id, 0);
+                    continue;
+                }
+                $this->sendGreeting($followers);
+                $this->randomWait();
+                $this->sendMessage($message->id, $followers);
+                $this->updateSentDate($message->id);
+                $this->insertStat($message->id, $followers);
+                $this->popAlreadyTexted($user->pk, $_followers);
+                $this->setMessageProcessing($message->id, 0);
+            }
+            catch (Exception $ex) {
+                $this->setMessageFailed($message->id, 1);
+                $this->setMessageProcessing($message->id, 0);
+                $this->unlockMessage();
+                $this->interrupt($ex->getMessage());
+            }
+            printf("* Procesado el mensaje %s...\n", $message->id);
+        }
+        $this->unlockMessage();
+        printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
+    }
+    
+    protected function now() {
+        date_default_timezone_set(TIME_ZONE);
+        return \Carbon\Carbon::now()->format('d-M H:i:s');
+    }
+
+    public function getInstagram() {
+        if ($this->instagram !== NULL) { return $this->instagram; }
+        $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        printf("- Obtenida instancia del objeto Instagram\n");
+    }
+    
+    public function alreadyTexted($pk, $msg_id)
+    {
+        $sql = "select count(*) as messages from stat "
+                . "where follower_id = ? and msg_id = ?";
+        $result = $this->db->query($sql, [
+            'follower_id' => $pk,
+            'msg_id' => $msg_id
+        ])->result();
+        return $result[0]->messages > 0 ? TRUE : FALSE;
+    }
+    
+    public function promoRecipients($msg_id)
     {
         $message = $this->getMessage($msg_id);
         $pk = $this->getUser($message->user_id)->pk;
@@ -314,116 +213,51 @@ class Scheduler extends CI_Controller {
         $c = mt_rand(1, 5);
         $followers = trim(shell_exec("head -n $c $followers_file"));
         if ($followers == '') { return NULL; }
-        $followers_array = explode(PHP_EOL, $followers);
-        printf("Se enviara el mensaje a los seguidores: [%s]\n",
-                implode(',', $followers_array));
-        return $followers_array;
+        $promo_recip = explode(PHP_EOL, $followers);
+        printf("- Se enviara promocion a seguidores: [%s]\n", implode(',', $promo_recip));
+        return $promo_recip;
     }
-
-    public function getSpecialRecipientsCount($pk)
+    
+    public function promoRecipientsCount($pk)
     {
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
         $count = trim(shell_exec("cat $followers_file | wc -l"));
+        printf("- La promocion tiene %s seguidores pendientes...\n",
+            $count);
         return intval($count);
     }
-
-    public function randomGreeting()
+    
+    public function promoDefinedFollowersList($pk)
     {
-        $greetings = [
-            0 => "Oi, todo bem?",
-            1 => "Olá, todo bem?",
-            2 => "Oi, como vai?",
-            3 => "Como vai tudo?",
-            4 => "Eu tenho algo para lhe dizer",
-            5 => "Olá, como vai?"
-        ];
-        $n = mt_rand(0, count($greetings) - 1);
-        printf("Saludo aleatorio escogido: \"%s\"\n", $greetings[$n]);
-        return $greetings[$n];
+        $exists_followers_file = file_exists(FOLLOWERS_LIST_DIR . "/$pk.txt");
+        return $exists_followers_file;
     }
     
-    public function alreadyTextedWithSpecial($pk, $followers)
+    public function purgePromoRecipientsList($msg_id, &$followers)
     {
-        $_followers = [];
-        foreach ($followers as $follower) {
-            $this->load->database();
-            $this->db->where('follower_id', $follower);
-            $query = $this->db->get('stat');
-            $stats = $query->result();
-            if (count($stats) === 0) {
-                $_followers[] = $follower;
+        $count = count($followers);
+        for ($i = 0; $i < $count; $i++) {
+            $already_texted = $this->alreadyTexted($followers[$i], $msg_id);
+            if ($already_texted) {
+                printf("- Sacando de la lista al seguidor %s porque ya recibio promocion\n",
+                        $followers[$i]);
+                array_splice($followers, $i, 1);
+                $count--;
             }
-        }
-        return count($_followers) > 0 ? $_followers : NULL;
-    }
-
-    public function sendSpecialMessage($msg_id, $followers)
-    {
-        $message = $this->getMessage($msg_id);
-        $user = $this->getUser($message->user_id);
-        $this->loginInstagram($user);
-        try {
-            $_followers = $this->alreadyTextedWithSpecial($user->pk, $followers);
-            if ($_followers == NULL) {
-                printf("Estos seguidores [%s] ya fueron texteados con promociones\n",
-                    implode(',', $followers));
-                return;
-            }
-            $this->randomWait();
-            $this->instagram->directMessage($_followers, $this->randomGreeting());
-            $this->randomWait();
-            $this->instagram->directMessage($_followers, $message->msg_text);
-            printf("Enviado mensaje: \"%s...\"; a los seguidores [%s]\n",
-                trim(substr($message->msg_text, 0, 15)), implode(',', $followers));
-            $this->updateMessageDate($msg_id);
-        } catch (Exception $ex) {
-            $msg = sprintf("Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
-                trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
-            throw new Exception($msg, 500);
         }
     }
     
-    public function updateMessageDate($msg_id)
+    /**
+     * 
+     * @param array() $followers Arreglo con la lista de pks de los seguidores
+     * a los que se les envio el mensaje.
+     */
+    public function insertStat($msg_id, $followers)
     {
-        $this->load->database();
-        $this->db->where('id', $msg_id);
-        $this->db->update('message', [
-            'sent_at' => \Carbon\Carbon::now()->timestamp
-        ]);
-    }
-
-    public function popAlreadyTexted($pk, $followers)
-    {
-        $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
-        foreach ($followers as $follower) {
-            $cmd = "sed -i '/$follower/d' " . $followers_file;
-            shell_exec($cmd);
-        }
-        printf("Sacados de la lista de destinatarios los perfiles [%s]\n",
-            implode(',', $followers));
-    }
-
-    public function followerAlreadyStat($pk, $msg_id)
-    {
-        $this->load->database();
-        $this->db->where('follower_id', $pk);
-        $this->db->where('msg_id', $msg_id);
-        $query = $this->db->get('stat');
-        $result = $query->result();
-        if (count($result) >= 1) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function insertSpecialMessageStat($msg_id, $followers)
-    {
+        date_default_timezone_set(TIME_ZONE);
         $message = $this->getMessage($msg_id);
-        $this->load->database();
         foreach ($followers as $follower) {
             if (trim($follower)=='') { continue; }
-            if ($this->followerAlreadyStat($follower, $msg_id)) { continue; }
             $data = [
                 'user_id' => $message->user_id,
                 'follower_id' => $follower,
@@ -432,21 +266,221 @@ class Scheduler extends CI_Controller {
             ];
             $this->db->insert('stat', $data);
         }
+        printf("- Registrado el envio para los seguidores [%s]\n",
+            implode(',', $followers));
+    }
+    
+    public function popAlreadyTexted($pk, $followers)
+    {
+        $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
+        foreach ($followers as $follower) {
+            $cmd = "sed -i '/$follower/d' " . $followers_file;
+            shell_exec($cmd);
+        }
+        printf("- Sacados de la lista de destinatarios los perfiles [%s]\n",
+            implode(',', $followers));
     }
 
-    public function special()
+    public function randomGreeting($lang = 'pt')
     {
-        set_time_limit(0);
-        printf("\n%s - Procesando mensajes especiales...\n", $this->now());
+        $greetings = [ 
+            'pt' => [
+                0 => "Oi, todo bem?",
+                1 => "Olá, todo bem?",
+                2 => "Oi, como vai?",
+                3 => "Como vai tudo?",
+                4 => "Eu tenho algo para lhe dizer",
+                5 => "Olá, como vai?",
+            ],
+            'en' => [
+                0 => "Hi!",
+                1 => "How are you?",
+                2 => "How do you feel today? I want to tell you something...",
+                3 => "I have something to tell you...",
+            ]
+        ];
+        $n = mt_rand(0, count($greetings[$lang]) - 1);
+        $greeting = $greetings[$lang][$n];
+        printf("- Saludo aleatorio escogido: \"%s\"\n", $greeting);
+        return $greeting;
+    }
+    
+    public function sendGreeting($followers)
+    {
         try {
-            $this->processSpecialMessages();
+            $greeting = $this->randomGreeting();
+            $this->instagram->directMessage($followers, $greeting);
+            printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
+        }
+        catch (Exception $ex) {
+            $msg = sprintf("- Error al enviar el saludo inicial; ERROR: \"%s\"\n",
+                $ex->getMessage());
+            throw new Exception($msg);
+        }
+    }
+    
+    public function updateSentDate($msg_id)
+    {
+        date_default_timezone_set(TIME_ZONE);
+        $this->db->where('id', $msg_id)
+            ->update('message', [
+                'sent_at' => \Carbon\Carbon::now()->timestamp
+            ]);
+    }
+    
+    public function sendMessage($msg_id, $followers)
+    {
+        $message = $this->getMessage($msg_id);
+        try {
+            $this->instagram->directMessage($followers, $message->msg_text);
+            printf("- Se envio el mensaje \"%s...\"; a los seguidores [%s]\n",
+                trim(substr($message->msg_text, 0, 15)), implode(", ", $followers));
+        }
+        catch (Exception $ex) {
+            $msg = sprintf("- Error al enviar el mensaje \"%s...\"; ERROR: \"%s\"\n",
+                trim(substr($message->msg_text, 0, 15)), $ex->getMessage());
+            $this->setMessageFailed($msg_id, 1);
+            $this->setMessageProcessing($msg_id, 0);
+            throw new Exception($msg, 500);
+        }
+    }
+    
+    public function setMessageFailed($msg_id, $failed = 0)
+    {
+        $this->db->where('id', $msg_id)
+                ->update('message', [
+                    'failed' => $failed
+                ]);
+        printf("- Se establecio el estado del mensaje a \"%s\"...\n",
+                $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
+    }
+    
+    public function isOldMsg($msg_id, $minutes = 10)
+    {
+        date_default_timezone_set(TIME_ZONE);
+        $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
+        $messages = $this->db->where('id', $msg_id)
+                ->get('message')->result();
+        if ($messages[0]->sent_at <= $before) {
+            return TRUE;
+        }
+        else {
+            FALSE;
+        }
+    }
+    
+    public function getMessage($msg_id)
+    {
+        $messages = $this->db->where('id', $msg_id)->get('message')
+            ->result();
+        return $messages[0];
+    }
+    
+    public function getUser($user_id)
+    {
+        $users = $this->db->where('id', $user_id)->get('client')->result();
+        printf("- Obtenidos datos del usuario %s\n", $users[0]->username);
+        return $users[0];
+    }
+
+    public function loginInstagram($username, $password) {
+        try {
+            $this->instagram->setUser($username, $password);
+            $this->instagram->login();
+            printf("- Iniciada sesión en Instagram como %s\n", $username);
         } catch (Exception $ex) {
-            show_error('Error al procesar los mensajes especiales: ' .
-                    $ex->getMessage(), 500);
+            $msg = sprintf("- No se pudo iniciar sesion para \"%s\". CAUSA: \"%s\"\n", $username, $ex->getMessage());
+            throw new Exception($msg);
+        }
+    }
+
+    public function randomWait() {
+        $secs = mt_rand(10, 30);
+        printf("- Esperando %s segs para continuar\n", $secs);
+        sleep($secs);
+    }
+    
+    public function lockMessage() {
+        file_put_contents(ROOT_DIR . '/var/message.lock', '');
+        printf("- Bloqueada la cola de mensajes...\n");
+    }
+    
+    public function unlockMessage() {
+        if (file_exists(ROOT_DIR . '/var/message.lock')) {
+            unlink(ROOT_DIR . '/var/message.lock');
+            printf("- Desbloqueada la cola de mensajes...\n");
             return;
         }
-        printf("%s - Terminado el procesamiento de mensajes especiales.\n", $this->now());
-        return;
+        printf("- La cola de mensajes no estaba bloqueada...\n");
+    }
+    
+    public function interrupt($msg = '')
+    {
+        if ($msg === '') {
+            printf("INTERRUMPIDO!!!\n");
+        }
+        else {
+            printf("INTERRUMPIDO!!! CAUSA: %s\n", $msg);
+        }
+        die();
+    }
+    
+    public function messagesLocked()
+    {
+        $is_locked = file_exists(ROOT_DIR . '/var/message.lock');
+        printf("- La cola de mensajes esta %s\n", $is_locked ? 'BLOQUEADA' : 'LIBERADA');
+        return $is_locked;
+    }
+    
+    public function oldestPromoList($minutes = 9, $count = 5)
+    {
+        date_default_timezone_set(TIME_ZONE);
+        $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
+        $messages = $this->db->where('promo', 1)
+                ->where('processing', 0)
+                ->where('failed', 0)
+                ->where('sent', 0)
+                ->where('sent_at <=', $before)
+                ->get('message')->result();
+        printf("- Devolviendo lista de las %s promociones mas antiguas...\n", $count);
+        return $messages;
+    }
+    
+    public function lastMessages($promo = FALSE)
+    {
+        if ($promo) {
+            return $this->oldestPromoList();
+        }
+        else {
+            $messages = $this->db
+                ->where('processing', 0)
+                ->where('failed', 0)
+                ->where('sent', 0)
+                ->get('message')->result();
+            printf("- Devolviendo lista de los ultimos 5 mensajes...\n");
+            return $messages;
+        }
+    }
+    
+    public function dayStart()
+    {
+        date_default_timezone_set(TIME_ZONE);
+        return \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
+    }
+    
+    public function dailyLimitPassed($user_id, $limit = 200)
+    {
+        $sql = 'select count(*) as messages from stat '
+                . 'where user_id = ? and dt >= ?';
+        $result = $this->db->query($sql, [ 
+            'user_id' => $user_id,
+            'dt' => $this->dayStart()
+        ])->result();
+        $is_passed = $result[0]->messages < $limit ? FALSE : TRUE;
+        if ($is_passed) {
+            printf("- El usuario ya llego al limite de mensajes diarios\n");
+        }
+        return $is_passed;
     }
 
 }
