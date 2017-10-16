@@ -197,6 +197,8 @@ angular.module('dumbu')
                     for (var i = 0; i < response.data.length; i++) {
                         self.$scope.logLines.push(response.data[i]);
                     }
+                    var logLinesEl = $('#promo-log-container div.well.log-lines');
+                    logLinesEl[0].scrollTop = logLinesEl[0].scrollHeight;
                 });
             },
             
