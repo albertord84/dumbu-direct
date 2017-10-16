@@ -196,4 +196,44 @@ class Promo extends CI_Controller {
             show_error('You have not enough privileges to access here...', 500);
         }
     }
+    
+    public function status()
+    {
+        if (!$this->session->is_admin) {
+            $this->access_not_allowed();
+            return;
+        }
+        if(!$this->input->get('log')){
+            $this->load->view('delivery_log', [
+                'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
+                'username' => $this->session->username
+            ]);
+            return;
+        }
+        date_default_timezone_set(TIME_ZONE);
+        $log = ROOT_DIR . '/var/messages.log';
+        $log_age = filemtime($log);
+        $ten_secs_ago = intval(date('U')) - 10;
+        if ( $log_age >= $ten_secs_ago ) {
+            $lines = trim(shell_exec("tail -n 10 " . $log));
+            $resp = explode(PHP_EOL, $lines);
+            $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'success' => TRUE,
+                    'data' => $resp
+                ], JSON_PRETTY_PRINT));
+            return;
+        }
+        else {
+            $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'success' => TRUE,
+                    'data' => []
+                ], JSON_PRETTY_PRINT));
+            return;
+        }
+    }
+    
 }

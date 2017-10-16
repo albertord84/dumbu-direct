@@ -38,4 +38,13 @@ angular.module('dumbu')
     {
         promoService.senderTypeahead($scope);
     }
+])
+
+.controller('promoLog', [
+    '$scope', '$log', 'promoService',
+    function ($scope, $log, promoService)
+    {
+        promoService.setScope($scope);
+        promoService.getLogLines();
+    }
 ]);

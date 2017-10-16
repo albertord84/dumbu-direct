@@ -227,3 +227,17 @@ body .container {
 #promos-container .promo-tabs .tab-pane table .promo a.promo-action:hover {
     opacity: 1;
 }
+
+#promo-log-container div.well.log-lines {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+#promo-log-container div.well.log-lines .row {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#promo-log-container div.well.log-lines p {
+    margin-bottom: 0px;
+}

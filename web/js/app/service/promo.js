@@ -3,8 +3,8 @@
 angular.module('dumbu')
 
 .service('promoService', [
-    '$log', '$http', '$location', '$timeout', '$resource',
-    function ($log, $http, $location, $timeout, $resource)
+    '$log', '$http', '$location', '$timeout', '$resource', '$interval',
+    function ($log, $http, $location, $timeout, $resource, $interval)
     {
         var self = {
 
@@ -177,6 +177,37 @@ angular.module('dumbu')
                         Dumbu.unblockUI();
                     });
                 });
+            },
+            
+            setScope: function($scope)
+            {
+                self.$scope = $scope;
+            },
+            
+            lastLogLines: function()
+            {
+                $log.log('buscando log...');
+                if (angular.isUndefined(self.$scope.logLines)) {
+                    self.$scope.logLines = [];
+                }
+                var LogLines = $resource(Dumbu.siteUrl + '/promo/status', {
+                    log: new Date().getTime()
+                });
+                LogLines.get(function(response){
+                    for (var i = 0; i < response.data.length; i++) {
+                        self.$scope.logLines.push(response.data[i]);
+                    }
+                });
+            },
+            
+            getLogLines: function()
+            {
+                if (angular.isUndefined(self.$scope.logLines)) {
+                    self.lastLogLines();
+                }
+                $interval(function(){
+                    self.lastLogLines();
+                }, 10000 /*1000 * 60 * 10*/);
             }
 
         };

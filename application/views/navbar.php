@@ -11,6 +11,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="<?php echo site_url('promo'); ?>">Create promotion</a></li>
                     <li><a href="<?php echo site_url('promo/browse'); ?>">Browse promotions</a></li>
+                    <li><a href="<?php echo site_url('promo/status'); ?>">Delivery log</a></li>
                 </ul>
             </li>
             <?php } ?>
