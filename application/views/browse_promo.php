@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </td>
                                         </tr>
                                     </table>
-                                    <div class="row text-center" data-ng-if="activePromos.length <= activeCount">
+                                    <div class="row text-center" data-ng-if="activePromos.length < activeCount">
                                         <div class="text-muted"><a href class="btn btn-xs btn-primary" data-ng-click="moreActive()">More...</a></div>
                                     </div>
                                 </div>
