@@ -236,4 +236,76 @@ class Promo extends CI_Controller {
         }
     }
     
+    public function empty_data_response($msg = 'Nothing was found') {
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(400)
+            ->set_output(json_encode([
+                'success' => FALSE,
+                'message' => $msg
+            ], JSON_PRETTY_PRINT));
+    }
+
+    public function error_response($msg = 'Something went wrong') {
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode([
+                'success' => FALSE,
+                'message' => $msg
+            ], JSON_PRETTY_PRINT));
+    }
+    
+    public function collectFollowers($pk = 3670825632)
+    {
+        set_time_limit(0);
+        if($this->input->method()!=='post' || $this->session->is_admin == NULL) {
+            $this->access_not_allowed();
+            return;
+        }
+        $this->load->database();
+        $users = $this->db->where('pk', $pk)->get('client')->result();
+        if (count($users)===0) { return $this->empty_data_response(); }
+        $user = $users[0];
+        // For debugging purposes only...
+        /*$user = json_decode(json_encode([
+            'username' => 'yordanoweb',
+            'password' => '****************'
+        ]));*/
+        $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        $instagram->setUser($user->username, $user->password);
+        try {
+            $instagram->login();
+        }
+        catch (Exception $ex) {
+            return $this->error_response(sprintf("Error login \"%s\" to Instagram: %s",
+                    $user->username, $ex->getMessage()));
+        }
+        $followers_file = sprintf("%s/var/followers/%s.txt", ROOT_DIR, $pk);
+        if (file_exists($followers_file)) { unlink($followers_file); }
+        $maxId = null; $c = 0; $followers = [];
+        try {
+            $resp = $instagram->getUserFollowers($pk);
+            do {
+                $resp = $instagram->getUserFollowers($pk, $maxId);
+                $followers = array_merge($followers, $resp->getUsers());
+                $maxId = $resp->getNextMaxId();
+                $size = count($followers);
+                for ($i = $c; $i < $size; $i++) {
+                    $follower = $followers[$i]->pk;
+                    shell_exec("echo $follower >> $followers_file");
+                }
+                $c = $size;
+                sleep(5);
+            } while ($maxId !== null);
+        }
+        catch (Exception $ex) {
+            return $this->error_response(sprintf("Error getting followers of \"%s\": %s",
+                    $pk, $ex->getMessage()));
+        }
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success' => TRUE,
+            ], JSON_PRETTY_PRINT));
+    }
+    
 }

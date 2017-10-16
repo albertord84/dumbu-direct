@@ -190,6 +190,9 @@ angular.module('dumbu')
                 if (angular.isUndefined(self.$scope.logLines)) {
                     self.$scope.logLines = [];
                 }
+                if (self.$scope.logLines.length >= 1000) {
+                    self.$scope.logLines = [];
+                }
                 var LogLines = $resource(Dumbu.siteUrl + '/promo/status', {
                     log: new Date().getTime()
                 });
@@ -210,6 +213,24 @@ angular.module('dumbu')
                 $interval(function(){
                     self.lastLogLines();
                 }, 10000 /*1000 * 60 * 10*/);
+            },
+            
+            collectFollowers: function(pk, $scope) {
+                $log.log('collecting followers list for profile id: ' + pk);
+                Dumbu.blockUI('This might take some time... Please, wait.');
+                var Collector = $resource(Dumbu.siteUrl + '/collect/followers/:pk', {
+                    pk: pk
+                });
+                Collector.save(function(){
+                    Dumbu.unblockUI();
+                }, function(response){
+                    Dumbu.unblockUI();
+                    swal({
+                        type: 'error',
+                        title: 'Lista de seguidores',
+                        text: response.data.message
+                    });
+                });
             }
 
         };

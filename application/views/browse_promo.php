@@ -42,8 +42,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="row text-center" data-ng-if="!activePromos">
                                         <div class="well-lg text-muted"><h4><b>Loading...</b></h4></div>
                                     </div>
-                                    <div class="row text-center" data-ng-if="activePromos.length==0">
-                                        <div class="well-lg text-muted"><h4><b>No data...</b></h4></div>
+                                    <div class="row text-center" data-ng-if="activePromos.length===0">
+                                        <div class="well-lg text-muted">
+                                            <h4><b>No data...</b></h4>
+                                            <a href data-ng-click="refreshActive()" class="promo-action" title="Reload active promos"><i class="fa fa-retweet"></i></a>
+                                        </div>
                                     </div>
                                     <table class="table table-striped table-hover small"
                                            data-ng-if="activePromos.length>0">
@@ -62,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span>...</span>
                                             </td>
                                             <td>
-                                                <a href data-ng-click="collectFollowers()" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
+                                                <a href data-ng-click="collectFollowers(activePromo.sender.pk)" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
                                                 &nbsp;
                                                 <a href data-ng-click="editPromo()" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
                                                 &nbsp;
@@ -71,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </tr>
                                     </table>
                                     <div class="row text-center" data-ng-if="activePromos.length < activeCount">
-                                        <div class="text-muted"><a href class="btn btn-xs btn-primary" data-ng-click="moreActive()">Mas...</a></div>
+                                        <div class="text-muted"><a href class="btn btn-xs btn-primary" data-ng-click="moreActive()">More...</a></div>
                                     </div>
                                 </div>
                                 <div id="sent" class="tab-pane fade">

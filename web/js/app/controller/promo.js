@@ -29,6 +29,14 @@ angular.module('dumbu')
         {
             promoService.removePromo(promo, $scope);
         };
+        
+        $scope.refreshActive = function() {
+            promoService.getActive($scope);
+        };
+        
+        $scope.collectFollowers = function(pk) {
+            promoService.collectFollowers(pk, $scope);
+        };
     }
 ])
 
