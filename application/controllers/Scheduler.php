@@ -7,6 +7,7 @@ class Scheduler extends CI_Controller {
     public $instagram = NULL;
 
     public function index() {
+        PHP_SAPI == 'cli' OR die('You may not access this way...');
         set_time_limit(0);
         printf("\n%s - Procesando mensajes...\n", $this->now());
         try {

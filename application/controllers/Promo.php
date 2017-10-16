@@ -14,6 +14,15 @@ class Promo extends CI_Controller {
             'username' => $this->session->username
         ]);
     }
+    
+    private function access_not_allowed() {
+        $this->output->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode([
+                'success' => FALSE,
+                'message' => 'Access not allowed for your privileges level'
+            ], JSON_PRETTY_PRINT));
+    }
 
     public function browse() {
         $this->load->view('browse_promo', [
@@ -27,6 +36,7 @@ class Promo extends CI_Controller {
         if ($this->session->is_admin) {
             $this->load->database();
             $this->db->where('sent', 0);
+            $this->db->where('failed', 0);
             if ($words != NULL) {
                 foreach (explode(' ', $words) as $word) {
                     $this->db->like('msg_text', $word);
@@ -43,8 +53,11 @@ class Promo extends CI_Controller {
             $count = current($this->db->query($count_sql)->result())->messages;
             $promos = $this->db->get('message')->result();
             foreach ($promos as $promo) {
-                $q = $this->db->query('select id, username, pk from client where id = ?', [ $promo->user_id ])
-                        ->result();
+                // Excluir el campo 'password' para que no vaya en JSON para
+                // el navegador
+                $senders_sql = 'select id, username, pk from client where id = ?';
+                $q = $this->db->query($senders_sql, [ $promo->user_id ])
+                    ->result();
                 $promo->sender = $q[0];
             }
             $this->output->set_content_type('application/json')
@@ -56,12 +69,7 @@ class Promo extends CI_Controller {
             return;
         }
         else {
-            $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'success' => FALSE,
-                    'message' => 'Access not allowed for your privileges level'
-                ], JSON_PRETTY_PRINT));
+            $this->access_not_allowed();
         }
     }
     
@@ -82,12 +90,7 @@ class Promo extends CI_Controller {
             return;
         }
         else {
-            $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'success' => FALSE,
-                    'message' => 'Access not allowed for your privileges level'
-                ], JSON_PRETTY_PRINT));
+            $this->access_not_allowed();
         }
     }
     
@@ -108,12 +111,7 @@ class Promo extends CI_Controller {
             return;
         }
         else {
-            $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'success' => FALSE,
-                    'message' => 'Access not allowed for your privileges level'
-                ], JSON_PRETTY_PRINT));
+            $this->access_not_allowed();
         }
     }
     
@@ -129,12 +127,7 @@ class Promo extends CI_Controller {
             return;
         }
         else {
-            $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'success' => FALSE,
-                    'message' => 'Access not allowed for your privileges level'
-                ], JSON_PRETTY_PRINT));
+            $this->access_not_allowed();
         }
     }
     
