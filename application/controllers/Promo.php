@@ -49,7 +49,8 @@ class Promo extends CI_Controller {
             else if ($page > 0) {
                 $this->db->limit($page * 5, 5);
             }
-            $count_sql = "select count(*) as messages from message where sent=0 or sent=2";
+            $count_sql = "select count(*) as messages from message "
+                    . "where (sent=0 or sent=2) and failed=0";
             $count = current($this->db->query($count_sql)->result())->messages;
             $promos = $this->db->get('message')->result();
             foreach ($promos as $promo) {
