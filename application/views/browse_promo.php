@@ -129,7 +129,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span>...</span>
                                             </td>
                                             <td data-ng-bind="failedPromo.sent_at | ts2human"></td>
-                                            <td><a href data-ng-click="enqueuePromo()" class="promo-action" title="Enqueue again"><i class="fa fa-retweet"></i></a></td>
+                                            <td><a href data-ng-click="enqueuePromo(failedPromo)" class="promo-action" title="Enqueue again"><i class="fa fa-retweet"></i></a></td>
                                         </tr>
                                     </table>
                                 </div>

@@ -231,6 +231,26 @@ angular.module('dumbu')
                         text: response.data.message
                     });
                 });
+            },
+            
+            enqueuePromo: function (promo, $scope) {
+                Dumbu.blockUI('After updating, go to active promos tab and reload...');
+                var Promo = $resource(Dumbu.siteUrl + '/promo/enqueue/:id', {
+                    id: promo.id
+                }, {
+                    update: { method: 'PUT' }
+                });
+                Promo.update(function(response){
+                    for (var i = 0; i < $scope.failedPromos.length; i++) {
+                        if ($scope.failedPromos[i].id===promo.id) { break; }
+                    }
+                    $timeout(function(){
+                        $scope.failedPromos.splice(i, 1);
+                        Dumbu.unblockUI();
+                    }, 3000);
+                }, function(){
+                    Dumbu.unblockUI();
+                });
             }
 
         };

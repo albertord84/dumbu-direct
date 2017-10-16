@@ -37,6 +37,10 @@ angular.module('dumbu')
         $scope.collectFollowers = function(pk) {
             promoService.collectFollowers(pk, $scope);
         };
+        
+        $scope.enqueuePromo = function(promo) {
+            promoService.enqueuePromo(promo, $scope);
+        };
     }
 ])
 

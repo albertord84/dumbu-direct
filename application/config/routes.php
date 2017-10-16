@@ -31,3 +31,5 @@ $route['promo/(:num)/(:num)'] = 'promo/change_sender/$1/$2';
 
 $route['promo/(:num)'] = 'promo/rest/$1';
 $route['collect/followers/(:num)'] = 'promo/collectfollowers/$1';
+
+$route['promo/enqueue/(:num)'] = 'promo/enqueue/$1';
