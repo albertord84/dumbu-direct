@@ -173,6 +173,8 @@ class Promo extends CI_Controller {
         $this->load->database();
         $this->db->where('id', $msg_id);
         $this->db->delete('message');
+        $this->db->where('msg_id', $msg_id);
+        $this->db->delete('stat');
         $this->output->set_content_type('application/json')
             ->set_status_header(200)
             ->set_output(json_encode(['success'=>TRUE], JSON_PRETTY_PRINT));

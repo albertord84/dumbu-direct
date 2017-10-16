@@ -167,10 +167,20 @@ angular.module('dumbu')
                     });
                     Promo.delete(function () {
                         $timeout(function(){
-                            $scope.activeCount--;
-                            _.remove($scope.activePromos, function(o){
-                                return o.id === promo.id;
-                            });
+                            if (promo.failed==="1") {
+                                $scope.failedCount--;
+                                for (var i = 0; i < $scope.failedPromos.length; i++) {
+                                    if ($scope.failedPromos[i].id===promo.id) { break; }
+                                }
+                                $scope.failedPromos.splice(i, 1);
+                            }
+                            else if (promo.failed!=="1") {
+                                $scope.activeCount--;
+                                for (var i = 0; i < $scope.activePromos.length; i++) {
+                                    if ($scope.activePromos[i].id===promo.id) { break; }
+                                }
+                                $scope.activePromos.splice(i, 1);
+                            }
                             Dumbu.unblockUI();
                         }, 1000);
                     }, function () {

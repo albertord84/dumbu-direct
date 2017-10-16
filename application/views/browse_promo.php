@@ -67,7 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td>
                                                 <a href data-ng-click="collectFollowers(activePromo.sender.pk)" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
                                                 &nbsp;
-                                                <a href data-ng-click="editPromo()" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
+                                                <a href data-ng-click="editPromo(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
                                                 &nbsp;
                                                 <a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
                                             </td>
@@ -129,7 +129,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span>...</span>
                                             </td>
                                             <td data-ng-bind="failedPromo.sent_at | ts2human"></td>
-                                            <td><a href data-ng-click="enqueuePromo(failedPromo)" class="promo-action" title="Enqueue again"><i class="fa fa-retweet"></i></a></td>
+                                            <td>
+                                                <a href data-ng-click="enqueuePromo(failedPromo)" class="promo-action" title="Enqueue again"><i class="fa fa-retweet"></i></a>
+                                                <a href data-ng-click="removePromo(failedPromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
