@@ -124,9 +124,7 @@ angular.module('dumbu')
                 });
                 Promo.save(function(){
                     $timeout(function(){
-                        var i = _.findIndex($scope.activePromos, function(o){
-                            return o.id === $scope.selectedPromo.id;
-                        });
+                        var i = _.findIndex($scope.activePromos, { id: $scope.selectedPromo.id });
                         $scope.activePromos[i].sender = $scope.newSender;
                         Dumbu.unblockUI();
                     }, 1000);
@@ -323,10 +321,8 @@ angular.module('dumbu')
 					text: $scope.modifiedText
 				}, function(){
 					$timeout(function(){
-						for(var index = 0; index < $scope.activePromos.length; index++){
-							if ($scope.activePromos[index].id == promo.id) { break; }
-						}
-						$log.log('changing text of promo: ' + promo.id);
+						var index = _.findIndex($scope.activePromos, { id: promo.id });
+						$log.log('changed text of promo: ' + promo.id);
 						$scope.activePromos[index].msg_text = $scope.modifiedText;
 						Dumbu.unblockUI();
 					}, 3000);
