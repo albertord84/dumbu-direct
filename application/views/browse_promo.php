@@ -32,6 +32,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="panel panel-default">
                         <div class="panel-heading text-muted">Promotions</div>
                         <div class="panel-body">
+							<input type="text" data-ng-model="searchTerms" class="small pull-right"
+								placeholder="Search terms...">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#active" data-toggle="tab">Active</a></li>
                                 <li><a href="#sent" data-toggle="tab">Sent</a></li>
@@ -64,9 +66,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span data-ng-bind="activePromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
                                             </td>
-                                            <td>
-                                                <a href data-ng-click="collectFollowers(activePromo.sender.pk)" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
-                                                &nbsp;
+                                            <td width="15%">
+												<a href data-ng-click="startPromo(activePromo)" data-ng-if="activePromo.sent=='2'"
+												   class="promo-action text-info" title="Start this promo"><i class="fa fa-send"></i></a>
+												&nbsp;
+												<a href data-ng-click="collectFollowers(activePromo.sender.pk)" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
+												&nbsp;
                                                 <a href data-ng-click="editPromo(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
                                                 &nbsp;
                                                 <a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
@@ -112,7 +117,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="well-lg text-muted"><h4><b>Loading...</b></h4></div>
                                     </div>
                                     <div class="row text-center" data-ng-if="failedPromos.length==0">
-                                        <div class="well-lg text-muted"><h4><b>No data...</b></h4></div>
+                                        <div class="well-lg text-muted">
+											<h4><b>No data...</b></h4>
+											<a href data-ng-click="refreshFailed()" class="promo-action" title="Reload failed promos"><i class="fa fa-retweet"></i></a>
+										</div>
                                     </div>
                                     <table class="table table-striped table-hover small"
                                            data-ng-if="failedPromos.length>0">

@@ -15,6 +15,9 @@ angular.module('dumbu')
                     $scope.activePromos = promos.promos;
                     $scope.activeCount = promos.count;
                     $scope.activePage = Math.round(promos.count / 5);
+                    $timeout(function(){
+                    	Dumbu.unblockUI();
+					}, 3000);
                 });
             },
 
@@ -29,8 +32,13 @@ angular.module('dumbu')
             getFailed: function ($scope)
             {
                 var Promo = $resource(Dumbu.siteUrl + '/promo/failed');
-                var promos = Promo.query(function () {
-                    $scope.failedPromos = promos;
+                var promos = Promo.get(function () {
+                    $scope.failedPromos = promos.promos;
+					$scope.failedCount = promos.count;
+					$scope.failedPage = Math.round(promos.count / 5);
+					$timeout(function(){
+						Dumbu.unblockUI();
+					}, 3000);
                 });
             },
             
@@ -261,7 +269,27 @@ angular.module('dumbu')
                 }, function(){
                     Dumbu.unblockUI();
                 });
-            }
+            },
+
+			startPromo: function (promo, $scope) {
+				Dumbu.blockUI('Changing promo status...');
+				var Promo = $resource(Dumbu.siteUrl + '/promo/start/:id', {
+					id: promo.id
+				}, {
+					update: { method: 'PUT' }
+				});
+				Promo.update(function(response){
+					for (var i = 0; i < $scope.activePromos.length; i++) {
+						if ($scope.activePromos[i].id===promo.id) { break; }
+					}
+					$timeout(function(){
+						$scope.activePromos[i] = response.promo;
+						Dumbu.unblockUI();
+					}, 3000);
+				}, function(){
+					Dumbu.unblockUI();
+				});
+			}
 
         };
         return self;

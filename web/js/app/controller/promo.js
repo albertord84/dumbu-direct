@@ -29,18 +29,28 @@ angular.module('dumbu')
         {
             promoService.removePromo(promo, $scope);
         };
-        
-        $scope.refreshActive = function() {
-            promoService.getActive($scope);
-        };
-        
-        $scope.collectFollowers = function(pk) {
+
+		$scope.refreshActive = function() {
+			Dumbu.blockUI();
+			promoService.getActive($scope);
+		};
+
+		$scope.refreshFailed = function() {
+			Dumbu.blockUI();
+			promoService.getFailed($scope);
+		};
+
+		$scope.collectFollowers = function(pk) {
             promoService.collectFollowers(pk, $scope);
         };
         
         $scope.enqueuePromo = function(promo) {
             promoService.enqueuePromo(promo, $scope);
         };
+
+        $scope.startPromo = function (promo) {
+        	promoService.startPromo(promo, $scope);
+		};
     }
 ])
 

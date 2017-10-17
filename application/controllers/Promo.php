@@ -61,16 +61,15 @@ class Promo extends CI_Controller {
                     ->result();
                 $promo->sender = $q[0];
             }
-            $this->output->set_content_type('application/json')
+            return $this->output->set_content_type('application/json')
                 ->set_status_header(200)
                 ->set_output(json_encode([
                     'promos' => $promos,
                     'count' => $count
                 ], JSON_PRETTY_PRINT));
-            return;
         }
         else {
-            $this->access_not_allowed();
+            return $this->access_not_allowed();
         }
     }
     
@@ -85,34 +84,49 @@ class Promo extends CI_Controller {
                         ->result();
                 $promo->sender = $q[0];
             }
-            $this->output->set_content_type('application/json')
+            return $this->output->set_content_type('application/json')
                 ->set_status_header(200)
                 ->set_output(json_encode($promos, JSON_PRETTY_PRINT));
-            return;
         }
         else {
-            $this->access_not_allowed();
+            return $this->access_not_allowed();
         }
     }
     
-    public function failed() {
+    public function failed($page = 0) {
+		$words = $this->input->get('words');
         if ($this->session->is_admin) {
             $this->load->database();
             $this->db->where('failed', 1);
-            $this->db->limit(5);
+			if ($words != NULL) {
+				foreach (explode(' ', $words) as $word) {
+					$this->db->like('msg_text', $word);
+				}
+			}
+			if ($page == 0) {
+				$this->db->limit(5);
+			}
+			else if ($page > 0) {
+				$this->db->limit($page * 5, 5);
+			}
+			$count_sql = "select count(*) as messages from message "
+				. "where failed=0";
+			$count = current($this->db->query($count_sql)->result())->messages;
             $promos = $this->db->get('message')->result();
             foreach ($promos as $promo) {
                 $q = $this->db->query('select id, username, pk from client where id = ?', [ $promo->user_id ])
                         ->result();
                 $promo->sender = $q[0];
             }
-            $this->output->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode($promos, JSON_PRETTY_PRINT));
-            return;
+			return $this->output->set_content_type('application/json')
+				->set_status_header(200)
+				->set_output(json_encode([
+					'promos' => $promos,
+					'count' => $count
+				], JSON_PRETTY_PRINT));
         }
         else {
-            $this->access_not_allowed();
+            return $this->access_not_allowed();
         }
     }
     
@@ -175,11 +189,23 @@ class Promo extends CI_Controller {
         $this->db->delete('message');
         $this->db->where('msg_id', $msg_id);
         $this->db->delete('stat');
-        $this->output->set_content_type('application/json')
+        return $this->output->set_content_type('application/json')
             ->set_status_header(200)
             ->set_output(json_encode(['success'=>TRUE], JSON_PRETTY_PRINT));
-        return;
     }
+
+	private function get($msg_id)
+	{
+		$this->load->database();
+		$this->db->where('id', $msg_id);
+		$promos = $this->db->get('message')->result();
+		return $this->output->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode([
+				'success'=>TRUE,
+				'promo' => $promos[0]
+			], JSON_PRETTY_PRINT));
+	}
 
     public function rest($msg_id)
     {
@@ -189,10 +215,10 @@ class Promo extends CI_Controller {
                 echo 'Not implemented yet...';
             }
             else if ($method == 'get') {
-                echo 'Not implemented yet...';
+            	return $this->get($msg_id);
             }
             else if ($method == 'delete') {
-                $this->delete($msg_id);
+                return $this->delete($msg_id);
             }
         }
         else {
@@ -330,5 +356,32 @@ class Promo extends CI_Controller {
                 'success' => TRUE,
             ], JSON_PRETTY_PRINT));
     }
+
+	public function start($msg_id) {
+		date_default_timezone_set(TIME_ZONE);
+		if($this->input->method()!=='put' || $this->session->is_admin == NULL) {
+			return $this->access_not_allowed();
+		}
+		$this->load->database();
+		$this->db->where('id', $msg_id);
+		$this->db->update('message', [
+			'sent' => 0,
+			'failed' => 0,
+			'processing' => 0,
+			'sent_at' => date('U')
+		]);
+		$promos = $this->db->where('id', $msg_id)->get('message')->result();
+		$promo = $promos[0];
+		$senders = $this->db->query('select id, username, pk from client where id = ?', [
+			$promo->user_id
+		])->result();
+		$promo->sender = $senders[0];
+		return $this->output->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode([
+				'success' => TRUE,
+				'promo' => $promo
+			], JSON_PRETTY_PRINT));
+	}
     
 }
