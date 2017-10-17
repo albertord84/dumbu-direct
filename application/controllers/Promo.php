@@ -384,5 +384,32 @@ class Promo extends CI_Controller {
 				'promo' => $promo
 			], JSON_PRETTY_PRINT));
 	}
-    
+
+	public function pause($msg_id) {
+		date_default_timezone_set(TIME_ZONE);
+		if($this->input->method()!=='put' || $this->session->is_admin == NULL) {
+			return $this->access_not_allowed();
+		}
+		$this->load->database();
+		$this->db->where('id', $msg_id);
+		$this->db->update('message', [
+			'sent' => 2,
+			'failed' => 0,
+			'processing' => 0,
+			'sent_at' => date('U')
+		]);
+		$promos = $this->db->where('id', $msg_id)->get('message')->result();
+		$promo = $promos[0];
+		$senders = $this->db->query('select id, username, pk from client where id = ?', [
+			$promo->user_id
+		])->result();
+		$promo->sender = $senders[0];
+		return $this->output->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode([
+				'success' => TRUE,
+				'promo' => $promo
+			], JSON_PRETTY_PRINT));
+	}
+
 }

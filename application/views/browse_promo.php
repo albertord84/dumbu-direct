@@ -63,18 +63,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span data-ng-bind="activePromo.sender.username"></span>
                                             </td>
                                             <td class="text-muted">
+												<a href data-ng-click="editText(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
+												&nbsp;
                                                 <span data-ng-bind="activePromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
                                             </td>
-                                            <td width="15%">
-												<a href data-ng-click="startPromo(activePromo)" data-ng-if="activePromo.sent=='2'"
-												   class="promo-action text-info" title="Start this promo"><i class="fa fa-send"></i></a>
-												&nbsp;
-												<a href data-ng-click="collectFollowers(activePromo.sender.pk)" class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
-												&nbsp;
-                                                <a href data-ng-click="editPromo(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
-                                                &nbsp;
-                                                <a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                            <td>
+                                                <span class="pull-right">
+													<a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+												</span>
+												<span class="pull-right">
+													<a href data-ng-click="collectFollowers(activePromo.sender.pk)"
+													   class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
+													&nbsp;
+												</span>
+												<span class="pull-right">
+													<a href data-ng-click="pausePromo(activePromo)" data-ng-if="activePromo.sent=='0'"
+													   class="promo-action text-info" title="Pause this promo"><i class="fa fa-pause-circle"></i></a>
+													&nbsp;
+												</span>
+												<span class="pull-right">
+													<a href data-ng-click="startPromo(activePromo)" data-ng-if="activePromo.sent=='2'"
+													   class="promo-action text-info" title="Start this promo"><i class="fa fa-send"></i></a>
+													&nbsp;
+												</span>
                                             </td>
                                         </tr>
                                     </table>

@@ -48,8 +48,16 @@ angular.module('dumbu')
             promoService.enqueuePromo(promo, $scope);
         };
 
-        $scope.startPromo = function (promo) {
-        	promoService.startPromo(promo, $scope);
+		$scope.startPromo = function (promo) {
+			promoService.startPromo(promo, $scope);
+		};
+
+		$scope.pausePromo = function (promo) {
+			promoService.pausePromo(promo, $scope);
+		};
+
+		$scope.editText = function (promo) {
+			promoService.editText(promo, $scope);
 		};
     }
 ])
