@@ -145,6 +145,7 @@ class Compose extends CI_Controller {
             $this->load->view('message_dashboard', [
                 'username' => $username,
                 'message' => $message,
+                'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
                 'follower_names' => explode(',', $this->session->follower_names)
             ]);
             return;
