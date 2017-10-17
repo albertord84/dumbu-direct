@@ -76,7 +76,8 @@ class Promo extends CI_Controller {
     public function sent() {
         if ($this->session->is_admin) {
             $this->load->database();
-            $this->db->where('sent', 1);
+			$this->db->where('sent', 1);
+			$this->db->where('promo', 1);
             $this->db->limit(5);
             $promos = $this->db->get('message')->result();
             foreach ($promos as $promo) {
