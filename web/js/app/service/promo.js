@@ -235,7 +235,7 @@ angular.module('dumbu')
             
             collectFollowers: function(pk, $scope) {
                 $log.log('collecting followers list for profile id: ' + pk);
-                Dumbu.blockUI('This might take some time... Please, wait.');
+                Dumbu.blockUI('Please, wait...');
                 var Collector = $resource(Dumbu.siteUrl + '/collect/followers/:pk', {
                     pk: pk
                 });
@@ -245,14 +245,14 @@ angular.module('dumbu')
                     Dumbu.unblockUI();
                     swal({
                         type: 'error',
-                        title: 'Lista de seguidores',
+                        title: 'Followers list',
                         text: response.data.message
                     });
                 });
             },
             
             enqueuePromo: function (promo, $scope) {
-                Dumbu.blockUI('After updating, go to active promos tab and reload...');
+                Dumbu.blockUI('After this, go to active promos and reload...');
                 var Promo = $resource(Dumbu.siteUrl + '/promo/enqueue/:id', {
                     id: promo.id
                 }, {
@@ -311,8 +311,31 @@ angular.module('dumbu')
 				});
 			},
 
-			editText: function (promo, $scope) {
-            	alert(1);
+			modifyText: function (promo, $scope) {
+				$('div.promo-text-change').modal('hide');
+				Dumbu.blockUI('Changing promo text...');
+				var Promo = $resource(Dumbu.siteUrl + '/promo/text/:msgId', {
+					msgId: promo.id
+				}, { update: { method: 'PUT' } });
+				Promo.update({
+					msgId: promo.id
+				}, {
+					text: $scope.modifiedText
+				}, function(){
+					$timeout(function(){
+						for(var index = 0; index < $scope.activePromos.length; index++){
+							if ($scope.activePromos[index].id == promo.id) { break; }
+						}
+						$log.log('changing text of promo: ' + promo.id);
+						$scope.activePromos[index].msg_text = $scope.modifiedText;
+						Dumbu.unblockUI();
+					}, 3000);
+				}, function(){
+					$log.log(arguments);
+					$timeout(function(){
+						Dumbu.unblockUI();
+					}, 3000);
+				});
 			}
 
         };

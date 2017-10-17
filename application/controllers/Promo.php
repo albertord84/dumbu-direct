@@ -412,4 +412,38 @@ class Promo extends CI_Controller {
 			], JSON_PRETTY_PRINT));
 	}
 
+	private function changeText($msg_id, $text) {
+		$this->load->database();
+		$this->db->where('id', $msg_id);
+		$this->db->update('message', [
+			'msg_text' => $text
+		]);
+		return $this->output->set_content_type('application/json')
+			->set_status_header(200)
+			->set_output(json_encode([
+				'success' => TRUE
+			], JSON_PRETTY_PRINT));
+	}
+
+	private function getXhrParam($param)
+	{
+		$request = json_decode(file_get_contents("php://input"), TRUE);
+		return $request[$param];
+	}
+
+	public function text($msg_id)
+	{
+		if ($this->session->is_admin) {
+			$method = $this->input->method();
+			if ($method == 'put') {
+				return $this->changeText($msg_id, $this->getXhrParam('text'));
+			}
+			else if ($method == 'get') {
+				echo 'Not implemented yet...';
+			}
+		}
+		else {
+			show_error('You have not enough privileges to access here...', 500);
+		}
+	}
 }

@@ -56,9 +56,22 @@ angular.module('dumbu')
 			promoService.pausePromo(promo, $scope);
 		};
 
-		$scope.editText = function (promo) {
-			promoService.editText(promo, $scope);
+		$scope.editTextDialog = function (promo) {
+			$scope.selectedPromo = promo;
+			$('div.promo-text-change').modal('show');
 		};
+
+		// Para reflejar en el dialogo modal el texto de
+		// la promocion que se desea modificar
+		$scope.$watch('selectedPromo', function (newVal) {
+			if (!angular.isUndefined(newVal)) {
+				$scope.modifiedText = newVal.msg_text;
+			}
+		});
+
+		$scope.modifyText = function () {
+			promoService.modifyText($scope.selectedPromo, $scope);
+		}
     }
 ])
 

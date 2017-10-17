@@ -35,3 +35,4 @@ $route['collect/followers/(:num)'] = 'promo/collectfollowers/$1';
 $route['promo/enqueue/(:num)'] = 'promo/enqueue/$1';
 $route['promo/start/(:num)'] = 'promo/start/$1';
 $route['promo/pause/(:num)'] = 'promo/pause/$1';
+$route['promo/text/(:num)'] = 'promo/text/$1';

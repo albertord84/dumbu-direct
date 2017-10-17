@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span data-ng-bind="activePromo.sender.username"></span>
                                             </td>
                                             <td class="text-muted">
-												<a href data-ng-click="editText(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
+												<a href data-ng-click="editTextDialog(activePromo)" class="promo-action text-success" title="Edit promo text"><i class="fa fa-edit"></i></a>
 												&nbsp;
                                                 <span data-ng-bind="activePromo.msg_text | limitTo: 50"></span>
                                                 <span>...</span>
@@ -194,6 +194,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
         </div>
+		<div class="modal fade promo-text-change">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h4 class="modal-title"><b>Modify the promo text</b></h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<textarea type="text" class="form-control input-lg"
+										   data-ng-model="modifiedText" rows="6"
+										   placeholder="New promo text...">
+									</textarea>
+								</div>
+							</div>
+						</div><br>
+						<div class="row text-center">
+							<div class="form-group">
+								<div class="col-xs-6">
+									<button class="btn btn-success btn-lg btn-block"
+											data-ng-click="modifyText()">Accept</button>
+								</div>
+								<div class="col-xs-6">
+									<button class="btn btn-danger btn-lg btn-block"
+											data-dismiss="modal">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/angular.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
