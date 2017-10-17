@@ -77,13 +77,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													   class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
 													&nbsp;
 												</span>
-												<span class="pull-right">
-													<a href data-ng-click="pausePromo(activePromo)" data-ng-if="activePromo.sent=='0'"
+												<span class="pull-right" data-ng-if="activePromo.sent=='0'">
+													<a href data-ng-click="pausePromo(activePromo)"
 													   class="promo-action text-info" title="Pause this promo"><i class="fa fa-pause-circle"></i></a>
 													&nbsp;
 												</span>
-												<span class="pull-right">
-													<a href data-ng-click="startPromo(activePromo)" data-ng-if="activePromo.sent=='2'"
+												<span class="pull-right" data-ng-if="activePromo.sent=='2'">
+													<a href data-ng-click="startPromo(activePromo)"
 													   class="promo-action text-info" title="Start this promo"><i class="fa fa-send"></i></a>
 													&nbsp;
 												</span>
