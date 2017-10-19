@@ -38,5 +38,6 @@ $route['promo/pause/(:num)'] = 'promo/pause/$1';
 $route['promo/text/(:num)'] = 'promo/text/$1';
 
 $route['accounts'] = 'accounts/index';
+$route['accounts/(:any)'] = 'accounts/search/$1';
 $route['account/(:any)'] = 'accounts/rest/$1';
 $route['account'] = 'accounts/rest';

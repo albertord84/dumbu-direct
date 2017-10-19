@@ -13,7 +13,7 @@ $(function(){
         newAccount: {
             userName: ko.observable(''),
             password: ko.observable(''),
-            pk: ko.observable(0),
+            pk: ko.observable(''),
             priv: ko.observable(0)
         }
     };
@@ -23,6 +23,23 @@ $(function(){
     ////////////////////////////////////////////////////////////////////////////////////
     // ACCOUNTS REDUCER
     ////////////////////////////////////////////////////////////////////////////////////
+
+    function newAccount(state, action) {
+        if (typeof state === 'undefined') { return appState.newAccount; }
+
+        switch (action.type) {
+            case 'SET_NEW_ACCOUNT_NAME':
+                state.userName(action.userName);
+                return state;
+                
+            case 'SET_NEW_ACCOUNT_PK':
+                state.pk(action.pk);
+                return state;
+
+            default:
+                return state;
+        }
+    }
 
     function accounts(state, action) {
         if (typeof state === 'undefined') { return appState.accounts; }
@@ -92,20 +109,56 @@ $(function(){
             default:
                 return state;
         }
-    };
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////
     // jQuery STUFF
     ////////////////////////////////////////////////////////////////////////////////////
+    
+    var datasource = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: Dumbu.siteUrl + '/accounts/%QUERY',
+            wildcard: '%QUERY'
+        }
+    });
 
+    $('#account-name').typeahead(null, {
+        name: 'account-names',
+        hint: true,
+        highlight: true,
+        display: 'username',
+        source: datasource,
+        minLength: 3
+    });
 
+    $('#account-name').on({
+        'typeahead:selected': function (e, datum) {
+            store.dispatch({
+                type: 'SET_NEW_ACCOUNT_NAME',
+                userName: datum.username
+            });
+            store.dispatch({
+                type: 'SET_NEW_ACCOUNT_PK',
+                pk: datum.pk
+            });
+        },
+        'typeahead:asyncrequest': function (jq, query, dsName) {
+            $('.async-loading').removeClass('hidden');
+        },
+        'typeahead:asyncreceive': function (jq, query, dsName) {
+            $('.async-loading').addClass('hidden');
+        }
+    });
     
     ////////////////////////////////////////////////////////////////////////////////////
     // REDUX STORE CREATION
     ////////////////////////////////////////////////////////////////////////////////////
 
     var reducer = Redux.combineReducers({
-        accounts: accounts
+        accounts: accounts,
+        newAccount: newAccount
     });
     
     window.store = Redux.createStore(reducer);

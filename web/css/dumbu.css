@@ -255,3 +255,13 @@ div.privs div input.checkbox {
     margin-top: 2px;
     height: 15px;
 }
+
+#new-account .twitter-typeahead {
+    margin-bottom: 15px;
+}
+
+#new-account img.async-loading {
+    position: absolute;
+    right: 26px;
+    top: 10px;
+}

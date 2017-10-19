@@ -115,4 +115,40 @@ class Accounts extends CI_Controller {
         }
     }
 
+    public function search($query) {
+        $this->load->database();
+        $username = $this->session->username;
+        $users = $this->db->where('username', $username)->get('client')->result();
+        $user = $users[0];
+
+        $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        $instagram->setUser($user->username, $user->password);
+
+        try {
+            $instagram->login();
+        } catch (\Exception $ex) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'success' => FALSE,
+                    'message' => $e->getMessage()
+                ]));
+        }
+
+        try {
+            $response = $instagram->searchUsers($query)->users;
+        } catch (Exception $e) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'success' => FALSE,
+                    'message' => $e->getMessage()
+                ]));
+        }
+
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($response));
+    }
+
 }

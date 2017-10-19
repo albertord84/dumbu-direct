@@ -109,8 +109,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg typeahead"
                                         id="account-name" data-bind="textInput: newAccount.userName"
-                                        name="username" placeholder="Instagram account name...">
-                                </div>
+                                        placeholder="Instagram account name...">
+                                        <img class="async-loading hidden"
+                                             src="<?php echo base_url('img/loading-small.gif'); ?>">
+                                </div><br>
                                 <div class="form-group">
                                     <input type="password" class="form-control input-lg"
                                         id="password" data-bind="textInput: newAccount.password"
