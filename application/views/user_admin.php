@@ -124,7 +124,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         name="pk" placeholder="Instagram ID...">
                                 </div>
                                 <div class="form-group privs">
-                                    <div class="col-xs-6 text-right">
+                                    <div class="col-xs-6 text-left">
                                         <label for="priv-admin">Administrator</label>
                                     </div>
                                     <div class="col-xs-6 text-left">
@@ -138,7 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="row text-center">
                             <div class="form-group">
                                 <div class="col-xs-6">
-                                    <button class="btn btn-success btn-lg btn-block"
+                                    <button class="btn btn-success btn-lg btn-block" data-bind="disable: !newAccount.pk() || !newAccount.userName() || !newAccount.password()"
                                         onclick="store.dispatch({ type: 'ADD_ACCOUNT' })">Create</button>
                                 </div>
                                 <div class="col-xs-6">

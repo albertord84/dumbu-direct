@@ -89,6 +89,18 @@ class Accounts extends CI_Controller {
             ], JSON_PRETTY_PRINT));
     }
 
+    private function remove($id) {
+        $this->load->database();
+        $this->db->delete('client', [
+            'id' => $id
+        ]);
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success' => TRUE,
+            ], JSON_PRETTY_PRINT));
+    }
+
     public function rest($data = '') {
         if ($this->session->is_admin === NULL) {
             return show_error("Access not allowed", 500);
@@ -106,8 +118,7 @@ class Accounts extends CI_Controller {
                 break;
 
             case 'delete':
-                # code...
-                break;
+                return $this->remove($data);
 
             default:
                 # code...

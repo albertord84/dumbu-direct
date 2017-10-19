@@ -192,7 +192,7 @@ angular.module('dumbu')
                     }, function () {
                         Dumbu.unblockUI();
                     });
-                });
+                }).catch(swal.noop);
             },
             
             setScope: function($scope)

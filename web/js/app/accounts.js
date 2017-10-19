@@ -91,6 +91,42 @@ $(function(){
                 return state;
             
             case 'REMOVE_ACCOUNT':
+                swal({
+                    title: 'Are you sure?',
+                    html: "You are going to remove this account:<br><br>"+
+                            "<b class=\"text-muted\">"+action.payload.data.username+"...</b>",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonText: 'Yes, do it!'
+                }).then(function () {
+                    Dumbu.blockUI();
+                    setTimeout(function(){
+                        jQuery.ajax(Dumbu.siteUrl + '/account/' + action.payload.data.id, {
+                            type: 'DELETE',
+                            success: function(data){
+                                state.accounts.remove(action.payload.data);
+                                var c = Math.abs(state.count()) - 1;
+                                state.count(c);
+                                setTimeout(function() {
+                                    Dumbu.unblockUI();
+                                }, 1200);
+                            },
+                            error: function(response){
+                                Dumbu.unblockUI();
+                                setTimeout(function() {
+                                    swal({
+                                        type: 'error',
+                                        title: 'Account deletion error!',
+                                        text: response.responseJSON.message
+                                    });
+                                }, 500);
+                            }
+                        });
+                    },2000);
+                }).catch(swal.noop);
                 return state;
             
             case 'REFRESH_ACCOUNTS':
@@ -145,6 +181,10 @@ $(function(){
             });
         },
         'typeahead:asyncrequest': function (jq, query, dsName) {
+            store.dispatch({
+                type: 'SET_NEW_ACCOUNT_PK',
+                pk: undefined
+            });
             $('.async-loading').removeClass('hidden');
         },
         'typeahead:asyncreceive': function (jq, query, dsName) {
