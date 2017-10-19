@@ -1,0 +1,39 @@
+{
+  "name": "dumbu-direct",
+  "version": "1.0.0",
+  "description": "Dumbu site",
+  "main": "web/index.php",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "angular": "^1.6.6",
+    "angular-cookies": "^1.6.6",
+    "angular-resource": "^1.6.6",
+    "angular-sanitize": "^1.6.6",
+    "bootstrap": "^3.3.7",
+    "eslint": "^4.8.0",
+    "grunt": "^1.0.1",
+    "gulp": "^3.9.1",
+    "jquery": "^3.2.1",
+    "knockout": "^3.4.2",
+    "lodash": "^4.17.4",
+    "redux": "^3.7.2",
+    "sweetalert2": "^6.11.0",
+    "typescript": "^2.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://yordanoweb@github.com/albertord84/dumbu-direct.git"
+  },
+  "author": "Yordano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/albertord84/dumbu-direct/issues"
+  },
+  "homepage": "https://github.com/albertord84/dumbu-direct#readme"
+}

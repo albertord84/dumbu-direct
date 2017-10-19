@@ -1,6 +1,8 @@
-angular.module('dumbu', [
-    'ngResource', 'ngCookies', 'ngSanitize'
-]);
+if (typeof angular !== 'undefined'){
+    angular.module('dumbu', [
+        'ngResource', 'ngCookies', 'ngSanitize'
+    ]);
+}
 
 var Dumbu = {
 

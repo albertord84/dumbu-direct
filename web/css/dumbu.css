@@ -241,3 +241,17 @@ body .container {
 #promo-log-container div.well.log-lines p {
     margin-bottom: 0px;
 }
+
+div.privs div {
+    height: 20px;
+}
+
+div.privs div label {
+    cursor: pointer;
+    margin-bottom: 0px;
+}
+
+div.privs div input.checkbox {
+    margin-top: 2px;
+    height: 15px;
+}

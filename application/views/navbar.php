@@ -14,6 +14,7 @@
                     <li><a href="<?php echo site_url('promo/status'); ?>">Delivery log</a></li>
                 </ul>
             </li>
+            <li><a href="<?php echo site_url('accounts'); ?>" title="User accounts management"><i class="fa fa-user-plus" aria-hidden="true"></i></a></li>
             <?php } ?>
             <li><a href="<?php echo site_url('logout') ?>" title="Close your session"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
         </ul>
