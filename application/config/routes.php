@@ -39,3 +39,4 @@ $route['promo/text/(:num)'] = 'promo/text/$1';
 
 $route['accounts'] = 'accounts/index';
 $route['account/(:any)'] = 'accounts/rest/$1';
+$route['account'] = 'accounts/rest';

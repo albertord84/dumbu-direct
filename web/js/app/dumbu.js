@@ -13,7 +13,7 @@ var Dumbu = {
         $.blockUI({
             message: tmpl({
                 src: src,
-                text: angular.isUndefined(msg) ? '' : msg
+                text: typeof msg === 'undefined' ? '' : msg
             }),
             css: {
                 backgroundColor: 'transparent',

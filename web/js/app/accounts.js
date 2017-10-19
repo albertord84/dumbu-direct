@@ -1,5 +1,9 @@
 $(function(){
 
+    ////////////////////////////////////////////////////////////////////////////////////
+    // APPLICATION STATE
+    ////////////////////////////////////////////////////////////////////////////////////
+
     window.appState = {
         searchTerms: ko.observable(''),
         accounts: {
@@ -7,7 +11,7 @@ $(function(){
             count: ko.observable(0)
         },
         newAccount: {
-            username: ko.observable(''),
+            userName: ko.observable(''),
             password: ko.observable(''),
             pk: ko.observable(0),
             priv: ko.observable(0)
@@ -15,6 +19,10 @@ $(function(){
     };
     
     ko.applyBindings(appState);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // ACCOUNTS REDUCER
+    ////////////////////////////////////////////////////////////////////////////////////
 
     function accounts(state, action) {
         if (typeof state === 'undefined') { return appState.accounts; }
@@ -31,12 +39,48 @@ $(function(){
                 return state;
 
             case 'ADD_ACCOUNT':
+                jQuery('#new-account').modal('hide');
+                Dumbu.blockUI();
+                setTimeout(function(){
+                    jQuery.ajax(Dumbu.siteUrl + '/account/', {
+                        type: 'POST',
+                        data: {
+                            username: appState.newAccount.userName(),
+                            pk: appState.newAccount.pk(),
+                            password: appState.newAccount.password(),
+                            priv: appState.newAccount.priv(),
+                            created_at: moment().unix()
+                        },
+                        success: function(data){
+                            state.accounts.push(data.newAccount);
+                            var c = Math.abs(state.count()) + 1;
+                            state.count(c);
+                            setTimeout(function() {
+                                Dumbu.unblockUI();
+                            }, 1200);
+                        },
+                        error: function(response){
+                            Dumbu.unblockUI();
+                            setTimeout(function() {
+                                swal({
+                                    type: 'error',
+                                    title: 'Account creation error!',
+                                    text: response.responseJSON.message
+                                });
+                            }, 500);
+                        }
+                    });
+                },2000);
                 return state;
             
             case 'REMOVE_ACCOUNT':
                 return state;
             
             case 'REFRESH_ACCOUNTS':
+                Dumbu.blockUI('Not implemented yet...');
+                setTimeout(function(){
+                    Dumbu.unblockUI();
+                }, 2000);
                 return state;
 
             case 'COLLECT_FOLLOWERS':
@@ -49,7 +93,17 @@ $(function(){
                 return state;
         }
     };
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // jQuery STUFF
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
     
+    ////////////////////////////////////////////////////////////////////////////////////
+    // REDUX STORE CREATION
+    ////////////////////////////////////////////////////////////////////////////////////
+
     var reducer = Redux.combineReducers({
         accounts: accounts
     });

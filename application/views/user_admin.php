@@ -53,7 +53,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Instagram ID</th>
                                                 <th>Privileges</th>
                                                 <th class="text-right">
-                                                    <a href data-bind="" class="promo-action text-warning" data-toggle="modal" data-target="#new-account"
+                                                    <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'REFRESH_ACCOUNTS', payload: { data: data, event: ev } }); }"
+                                                       class="promo-action text-info" title="Refresh list"><i class="fa fa-refresh"></i></a>&nbsp;&nbsp;
+                                                    <a href class="promo-action text-info" data-toggle="modal" data-target="#new-account"
                                                        title="Add new user account"><i class="fa fa-user-plus"></i></a>
                                                 </th>
                                             </tr>
@@ -106,7 +108,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="col-xs-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg typeahead"
-                                        id="account-name" data-bind="textInput: newAccount.username"
+                                        id="account-name" data-bind="textInput: newAccount.userName"
                                         name="username" placeholder="Instagram account name...">
                                 </div>
                                 <div class="form-group">
@@ -135,7 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <button class="btn btn-success btn-lg btn-block"
-                                        onclick="store.dispatch({ type: 'ADD_USER' })">Create</button>
+                                        onclick="store.dispatch({ type: 'ADD_ACCOUNT' })">Create</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button class="btn btn-danger btn-lg btn-block"
