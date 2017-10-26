@@ -203,7 +203,7 @@ angular.module('dumbu')
             lastLogLines: function()
             {
                 $log.log('%1 - buscando log...'
-                    .replace(/\%1/, moment().format('HH:mm')));
+                    .replace(/\%1/, moment(new Date()).format('HH:mm')));
                 if (angular.isUndefined(self.$scope.logLines)) {
                     self.$scope.logLines = [];
                 }
