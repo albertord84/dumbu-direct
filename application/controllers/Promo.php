@@ -134,9 +134,8 @@ class Promo extends CI_Controller {
     public function sender($username) {
         if ($this->session->is_admin) {
             $this->load->database();
-            $query = $this->db->query('select id, username, pk, created_at, priv from client where username = ? limit 10',[
-                'username' => $username
-            ]);
+            $query = $this->db->query("select id, username, pk, created_at, priv " . 
+                "from client where username like '%$username%' limit 10");
             $senders = $query->result();
             $this->output->set_content_type('application/json')
                 ->set_status_header(200)
