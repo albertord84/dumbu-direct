@@ -46,9 +46,7 @@ $(function(){
         
         switch (action.type) {
             case 'LOAD_ACCOUNTS':
-                _.forEach(Dumbu.accounts.accounts, function(o){
-                    state.accounts.push(o);
-                });
+                state(Array.concat(Dumbu.accounts.accounts));
                 return state;
             
             case 'SET_TOTAL_ACCOUNTS':

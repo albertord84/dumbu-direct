@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
-<html>
+<html data-ng-app="dumbu">
     <head>
         <title>DUMBU ::: Direct Message</title>
         <meta charset='utf-8'>
@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css') . '?' . d_guid(); ?>">
     </head>
-    <body>
+    <body data-ng-controller="accounts">
         <div id="promos-container" class="container">
             <?php include __DIR__ . '/navbar.php'; ?>
             <div class="row">
@@ -32,56 +32,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="panel panel-default">
                         <div class="panel-heading text-muted">User Accounts</div>
                         <div class="panel-body">
-							<input type="text" data-bind="textInput: searchTerms" class="small pull-right"
+							<input type="text" data-ng-model="state.searchTerms" class="small pull-right"
 								placeholder="Search terms...">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#active" data-toggle="tab">Active</a></li>
                             </ul>
                             <div class="promo-tabs tab-content">
                                 <div id="active" class="tab-pane fade in active">
-                                    <div class="row text-center" data-bind="if: accounts.accounts().length===0">
+                                    <div class="row text-center" data-ng-if="state.accounts.length===0">
                                         <div class="well-lg text-muted">
                                             <h4><b>No data...</b></h4>
-                                            <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'REFRESH_ACCOUNTS', payload: { data: data, event: ev } }); }" class="promo-action" title="Reload active promos"><i class="fa fa-retweet"></i></a>
+                                            <a href data-ng-click="store.dispatch({ type: 'accounts:REFRESH_ACCOUNTS', data: state })" class="promo-action" title="Reload active promos"><i class="fa fa-retweet"></i></a>
                                         </div>
                                     </div>
                                     <table class="table table-striped table-hover small"
-                                           data-bind="if: accounts.accounts().length > 0">
+                                           data-ng-if="state.accounts.length > 0">
                                         <thead>
                                             <tr>
                                                 <th>Username</th>
                                                 <th>Instagram ID</th>
                                                 <th>Privileges</th>
                                                 <th class="text-right">
-                                                    <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'REFRESH_ACCOUNTS', payload: { data: data, event: ev } }); }"
+                                                    <a href data-ng-click="store.dispatch({ type: 'accounts:REFRESH_ACCOUNTS', data: state })"
                                                        class="promo-action text-info" title="Refresh list"><i class="fa fa-refresh"></i></a>&nbsp;&nbsp;
                                                     <a href class="promo-action text-info" data-toggle="modal" data-target="#new-account"
                                                        title="Add new user account"><i class="fa fa-user-plus"></i></a>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody data-bind="foreach: accounts.accounts()">
-                                            <tr class="account">
+                                        <tbody>
+                                            <tr class="account" data-ng-repeat="account in state.accounts">
                                                 <td>
-                                                    <span data-bind="text: username"></span>
+                                                    <span data-ng-bind="account.username"></span>
                                                 </td>
                                                 <td class="text-muted">
-                                                    <span data-bind="text: pk"></span>
+                                                    <span data-ng-bind="account.pk"></span>
                                                 </td>
                                                 <td>
-                                                    <span data-bind="if: priv === '1'" class="text-muted"><b>Admin</b></span>
-                                                    <span data-bind="if: priv !== '1'" class="text-muted">User</span>
+                                                    <span data-ng-if="account.priv === '1'" class="text-muted"><b>Admin</b></span>
+                                                    <span data-ng-if="account.priv !== '1'" class="text-muted">User</span>
                                                 </td>
                                                 <td>
                                                     <span class="pull-right">
-                                                        <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'REMOVE_ACCOUNT', payload: { data: data, event: ev } }); }" class="promo-action text-danger" title="Remove account"><i class="fa fa-remove"></i></a>
+                                                        <a href data-ng-click="store.dispatch({ type: 'accounts:REMOVE_ACCOUNT', data: { account: account, state: state } })" class="promo-action text-danger" title="Remove account"><i class="fa fa-remove"></i></a>
                                                     </span>
                                                     <span class="pull-right">
-                                                        <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'CHANGE_PRIV', payload: { data: data, event: ev } }); }" class="promo-action text-success" title="Change privileges"><i class="fa fa-user-secret"></i></a>
+                                                        <a href data-ng-click="store.dispatch({ type: 'accounts:CHANGE_PRIV', data: { account: account, state: state } })" class="promo-action text-success" title="Change privileges"><i class="fa fa-user-secret"></i></a>
                                                         &nbsp;
                                                     </span>
                                                     <span class="pull-right">
-                                                        <a href data-bind="click: function(data, ev){ store.dispatch({ type: 'COLLECT_FOLLOWERS', payload: { data: data, event: ev } }); }"
+                                                        <a href data-ng-click="store.dispatch({ type: 'accounts:COLLECT_FOLLOWERS', data: { account: account, state: state } })"
                                                         class="promo-action text-info" title="Collect followers list"><i class="fa fa-users"></i></a>
                                                         &nbsp;
                                                     </span>
@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <p class="text-right small text-muted">Total accounts:&nbsp;<span data-bind="text: accounts.count()"></span></p>
+                                    <p class="text-right small text-muted">Total accounts:&nbsp;<span data-ng-bind="state.count"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -108,20 +108,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="col-xs-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg typeahead"
-                                        id="account-name" data-bind="textInput: newAccount.userName"
+                                        id="account-name" data-ng-model="state.newAccount.userName"
                                         placeholder="Instagram account name...">
                                         <img class="async-loading hidden"
                                              src="<?php echo base_url('img/loading-small.gif'); ?>">
                                 </div><br>
                                 <div class="form-group">
                                     <input type="password" class="form-control input-lg"
-                                        id="password" data-bind="textInput: newAccount.password"
+                                        id="password" data-ng-model="state.newAccount.password"
                                         name="password" placeholder="Instagram password...">
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg"
-                                        id="password" data-bind="textInput: newAccount.pk, disable: true"
-                                        name="pk" placeholder="Instagram ID...">
+                                        id="password" data-ng-model="state.newAccount.pk"
+										data-ng-disabled="true" name="pk" placeholder="Instagram ID...">
                                 </div>
                                 <div class="form-group privs">
                                     <div class="col-xs-6 text-left">
@@ -129,7 +129,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </div>
                                     <div class="col-xs-6 text-left">
                                         <input type="checkbox" class="checkbox"
-                                            id="priv-admin" data-bind="checked: newAccount.priv"
+                                            id="priv-admin" data-ng-checked="state.newAccount.priv==='1'"
                                             name="privAdmin">
                                     </div>
                                 </div>
@@ -138,8 +138,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="row text-center">
                             <div class="form-group">
                                 <div class="col-xs-6">
-                                    <button class="btn btn-success btn-lg btn-block" data-bind="disable: !newAccount.pk() || !newAccount.userName() || !newAccount.password()"
-                                        onclick="store.dispatch({ type: 'ADD_ACCOUNT' })">Create</button>
+                                    <button class="btn btn-success btn-lg btn-block" data-ng-disabled="!state.newAccount.pk || !state.newAccount.userName || !state.newAccount.password"
+                                        data-ng-click="store.dispatch({ type: 'accounts:ADD_ACCOUNT', data: state })">Create</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button class="btn btn-danger btn-lg btn-block"
@@ -151,42 +151,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </div>
             </div>
         </div>
-		<div class="modal fade promo-text-change">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header text-center">
-						<h4 class="modal-title"><b>Modify the promo text</b></h4>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-xs-12">
-								<div class="form-group">
-									<textarea type="text" class="form-control input-lg"
-										   data-ng-model="modifiedText" rows="6"
-										   placeholder="New promo text...">
-									</textarea>
-								</div>
-							</div>
-						</div><br>
-						<div class="row text-center">
-							<div class="form-group">
-								<div class="col-xs-6">
-									<button class="btn btn-success btn-lg btn-block"
-											data-ng-click="modifyText()">Accept</button>
-								</div>
-								<div class="col-xs-6">
-									<button class="btn btn-danger btn-lg btn-block"
-											data-dismiss="modal">Cancel</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/knockout.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/redux.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/angular.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
@@ -197,7 +164,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/handlebars.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
-        <script src="<?php echo base_url('js/app/accounts.js') . '?' . d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/controller/accounts.js') . '?' . d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/service/accounts.js') . '?' . d_guid(); ?>"></script>
         <img src="<?php echo base_url('img/loading.gif') . '?' . d_guid(); ?>" class="hidden loading" />
         <script>
             Dumbu.siteUrl = "<?php echo site_url(); ?>";

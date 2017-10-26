@@ -178,7 +178,7 @@ class Scheduler extends CI_Controller {
                 $this->unlockMessage();
                 $this->interrupt($ex->getMessage());
             }
-            printf("* Procesado el mensaje %s...\n", $message->id);
+            printf("* Procesada la promocion %s...\n", $message->id);
         }
         $this->unlockMessage();
         printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());

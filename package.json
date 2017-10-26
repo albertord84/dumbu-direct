@@ -15,6 +15,7 @@
     "eslint": "^4.8.0",
     "grunt": "^1.0.1",
     "gulp": "^3.9.1",
+    "immutable": "^3.8.2",
     "jquery": "^3.2.1",
     "knockout": "^3.4.2",
     "lodash": "^4.17.4",

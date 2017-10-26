@@ -229,7 +229,7 @@ angular.module('dumbu')
                 }
                 $interval(function(){
                     self.lastLogLines();
-                }, 30000 /*1000 * 60 * 10*/);
+                }, 30000 /* 1000 * 60 * 10 */);
             },
             
             collectFollowers: function(pk, $scope) {

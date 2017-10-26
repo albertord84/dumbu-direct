@@ -1,12 +1,13 @@
 <?php
 $username = trim($argv[1]);
 $password = trim($argv[2]);
-$uid = trim($argv[3]);
+$profile = trim($argv[3]);
+$dest_file = trim(@$argv[4]);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__ . '/../vendor/autoload.php';
-$debug = true;
-$truncatedDebug = true;
+$debug = FALSE;
+$truncatedDebug = TRUE;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
     $ig->setUser($username, $password);
@@ -18,29 +19,20 @@ try {
 try {
     $maxId = null;
     $followers = [];
-    $pk = $ig->getUsernameId($uid);
+    $pk = $ig->getUsernameId($profile);
     $c = 0;
-    
     $f = [];
     $resp = $ig->getUserFollowers($pk);
-    $f = array_merge($f, $resp->getUsers());
-    echo '[';
-    do {
-        $resp = $ig->getUserFollowers($pk, $maxId);
-        $followers = array_merge($followers, $resp->getUsers());
-        $maxId = $resp->getNextMaxId();
-        $size = count($followers);
-        for ($i = $c; $i < $size; $i++) {
-            $follower = $followers[$i];
-            echo sprintf("{ \"num\": %s, \"profile\": \"%s\", \"username\": \"%s\", \"private\": %s }%s" . PHP_EOL, 
-                    $i, $follower->pk, $follower->username, 
-                    ($follower->is_private ? 'true' : 'false'), 
-                    ($i < $size - 1 ? ',' : ''));
-        }
-        $c = $size;
-        sleep(5);
-    } while ($maxId !== null);
-    echo ']';
+    $followers = $resp->users;
+    $maxId = $resp->next_max_id;
+    printf("Cursor: %s\n", $maxId);
+    $size = count($followers);
+    for ($i = $c; $i < $size; $i++) {
+        $follower = $followers[$i];
+        printf("%s %s\n", $follower->pk, $follower->username);
+    }
+    $c = $size;
+    sleep(5);
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
 }

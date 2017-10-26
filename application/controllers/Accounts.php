@@ -60,8 +60,9 @@ class Accounts extends CI_Controller {
 
     private function add() {
         $this->load->database();
+        return var_dump($this->input->input_stream());
         $data = json_decode(json_encode($this->input->input_stream()));
-        if ($this->exists($data->username)) {
+        if ($this->exists($data->userName)) {
             return $this->output->set_content_type('application/json')
                 ->set_status_header(500)
                 ->set_output(json_encode([
@@ -70,7 +71,7 @@ class Accounts extends CI_Controller {
                 ], JSON_PRETTY_PRINT));
         }
         $this->db->insert('client', [
-            'username' => $data->username,
+            'username' => $data->userName,
             'pk' => $data->pk,
             'password' => $data->password,
             'priv' => $data->priv,

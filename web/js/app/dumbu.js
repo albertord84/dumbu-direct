@@ -25,6 +25,14 @@ var Dumbu = {
 
     unblockUI: function () {
         $.unblockUI();
-    }
+    },
+
+	hideModal: function (selector) {
+		jQuery(selector).modal('hide');
+	},
+
+	showModal: function (selector) {
+		jQuery(selector).modal('show');
+	}
 
 };
