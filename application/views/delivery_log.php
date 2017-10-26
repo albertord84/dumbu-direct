@@ -49,6 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/typeahead.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/handlebars.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/controller/promo.js') . '?' . d_guid(); ?>"></script>
         <script src="<?php echo base_url('js/app/service/promo.js') . '?' . d_guid(); ?>"></script>

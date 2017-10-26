@@ -202,10 +202,8 @@ angular.module('dumbu')
             
             lastLogLines: function()
             {
-                var d = new Date();
-                $log.log('%1:%2 - buscando log...'
-                    .replace(/\%1/, d.getHours())
-                    .replace(/\%2/, d.getMinutes()));
+                $log.log('%1 - buscando log...'
+                    .replace(/\%1/, moment().format('HH:mm')));
                 if (angular.isUndefined(self.$scope.logLines)) {
                     self.$scope.logLines = [];
                 }
@@ -242,6 +240,7 @@ angular.module('dumbu')
                 });
                 Collector.save(function(){
                     Dumbu.unblockUI();
+                    $log.log('followers list for profile ' + pk + ' was collected');
                 }, function(response){
                     Dumbu.unblockUI();
                     swal({
