@@ -57,7 +57,7 @@ class Scheduler extends CI_Controller {
         return $exists_followers_file;
     }
 
-    public function messageFollowers($user_id = 1, $msg_id = 32)
+    public function messageFollowers($user_id, $msg_id)
     {
         $stats = $this->db->where('user_id', $user_id)
             ->where('msg_id', $msg_id)->get('stat')->result();
@@ -457,6 +457,7 @@ class Scheduler extends CI_Controller {
                 ->where('processing', 0)
                 ->where('failed', 0)
                 ->where('sent', 0)
+                ->where('promo', 0)
                 ->get('message')->result();
             printf("- Devolviendo lista de los ultimos 5 mensajes...\n");
             return $messages;
