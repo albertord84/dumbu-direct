@@ -46,15 +46,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <br>
                                         <h4>No data...</h4>
                                     </div>
-                                    <div class="row" data-ng-if="todayPromos.length>0">
-                                        <br>
-                                        <div class="col-xs-4 col-xs-offset-1 text-muted"><b>Client / User</b></div>
-                                        <div class="col-xs-3 col-xs-offset-2 text-muted text-center"><b>Sent messages</b></div>
-                                    </div>
-                                    <div data-ng-repeat="todaySent in todayPromos" class="row" data-ng-if="todayPromos.length>0">
-                                        <div class="col-xs-4 col-xs-offset-1" data-ng-bind="todaySent.client"></div>
-                                        <div class="col-xs-3 col-xs-offset-2 text-center" data-ng-bind="todaySent.sent"></div>
-                                    </div>
+                                    <table data-ng-if="todayPromos.length>0" class="table table-stripped">
+                                        <thead>
+                                            <tr>
+                                                <th>Client / User</th>
+                                                <th>Sent messages</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="todaySent in todayPromos">
+                                                <td data-ng-bind="todaySent.client"></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span data-ng-bind="todaySent.sent"></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div id="last" class="tab-pane fade in">
                                     <div class="row text-center" data-ng-if="!lastPromos">
@@ -65,17 +72,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <br>
                                         <h4>No data...</h4>
                                     </div>
-                                    <div class="row" data-ng-if="lastPromos.length>0">
-                                        <br>
-                                        <div class="col-xs-3 col-xs-offset-1 text-muted"><b>Client / User</b></div>
-                                        <div class="col-xs-3 text-muted text-center"><b>Sent messages</b></div>
-                                        <div class="col-xs-3 text-muted text-center"><b>Finished at</b></div>
-                                    </div>
-                                    <div data-ng-repeat="lastSent in lastPromos" class="row" data-ng-if="lastPromos.length>0">
-                                        <div class="col-xs-3 col-xs-offset-1" data-ng-bind="lastSent.client"></div>
-                                        <div class="col-xs-3 text-center" data-ng-bind="lastSent.sent"></div>
-                                        <div class="col-xs-3 text-center" data-ng-bind="lastSent.sent_date"></div>
-                                    </div>
+                                    <table class="table table-stripped" data-ng-if="lastPromos.length>0">
+                                        <thead>
+                                            <tr>
+                                                <th>Client / User</th>
+                                                <th>Sent messages</th>
+                                                <th>Finished at</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="lastSent in lastPromos">
+                                                <td data-ng-bind="lastSent.client"></td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span data-ng-bind="lastSent.sent"></span>
+                                                </td>
+                                                <td data-ng-bind="lastSent.sent_date"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
