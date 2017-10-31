@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <br>
                                         <div class="col-xs-3 col-xs-offset-1 text-muted"><b>Client / User</b></div>
                                         <div class="col-xs-3 text-muted text-center"><b>Sent messages</b></div>
-                                        <div class="col-xs-3 text-muted text-center"><b>Delivery date</b></div>
+                                        <div class="col-xs-3 text-muted text-center"><b>Finished at</b></div>
                                     </div>
                                     <div data-ng-repeat="lastSent in lastPromos" class="row" data-ng-if="lastPromos.length>0">
                                         <div class="col-xs-3 col-xs-offset-1" data-ng-bind="lastSent.client"></div>
