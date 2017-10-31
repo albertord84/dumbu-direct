@@ -90,4 +90,13 @@ angular.module('dumbu')
         promoService.setScope($scope);
         promoService.getLogLines();
     }
+])
+
+.controller('promoStats', [
+    '$scope', '$log', 'promoService',
+    function ($scope, $log, promoService) {
+        promoService.setScope($scope);
+        promoService.todayStat();
+        promoService.lastStat();
+    }
 ]);

@@ -334,7 +334,29 @@ angular.module('dumbu')
 						Dumbu.unblockUI();
 					}, 3000);
 				});
-			}
+            },
+            
+            todayStat: function() {
+                var Promo = $resource(Dumbu.siteUrl + '/promo/today');
+				Promo.get(function(data){
+                    $timeout(function(){
+                        self.$scope.todayPromos = data.results;
+                    }, 1000);
+				}, function(){
+					$log.log(arguments);
+				});
+            },
+
+            lastStat: function() {
+                var Promo = $resource(Dumbu.siteUrl + '/promo/last');
+				Promo.get(function(data){
+                    $timeout(function(){
+                        self.$scope.lastPromos = data.results;
+                    }, 1000);
+				}, function(){
+					$log.log(arguments);
+				});
+            }
 
         };
         return self;

@@ -445,5 +445,51 @@ class Promo extends CI_Controller {
 		else {
 			show_error('You have not enough privileges to access here...', 500);
 		}
-	}
+    }
+
+    public function stats() {
+        if ($this->session->is_admin) {
+			$this->load->view('promo_stats', [
+                'is_admin' => TRUE,
+                'username' => $this->session->username
+            ]);
+		}
+		else {
+			show_error('You have not enough privileges to access here...', 500);
+		}
+    }
+    
+    public function todayPromoStats() {
+        $this->load->database();
+        $sql = "SELECT username as client, count(*) as sent ".
+               "FROM stat join client on stat.user_id=client.id ".
+               "JOIN message on stat.msg_id=message.id ".
+               "WHERE message.promo=1 and ".
+               sprintf("dt>=unix_timestamp('%s 00:00:00') ",
+                    \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d 00:00:00'))->timestamp).
+               "group by msg_id limit 10";
+        $results = $this->db->query($sql)->result();
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success' => TRUE,
+                'results' => $results
+            ], JSON_PRETTY_PRINT));
+    }
+
+    public function lastPromoStats() {
+        $this->load->database();
+        $sql = "SELECT username as client, count(*) as sent ".
+               "FROM stat join client on stat.user_id=client.id ".
+               "JOIN message on stat.msg_id=message.id ".
+               "WHERE message.promo=1 ".
+               "group by msg_id limit 10";
+        $results = $this->db->query($sql)->result();
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success' => TRUE,
+                'results' => $results
+            ], JSON_PRETTY_PRINT));
+    }
 }
