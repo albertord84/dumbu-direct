@@ -479,12 +479,17 @@ class Promo extends CI_Controller {
 
     public function lastPromoStats() {
         $this->load->database();
-        $sql = "SELECT username as client, count(*) as sent ".
+        $sql = "SELECT username as client, count(*) as sent, message.sent_at as sent_date ".
                "FROM stat join client on stat.user_id=client.id ".
                "JOIN message on stat.msg_id=message.id ".
                "WHERE message.promo=1 ".
                "group by msg_id limit 10";
         $results = $this->db->query($sql)->result();
+        foreach ($results as $key => $result) {
+            $d = $results[ $key ]->sent_date;
+            $results[ $key ]->sent_date = \Carbon\Carbon::createFromTimestamp($d)
+                ->format('M\/d h:i A');
+        }
         return $this->output->set_content_type('application/json')
             ->set_status_header(200)
             ->set_output(json_encode([

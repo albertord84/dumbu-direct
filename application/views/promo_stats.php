@@ -39,9 +39,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="promo-tabs tab-content">
                                 <div id="today" class="tab-pane fade in active">
                                     <div class="row text-center" data-ng-if="!todayPromos">
+                                        <br>
                                         <h4>Loading...</h4>
                                     </div>
                                     <div class="row text-center" data-ng-if="todayPromos.length===0">
+                                        <br>
                                         <h4>No data...</h4>
                                     </div>
                                     <div class="row" data-ng-if="todayPromos.length>0">
@@ -56,19 +58,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <div id="last" class="tab-pane fade in">
                                     <div class="row text-center" data-ng-if="!lastPromos">
+                                        <br>
                                         <h4>Loading...</h4>
                                     </div>
                                     <div class="row text-center" data-ng-if="lastPromos.length===0">
+                                        <br>
                                         <h4>No data...</h4>
                                     </div>
                                     <div class="row" data-ng-if="lastPromos.length>0">
                                         <br>
-                                        <div class="col-xs-4 col-xs-offset-1 text-muted"><b>Client / User</b></div>
-                                        <div class="col-xs-3 col-xs-offset-2 text-muted text-center"><b>Sent messages</b></div>
+                                        <div class="col-xs-3 col-xs-offset-1 text-muted"><b>Client / User</b></div>
+                                        <div class="col-xs-3 text-muted text-center"><b>Sent messages</b></div>
+                                        <div class="col-xs-3 text-muted text-center"><b>Delivery date</b></div>
                                     </div>
                                     <div data-ng-repeat="lastSent in lastPromos" class="row" data-ng-if="lastPromos.length>0">
-                                        <div class="col-xs-4 col-xs-offset-1" data-ng-bind="lastSent.client"></div>
-                                        <div class="col-xs-3 col-xs-offset-2 text-center" data-ng-bind="lastSent.sent"></div>
+                                        <div class="col-xs-3 col-xs-offset-1" data-ng-bind="lastSent.client"></div>
+                                        <div class="col-xs-3 text-center" data-ng-bind="lastSent.sent"></div>
+                                        <div class="col-xs-3 text-center" data-ng-bind="lastSent.sent_date"></div>
                                     </div>
                                 </div>
                             </div>
