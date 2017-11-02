@@ -2,6 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+define('SENT', 1);
+define('NOT_SENT', 0);
+define('FAILED', 1);
+define('NOT_FAILED', 0);
+define('PROCESSING', 1);
+define('NOT_PROCESSING', 0);
+define('PROCESSED', 0);
+define('IS_PROMOTION', 1);
+define('IS_MESSAGE', 0);
+define('IS_NOT_PROMOTION', 0);
+define('IS_WAITING', 2);
+
 class Scheduler extends CI_Controller {
 
     public $instagram = NULL;
@@ -35,7 +47,7 @@ class Scheduler extends CI_Controller {
         $this->db->where('id', $msg_id);
         $this->db->update('message', [ 'processing' => $status ]);
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
-                $status == 0 ? 'PROCESADO' : 'PROCESANDO');
+                $status == PROCESSED ? 'PROCESADO' : 'PROCESANDO');
     }
 
     public function setMessageSent($msg_id, $sent = 0)
@@ -43,12 +55,12 @@ class Scheduler extends CI_Controller {
         date_default_timezone_set(TIME_ZONE);
         $this->db->where('id', $msg_id);
         $this->db->update('message', [
-            'sent' => 1,
-            'failed' => 0,
+            'sent' => SENT,
+            'failed' => NOT_FAILED,
             'sent_at' => \Carbon\Carbon::now()->timestamp
         ]);
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
-                $sent == 0 ? 'NO ENVIADO' : 'ENVIADO');
+                $sent == NOT_SENT ? 'NO ENVIADO' : 'ENVIADO');
     }
 
     public function hasDefinedFollowers($pk)
@@ -438,9 +450,9 @@ class Scheduler extends CI_Controller {
         date_default_timezone_set(TIME_ZONE);
         $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
         $messages = $this->db->where('promo', 1)
-                ->where('processing', 0)
-                ->where('failed', 0)
-                ->where('sent', 0)
+                ->where('processing', NOT_PROCESSING)
+                ->where('failed', NOT_FAILED)
+                ->where('sent', NOT_SENT)
                 ->where('sent_at <=', $before)
                 ->get('message')->result();
         printf("- Devolviendo lista de las %s promociones mas antiguas...\n", $count);
@@ -454,10 +466,10 @@ class Scheduler extends CI_Controller {
         }
         else {
             $messages = $this->db
-                ->where('processing', 0)
-                ->where('failed', 0)
-                ->where('sent', 0)
-                ->where('promo', 0)
+                ->where('processing', NOT_PROCESSING)
+                ->where('failed', NOT_FAILED)
+                ->where('sent', NOT_SENT)
+                ->where('promo', IS_NOT_PROMOTION)
                 ->get('message')->result();
             printf("- Devolviendo lista de los ultimos 5 mensajes...\n");
             return $messages;
@@ -483,6 +495,22 @@ class Scheduler extends CI_Controller {
             printf("- El usuario ya llego al limite de mensajes diarios\n");
         }
         return $is_passed;
+    }
+
+    public function startStoppedPromosBy12h() {
+        $this->load->database();
+        $now = new \Carbon\Carbon;
+        $dt = $now->subHours(11)->timestamp;
+        $this->db->where('sent_at <=', $dt);
+        $this->db->where('promo', IS_PROMOTION);
+        $this->db->where('failed', FAILED);
+        $this->db->where('processing', NOT_PROCESSING);
+        $this->db->where('sent', NOT_SENT);
+        /*$this->db->update('message', [
+            'failed' => NOT_FAILED
+        ]);*/
+        $delayed = $this->db->get('message')->result();
+        var_dump($delayed);
     }
 
 }
