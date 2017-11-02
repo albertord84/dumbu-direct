@@ -2,17 +2,17 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-define('SENT', 1);
-define('NOT_SENT', 0);
-define('FAILED', 1);
-define('NOT_FAILED', 0);
-define('PROCESSING', 1);
-define('NOT_PROCESSING', 0);
-define('PROCESSED', 0);
-define('IS_PROMOTION', 1);
-define('IS_MESSAGE', 0);
-define('IS_NOT_PROMOTION', 0);
-define('IS_WAITING', 2);
+define('SENT', '1');
+define('NOT_SENT', '0');
+define('FAILED', '1');
+define('NOT_FAILED', '0');
+define('PROCESSING', '1');
+define('NOT_PROCESSING', '0');
+define('PROCESSED', '0');
+define('IS_PROMOTION', '1');
+define('IS_MESSAGE', '0');
+define('IS_NOT_PROMOTION', '0');
+define('IS_WAITING', '2');
 
 class Scheduler extends CI_Controller {
 
@@ -500,16 +500,19 @@ class Scheduler extends CI_Controller {
     public function startStoppedPromosBy12h() {
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $dt = $now->subHours(11)->timestamp;
-        $this->db->where('sent_at <=', $dt);
-        $this->db->where('promo', IS_PROMOTION);
-        $this->db->where('failed', FAILED);
-        $this->db->where('processing', NOT_PROCESSING);
-        $this->db->where('sent', NOT_SENT);
+        $fourteenHours = $now->subHours(14)->timestamp;
+        $twelveHours = $now->subHours(12)->timestamp;
+        $sql = sprintf("select * from message ".
+               "where (sent_at >= %d and sent_at <= %d) ".
+               "and promo=%d and failed=%d and processing=%d ".
+               "and sent=%d", 
+            $fourteenHours, $twelveHours,
+            IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
+        $this->db->query($sql);
         /*$this->db->update('message', [
             'failed' => NOT_FAILED
         ]);*/
-        $delayed = $this->db->get('message')->result();
+        $delayed = $this->db->result();
         var_dump($delayed);
     }
 

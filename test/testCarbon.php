@@ -4,4 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 date_default_timezone_set("America/Havana");
 
-printf("%s\n", \Carbon\Carbon::now()->format('d-M H:i:s'));
+$now = new \Carbon\Carbon();
+
+echo $now->subHours(14)->timestamp;
+echo PHP_EOL;
+
