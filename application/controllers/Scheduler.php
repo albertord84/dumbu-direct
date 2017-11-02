@@ -500,19 +500,16 @@ class Scheduler extends CI_Controller {
     public function startStoppedPromosBy12h() {
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $fourteenHours = $now->subHours(14)->timestamp;
         $twelveHours = $now->subHours(12)->timestamp;
         $sql = sprintf("select * from message ".
-               "where (sent_at >= %d and sent_at <= %d) ".
+               "where sent_at >= %d ".
                "and promo=%d and failed=%d and processing=%d ".
-               "and sent=%d", 
-            $fourteenHours, $twelveHours,
-            IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
-        $delayed = $this->db->query($sql)->result();
-        /*$this->db->update('message', [
-            'failed' => NOT_FAILED
-        ]);*/
-        var_dump($delayed);
+               "and sent=%d",
+            $twelveHours, IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
+        $this->db->update('message', [
+            'failed' => NOT_FAILED,
+            'processing' => NOT_PROCESSING
+        ]);
     }
 
 }
