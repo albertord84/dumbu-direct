@@ -508,11 +508,10 @@ class Scheduler extends CI_Controller {
                "and sent=%d", 
             $fourteenHours, $twelveHours,
             IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
-        $this->db->query($sql);
+        $delayed = $this->db->query($sql)->result();
         /*$this->db->update('message', [
             'failed' => NOT_FAILED
         ]);*/
-        $delayed = $this->db->result();
         var_dump($delayed);
     }
 
