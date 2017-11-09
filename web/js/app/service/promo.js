@@ -214,6 +214,7 @@ angular.module('dumbu')
                     log: new Date().getTime()
                 });
                 LogLines.get(function(response){
+                    self.$scope.logLines = [];
                     for (var i = 0; i < response.data.length; i++) {
                         self.$scope.logLines.push(response.data[i]);
                     }
