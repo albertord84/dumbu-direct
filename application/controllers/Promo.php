@@ -244,7 +244,7 @@ class Promo extends CI_Controller {
         $log = ROOT_DIR . '/var/messages.log';
         $log_age = filemtime($log);
         $ten_secs_ago = intval(date('U')) - 10;
-        if ( $log_age >= $ten_secs_ago ) {
+        if ( $log_age <> $ten_secs_ago ) {
             $lines = trim(shell_exec("tail -n 10 " . $log));
             $resp = explode(PHP_EOL, $lines);
             $this->output->set_content_type('application/json')
