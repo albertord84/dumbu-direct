@@ -311,6 +311,12 @@ class Scheduler extends CI_Controller {
                 1 => "How are you?",
                 2 => "How do you feel today? I want to tell you something...",
                 3 => "I have something to tell you...",
+            ],
+            'es' => [
+                0 => "Hola!",
+                1 => "Cómo estás?",
+                2 => "Cómo te sientes hoy? Tengo algo que decirte...",
+                3 => "Tengo algo que decirte...",
             ]
         ];
         $n = mt_rand(0, count($greetings[$lang]) - 1);
@@ -319,10 +325,10 @@ class Scheduler extends CI_Controller {
         return $greeting;
     }
     
-    public function sendGreeting($followers)
+    public function sendGreeting($followers, $lang = 'pt')
     {
         try {
-            $greeting = $this->randomGreeting();
+            $greeting = $this->randomGreeting($lang);
             $this->instagram->directMessage($followers, $greeting);
             printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
         }
@@ -526,6 +532,74 @@ class Scheduler extends CI_Controller {
             ]);
         }
         printf("Se reactivaron %s promociones\n", count($promos));
+    }
+
+    public function textBeginners() {
+        $beginnersFiles = FOLLOWERS_LIST_DIR . '/beginners.csv';
+        date_default_timezone_set(TIME_ZONE);
+        $this->load->database();
+        $now = new \Carbon\Carbon;
+        $timestamp = $now->subHours($hours)->timestamp;
+        $followersCount = mt_rand(1, 5);
+        $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
+        try {
+            $this->getInstagram();
+            $this->loginInstagram('dumbu.08', 'Sorvete69');
+        }
+        catch(\Exception $e) {
+            printf("\n", $e->getMessage());
+        }
+        $ptFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'PT') !== FALSE) {
+                $name = current(explode(',', $item));
+                return $this->instagram->getUsernameId($name);
+            }
+        });
+        $enFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'EN') !== FALSE) {
+                $name = current(explode(',', $item));
+                return $this->instagram->getUsernameId($name);
+            }
+        });
+        $esFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'ES') !== FALSE) {
+                $name = current(explode(',', $item));
+                return $this->instagram->getUsernameId($name);
+            }
+        });
+        if (count($ptFollowers)>0) {
+            $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $this->sendGreeting($ptFollowers);
+            $this->randomWait();
+            $this->instagram->directMessage($ptFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }            
+        }
+        if (count($enFollowers)>0) {
+            $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $this->sendGreeting($enFollowers, 'en');
+            $this->randomWait();
+            $this->instagram->directMessage($enFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }            
+        }
+        if (count($esFollowers)>0) {
+            $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $this->sendGreeting($esFollowers, 'es');
+            $this->randomWait();
+            $this->instagram->directMessage($esFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }            
+        }
     }
 
 }
