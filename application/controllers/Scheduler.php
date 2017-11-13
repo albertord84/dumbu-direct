@@ -23,6 +23,7 @@ class Scheduler extends CI_Controller {
         set_time_limit(0);
         printf("\n%s - Procesando mensajes...\n", $this->now());
         try {
+            $this->startStoppedPromosBy12h();
             $this->messages();
             $this->promos();
         } catch (Exception $ex) {
@@ -498,18 +499,33 @@ class Scheduler extends CI_Controller {
     }
 
     public function startStoppedPromosBy12h() {
+        date_default_timezone_set(TIME_ZONE);
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $twelveHours = $now->subHours(12)->timestamp;
-        $sql = sprintf("select * from message ".
-               "where sent_at >= %d ".
+        $hours = 11;
+        $pastTime = $now->subHours($hours)->timestamp;
+        printf("Reactivando promociones con mas de %sh\n", $hours);
+        $sql = sprintf("select id from message ".
+               "where sent_at <= %d ".
                "and promo=%d and failed=%d and processing=%d ".
                "and sent=%d",
-            $twelveHours, IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
-        $this->db->update('message', [
-            'failed' => NOT_FAILED,
-            'processing' => NOT_PROCESSING
-        ]);
+            $pastTime, IS_PROMOTION, FAILED, NOT_PROCESSING, NOT_SENT);
+        $promos = $this->db->query($sql)->result();
+        if (count($promos)===0) {
+            printf("No hay promociones con mas de %sh\n", $hours);
+            return;
+        }
+        printf("Se reactivaran %s promociones\n", count($promos));
+        foreach ($promos as $promo) {
+            printf("Reactivando promocion %s\n", $promo->id);
+            $this->db->where('id', $promo->id);
+            $this->db->update('message', [
+                'failed' => NOT_FAILED,
+                'processing' => NOT_PROCESSING,
+                'sent_at' => date("U")
+            ]);
+        }
+        printf("Se reactivaron %s promociones\n", count($promos));
     }
 
 }
