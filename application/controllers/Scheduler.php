@@ -539,7 +539,7 @@ class Scheduler extends CI_Controller {
         date_default_timezone_set(TIME_ZONE);
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $timestamp = $now->subHours($hours)->timestamp;
+        $timestamp = $now->timestamp;
         $followersCount = mt_rand(1, 5);
         $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
         try {
@@ -598,7 +598,7 @@ class Scheduler extends CI_Controller {
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }            
+            }   
         }
     }
 
