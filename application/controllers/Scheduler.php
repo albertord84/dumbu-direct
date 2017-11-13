@@ -592,6 +592,8 @@ class Scheduler extends CI_Controller {
             if ($f !== null) { return $f; }
         });
         if (count($ptFollowers)>0) {
+            printf("Se enviara a estos seguidores: [%s]\n",
+                implode(',', $ptFollowers));
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('pt');
@@ -601,9 +603,11 @@ class Scheduler extends CI_Controller {
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }            
+            }
         }
         if (count($enFollowers)>0) {
+            printf("Se enviara a estos seguidores: [%s]\n",
+                implode(',', $enFollowers));
             $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('en');
@@ -613,9 +617,11 @@ class Scheduler extends CI_Controller {
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }            
+            }
         }
         if (count($esFollowers)>0) {
+            printf("Se enviara a estos seguidores: [%s]\n",
+                implode(',', $esFollowers));
             $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('es');
@@ -625,7 +631,7 @@ class Scheduler extends CI_Controller {
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }   
+            }
         }
     }
 
