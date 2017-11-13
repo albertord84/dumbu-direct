@@ -543,6 +543,48 @@ class Scheduler extends CI_Controller {
         $timestamp = $now->timestamp;
         $followersCount = mt_rand(1, 5);
         $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
+        $ptFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'PT') !== FALSE) {
+                $data = explode(',', $item);
+                return $data[0] !== null;
+            }
+        });
+        $ptFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $ptFollowers);
+        if (count($ptFollowers)>0) {
+            printf("Colectados estos seguidores [%] (portugues)\n",
+                   implode(',', $ptFollowers));
+        }
+        $enFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'EN') !== FALSE) {
+                $data = explode(",", $item);
+                return $data[0] !== null;
+            }
+        });
+        $enFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $enFollowers);
+        if (count($enFollowers)>0) {
+            printf("Colectados estos seguidores [%] (ingles)\n",
+                   implode(',', $enFollowers));
+        }
+        $esFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'ES') !== FALSE) {
+                $data = explode(',', $item);
+                return $data[0] !== null;
+            }
+        });
+        $esFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $esFollowers);
+        if (count($esFollowers)>0) {
+            printf("Colectados estos seguidores [%] (portugues)\n",
+                   implode(',', $esFollowers));
+        }
         try {
             $this->getInstagram();
             $this->loginInstagram('dumbu.08', 'Sorvete69');
@@ -550,98 +592,47 @@ class Scheduler extends CI_Controller {
         catch(\Exception $e) {
             printf("\n", $e->getMessage());
         }
-        $ptFollowers = array_filter($followersList, function($item) {
-            if (strstr($item, 'PT') !== FALSE) {
-                $name = current(explode(',', $item));
-                try {
-                    return $this->instagram->getUsernameId($name);
-                }
-                catch(\Exception $e) {
-                    return null;
-                }
-            }
-        });
-        $ptFollowers = array_filter($ptFollowers, function($f) {
-            if ($f !== null) { return $f; }
-        });
-        if (count($ptFollowers)>0) {
-            printf("Colectados estos seguidores [%] (portugues)\n", implode(',', $ptFollowers));
-        }
-        $enFollowers = array_filter($followersList, function($item) {
-            if (strstr($item, 'EN') !== FALSE) {
-                $name = current(explode(',', $item));
-                try {
-                    return $this->instagram->getUsernameId($name);
-                }
-                catch(\Exception $e) {
-                    return null;
-                }
-            }
-        });
-        $enFollowers = array_filter($enFollowers, function($f) {
-            if ($f !== null) { return $f; }
-        });
-        if (count($enFollowers)>0) {
-            printf("Colectados estos seguidores [%] (ingles)\n", implode(',', $enFollowers));
-        }
-        $esFollowers = array_filter($followersList, function($item) {
-            if (strstr($item, 'ES') !== FALSE) {
-                $name = current(explode(',', $item));
-                try {
-                    return $this->instagram->getUsernameId($name);
-                }
-                catch(\Exception $e) {
-                    return null;
-                }
-            }
-        });
-        $esFollowers = array_filter($esFollowers, function($f) {
-            if ($f !== null) { return $f; }
-        });
-        if (count($esFollowers)>0) {
-            printf("Colectados estos seguidores [%] (espanol)\n", implode(',', $esFollowers));
-        }
         if (count($ptFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $ptFollowers));
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            /*$greeting = $this->randomGreeting('pt');
+            $greeting = $this->randomGreeting('pt');
             $this->instagram->directMessage($ptFollowers, $greeting);
-            /*$this->randomWait();
+            $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }*/
+            }
         }
         if (count($enFollowers)>0) {
             printf("Se enviara a estos seguidores: [%s]\n",
                 implode(',', $enFollowers));
             $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            /*$greeting = $this->randomGreeting('en');
+            $greeting = $this->randomGreeting('en');
             $this->instagram->directMessage($enFollowers, $greeting);
-            /*$this->randomWait();
+            $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }*/
+            }
         }
         if (count($esFollowers)>0) {
             printf("Se enviara a estos seguidores: [%s]\n",
                 implode(',', $esFollowers));
             $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            /*$greeting = $this->randomGreeting('es');
+            $greeting = $this->randomGreeting('es');
             $this->instagram->directMessage($esFollowers, $greeting);
-            /*$this->randomWait();
+            $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }*/
+            }
         }
     }
 
