@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#active" data-toggle="tab">Active</a></li>
                                 <li><a href="#sent" data-toggle="tab">Sent</a></li>
-                                <li><a href="#failed" data-toggle="tab">Failed</a></li>
+                                <li><a href="#failed" data-toggle="tab">Stopped</a></li>
                             </ul>
                             <div class="promo-tabs tab-content">
                                 <div id="active" class="tab-pane fade in active">
