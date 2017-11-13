@@ -594,7 +594,8 @@ class Scheduler extends CI_Controller {
         if (count($ptFollowers)>0) {
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $this->sendGreeting($ptFollowers);
+            $greeting = $this->randomGreeting('pt');
+            $this->instagram->directMessage($ptFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             foreach ($followersList as $data) {
@@ -605,7 +606,8 @@ class Scheduler extends CI_Controller {
         if (count($enFollowers)>0) {
             $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $this->sendGreeting($enFollowers, 'en');
+            $greeting = $this->randomGreeting('en');
+            $this->instagram->directMessage($enFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             foreach ($followersList as $data) {
@@ -616,7 +618,8 @@ class Scheduler extends CI_Controller {
         if (count($esFollowers)>0) {
             $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $this->sendGreeting($esFollowers, 'es');
+            $greeting = $this->randomGreeting('es');
+            $this->instagram->directMessage($esFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             foreach ($followersList as $data) {
