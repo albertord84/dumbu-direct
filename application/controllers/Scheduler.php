@@ -539,6 +539,7 @@ class Scheduler extends CI_Controller {
         date_default_timezone_set(TIME_ZONE);
         $this->load->database();
         $now = new \Carbon\Carbon;
+        printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
         $timestamp = $now->timestamp;
         $followersCount = mt_rand(1, 5);
         $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
@@ -563,6 +564,9 @@ class Scheduler extends CI_Controller {
         $ptFollowers = array_filter($ptFollowers, function($f) {
             if ($f !== null) { return $f; }
         });
+        if (count($ptFollowers)>0) {
+            printf("Colectados estos seguidores [%] (portugues)\n", implode(',', $ptFollowers));
+        }
         $enFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'EN') !== FALSE) {
                 $name = current(explode(',', $item));
@@ -577,6 +581,9 @@ class Scheduler extends CI_Controller {
         $enFollowers = array_filter($enFollowers, function($f) {
             if ($f !== null) { return $f; }
         });
+        if (count($enFollowers)>0) {
+            printf("Colectados estos seguidores [%] (ingles)\n", implode(',', $enFollowers));
+        }
         $esFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'ES') !== FALSE) {
                 $name = current(explode(',', $item));
@@ -591,8 +598,11 @@ class Scheduler extends CI_Controller {
         $esFollowers = array_filter($esFollowers, function($f) {
             if ($f !== null) { return $f; }
         });
+        if (count($esFollowers)>0) {
+            printf("Colectados estos seguidores [%] (espanol)\n", implode(',', $esFollowers));
+        }
         if (count($ptFollowers)>0) {
-            printf("Se enviara a estos seguidores: [%s]\n",
+            printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $ptFollowers));
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
