@@ -552,20 +552,44 @@ class Scheduler extends CI_Controller {
         $ptFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'PT') !== FALSE) {
                 $name = current(explode(',', $item));
-                return $this->instagram->getUsernameId($name);
+                try {
+                    return $this->instagram->getUsernameId($name);
+                }
+                catch(\Exception $e) {
+                    return null;
+                }
             }
+        });
+        $ptFollowers = array_filter($ptFollowers, function($f) {
+            if ($f !== null) { return $f; }
         });
         $enFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'EN') !== FALSE) {
                 $name = current(explode(',', $item));
-                return $this->instagram->getUserInfoByName($name)->user->pk;
+                try {
+                    return $this->instagram->getUsernameId($name);
+                }
+                catch(\Exception $e) {
+                    return null;
+                }
             }
+        });
+        $enFollowers = array_filter($enFollowers, function($f) {
+            if ($f !== null) { return $f; }
         });
         $esFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'ES') !== FALSE) {
                 $name = current(explode(',', $item));
-                return $this->instagram->getUsernameId($name);
+                try {
+                    return $this->instagram->getUsernameId($name);
+                }
+                catch(\Exception $e) {
+                    return null;
+                }
             }
+        });
+        $esFollowers = array_filter($esFollowers, function($f) {
+            if ($f !== null) { return $f; }
         });
         if (count($ptFollowers)>0) {
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
