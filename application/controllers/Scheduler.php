@@ -606,42 +606,42 @@ class Scheduler extends CI_Controller {
                 implode(',', $ptFollowers));
             $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $greeting = $this->randomGreeting('pt');
+            /*$greeting = $this->randomGreeting('pt');
             $this->instagram->directMessage($ptFollowers, $greeting);
-            $this->randomWait();
+            /*$this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }
+            }*/
         }
         if (count($enFollowers)>0) {
             printf("Se enviara a estos seguidores: [%s]\n",
                 implode(',', $enFollowers));
             $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $greeting = $this->randomGreeting('en');
+            /*$greeting = $this->randomGreeting('en');
             $this->instagram->directMessage($enFollowers, $greeting);
-            $this->randomWait();
+            /*$this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }
+            }*/
         }
         if (count($esFollowers)>0) {
             printf("Se enviara a estos seguidores: [%s]\n",
                 implode(',', $esFollowers));
             $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
-            $greeting = $this->randomGreeting('es');
+            /*$greeting = $this->randomGreeting('es');
             $this->instagram->directMessage($esFollowers, $greeting);
-            $this->randomWait();
+            /*$this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             foreach ($followersList as $data) {
                 $cmd = "sed -i '/$data/d' " . $beginnersFiles;
                 shell_exec($cmd);
-            }
+            }*/
         }
     }
 
