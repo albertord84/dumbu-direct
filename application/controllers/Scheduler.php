@@ -558,7 +558,7 @@ class Scheduler extends CI_Controller {
         $enFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'EN') !== FALSE) {
                 $name = current(explode(',', $item));
-                return $this->instagram->getUsernameId($name);
+                return $this->instagram->getUserInfoByName($name)->user->pk;
             }
         });
         $esFollowers = array_filter($followersList, function($item) {
