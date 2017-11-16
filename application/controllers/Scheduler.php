@@ -554,7 +554,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $ptFollowers);
         if (count($ptFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%s] (portugues)\n",
                    implode(',', $ptFollowers));
         }
         $enFollowers = array_filter($followersList, function($item) {
@@ -568,7 +568,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $enFollowers);
         if (count($enFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (ingles)\n",
+            printf("- Colectados estos seguidores [%s] (ingles)\n",
                    implode(',', $enFollowers));
         }
         $esFollowers = array_filter($followersList, function($item) {
@@ -582,7 +582,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $esFollowers);
         if (count($esFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%s] (portugues)\n",
                    implode(',', $esFollowers));
         }
         try {
@@ -656,7 +656,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $ptFollowers);
         if (count($ptFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%s] (portugues)\n",
                    implode(',', $ptFollowers));
         }
         $enFollowers = array_filter($followersList, function($item) {
@@ -670,7 +670,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $enFollowers);
         if (count($enFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (ingles)\n",
+            printf("- Colectados estos seguidores [%s] (ingles)\n",
                    implode(',', $enFollowers));
         }
         $esFollowers = array_filter($followersList, function($item) {
@@ -684,7 +684,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $esFollowers);
         if (count($esFollowers)>0) {
-            printf("- Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%s] (portugues)\n",
                    implode(',', $esFollowers));
         }
         try {
