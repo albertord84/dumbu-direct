@@ -250,7 +250,7 @@ class Promo extends CI_Controller {
         $log_age = filemtime($log);
         $ten_secs_ago = intval(date('U')) - 10;
         if ( $log_age <> $ten_secs_ago ) {
-            $lines = trim(shell_exec("tail -n 10 " . $log));
+            $lines = trim(shell_exec("tail -n 30 " . $log));
             $resp = explode(PHP_EOL, $lines);
             $this->output->set_content_type('application/json')
                 ->set_status_header(200)
