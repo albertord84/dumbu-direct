@@ -602,8 +602,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
         if (count($enFollowers)>0) {
@@ -616,8 +615,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
         if (count($esFollowers)>0) {
@@ -630,8 +628,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
     }
@@ -704,8 +701,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
         if (count($enFollowers)>0) {
@@ -718,8 +714,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
         if (count($esFollowers)>0) {
@@ -732,8 +727,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             foreach ($followersList as $data) {
-                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
-                shell_exec($cmd);
+                rep_in_file($beginnersFiles, $data);
             }
         }
     }
