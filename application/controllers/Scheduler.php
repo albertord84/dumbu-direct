@@ -601,9 +601,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($ptFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($enFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -614,9 +618,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($enFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($esFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -627,9 +635,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($esFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
     }
 
@@ -700,9 +712,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($ptFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($enFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -713,9 +729,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($enFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($esFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -726,9 +746,13 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($esFollowers, $greeting);
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
+            printf("- Enviado el mensaje a los seguidores seleccionados\n");
             foreach ($followersList as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
+            printf("- Sacados de la lista los seguidores texteados\n");
+            $endTime = new \Carbon\Carbon;
+            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
     }
 }
