@@ -602,7 +602,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($ptFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
@@ -619,7 +619,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($enFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
@@ -636,7 +636,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($esFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
@@ -713,7 +713,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($ptFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
@@ -730,7 +730,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($enFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
@@ -747,7 +747,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            foreach ($followersList as $data) {
+            foreach ($esFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
