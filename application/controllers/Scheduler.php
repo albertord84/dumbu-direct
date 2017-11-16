@@ -606,8 +606,6 @@ class Scheduler extends CI_Controller {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
-            $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($enFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -623,8 +621,6 @@ class Scheduler extends CI_Controller {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
-            $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($esFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -641,8 +637,10 @@ class Scheduler extends CI_Controller {
             }
             printf("- Sacados de la lista los seguidores texteados\n");
             $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
+        $endTime = new \Carbon\Carbon;
+        printf("- Se notifico a %s beginners\n", $followersCount);
+        printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
     }
 
     public function textBeginnersDumbuPRO() {
@@ -717,8 +715,6 @@ class Scheduler extends CI_Controller {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
-            $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($enFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -734,8 +730,6 @@ class Scheduler extends CI_Controller {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
-            $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
         if (count($esFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
@@ -751,8 +745,9 @@ class Scheduler extends CI_Controller {
                 rep_in_file($beginnersFiles, $data);
             }
             printf("- Sacados de la lista los seguidores texteados\n");
-            $endTime = new \Carbon\Carbon;
-            printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
         }
+        $endTime = new \Carbon\Carbon;
+        printf("- Se notifico a %s beginners\n", $followersCount);
+        printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
     }
 }
