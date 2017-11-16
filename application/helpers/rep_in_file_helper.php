@@ -23,7 +23,7 @@ if (!function_exists('rep_in_file')) {
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
-		rename("./$m.out", $argv[1]);
+		rename("./$m.out", $input_file);
 	}
 
 }
