@@ -25,10 +25,15 @@ class Promo extends CI_Controller {
     }
 
     public function browse() {
-        $this->load->view('browse_promo', [
-            'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
-            'username' => $this->session->username
-        ]);
+        if ($this->session->is_admin) {
+            $this->load->view('browse_promo', [
+                'is_admin' => $this->session->is_admin == NULL ? FALSE : TRUE,
+                'username' => $this->session->username
+            ]);
+        }
+        else {
+            return $this->access_not_allowed();
+        }
     }
 
     public function active($page = 0) {
