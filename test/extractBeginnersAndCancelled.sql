@@ -1,0 +1,1 @@
+SELECT clients.insta_id, users.language, user_status.name FROM `clients` left join users on clients.user_id=users.id left join user_status on users.status_id=user_status.id WHERE user_status.id=4 or user_status.id=8

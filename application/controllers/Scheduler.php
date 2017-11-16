@@ -534,7 +534,7 @@ class Scheduler extends CI_Controller {
         printf("Se reactivaron %s promociones\n", count($promos));
     }
 
-    public function textBeginners() {
+    public function textBeginnersDumbuONE() {
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/beginners.csv';
         date_default_timezone_set(TIME_ZONE);
         $this->load->database();
@@ -554,7 +554,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $ptFollowers);
         if (count($ptFollowers)>0) {
-            printf("Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%] (portugues)\n",
                    implode(',', $ptFollowers));
         }
         $enFollowers = array_filter($followersList, function($item) {
@@ -568,7 +568,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $enFollowers);
         if (count($enFollowers)>0) {
-            printf("Colectados estos seguidores [%] (ingles)\n",
+            printf("- Colectados estos seguidores [%] (ingles)\n",
                    implode(',', $enFollowers));
         }
         $esFollowers = array_filter($followersList, function($item) {
@@ -582,7 +582,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $esFollowers);
         if (count($esFollowers)>0) {
-            printf("Colectados estos seguidores [%] (portugues)\n",
+            printf("- Colectados estos seguidores [%] (portugues)\n",
                    implode(',', $esFollowers));
         }
         try {
@@ -595,7 +595,7 @@ class Scheduler extends CI_Controller {
         if (count($ptFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $ptFollowers));
-            $followerMsgFile = sprintf("%s/var/promo.pt.txt", ROOT_DIR);
+            $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('pt');
             $this->instagram->directMessage($ptFollowers, $greeting);
@@ -607,9 +607,9 @@ class Scheduler extends CI_Controller {
             }
         }
         if (count($enFollowers)>0) {
-            printf("Se enviara a estos seguidores: [%s]\n",
+            printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $enFollowers));
-            $followerMsgFile = sprintf("%s/var/promo.en.txt", ROOT_DIR);
+            $followerMsgFile = sprintf("%s/var/promo.beginner.en.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('en');
             $this->instagram->directMessage($enFollowers, $greeting);
@@ -621,9 +621,9 @@ class Scheduler extends CI_Controller {
             }
         }
         if (count($esFollowers)>0) {
-            printf("Se enviara a estos seguidores: [%s]\n",
+            printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $esFollowers));
-            $followerMsgFile = sprintf("%s/var/promo.es.txt", ROOT_DIR);
+            $followerMsgFile = sprintf("%s/var/promo.beginner.es.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $greeting = $this->randomGreeting('es');
             $this->instagram->directMessage($esFollowers, $greeting);
@@ -636,4 +636,105 @@ class Scheduler extends CI_Controller {
         }
     }
 
+    public function textBeginnersDumbuPRO() {
+        $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
+        date_default_timezone_set(TIME_ZONE);
+        $this->load->database();
+        $now = new \Carbon\Carbon;
+        printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
+        $timestamp = $now->timestamp;
+        $followersCount = mt_rand(1, 5);
+        $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
+        $ptFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'PT') !== FALSE) {
+                $data = explode(',', $item);
+                return $data[0] !== null;
+            }
+        });
+        $ptFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $ptFollowers);
+        if (count($ptFollowers)>0) {
+            printf("- Colectados estos seguidores [%] (portugues)\n",
+                   implode(',', $ptFollowers));
+        }
+        $enFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'EN') !== FALSE) {
+                $data = explode(",", $item);
+                return $data[0] !== null;
+            }
+        });
+        $enFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $enFollowers);
+        if (count($enFollowers)>0) {
+            printf("- Colectados estos seguidores [%] (ingles)\n",
+                   implode(',', $enFollowers));
+        }
+        $esFollowers = array_filter($followersList, function($item) {
+            if (strstr($item, 'ES') !== FALSE) {
+                $data = explode(',', $item);
+                return $data[0] !== null;
+            }
+        });
+        $esFollowers = array_map(function($f) {
+            $data = explode(',', $f);
+            return preg_replace('/"/', '', $data[0]);
+        }, $esFollowers);
+        if (count($esFollowers)>0) {
+            printf("- Colectados estos seguidores [%] (portugues)\n",
+                   implode(',', $esFollowers));
+        }
+        try {
+            $this->getInstagram();
+            $this->loginInstagram('dumbu.09', 'dumbu2017');
+        }
+        catch(\Exception $e) {
+            printf("\n", $e->getMessage());
+        }
+        if (count($ptFollowers)>0) {
+            printf("- Se enviara a estos seguidores: [%s]\n",
+                implode(',', $ptFollowers));
+            $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $greeting = $this->randomGreeting('pt');
+            $this->instagram->directMessage($ptFollowers, $greeting);
+            $this->randomWait();
+            $this->instagram->directMessage($ptFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }
+        }
+        if (count($enFollowers)>0) {
+            printf("- Se enviara a estos seguidores: [%s]\n",
+                implode(',', $enFollowers));
+            $followerMsgFile = sprintf("%s/var/promo.beginner.en.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $greeting = $this->randomGreeting('en');
+            $this->instagram->directMessage($enFollowers, $greeting);
+            $this->randomWait();
+            $this->instagram->directMessage($enFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }
+        }
+        if (count($esFollowers)>0) {
+            printf("- Se enviara a estos seguidores: [%s]\n",
+                implode(',', $esFollowers));
+            $followerMsgFile = sprintf("%s/var/promo.beginner.es.txt", ROOT_DIR);
+            $msgText = file_get_contents($followerMsgFile);
+            $greeting = $this->randomGreeting('es');
+            $this->instagram->directMessage($esFollowers, $greeting);
+            $this->randomWait();
+            $this->instagram->directMessage($esFollowers, $msgText);
+            foreach ($followersList as $data) {
+                $cmd = "sed -i '/$data/d' " . $beginnersFiles;
+                shell_exec($cmd);
+            }
+        }
+    }
 }
