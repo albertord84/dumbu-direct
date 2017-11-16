@@ -54,10 +54,10 @@ do {
         exit(0);
     }
     foreach ($users as $user) {
-        printf("%s: %s %s\n",
-            ++$i,
-            $user->getPk(),
-            $user->getUsername());
+        printf("%s\n",
+            //++$i,
+            $user->getPk()/*,
+            $user->getUsername()*/);
     }
     $c++;
     sleep(10);
