@@ -19,6 +19,42 @@ class Login extends CI_Controller {
         $this->load->view('login');
     }
 
+    public function logged() {
+        if ($this->session->username !== NULL) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'success' => TRUE,
+                    'username' => $this->session->username,
+                    'is_admin' => $this->is_admin($this->session->username)
+                ]));
+        }
+        else {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'success' => FALSE
+                ]));
+        }
+    }
+
+    public function admin() {
+        if ($this->session->username !== NULL) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'is_admin' => $this->is_admin($this->session->username)
+                ]));
+        }
+        else {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'success' => FALSE
+                ]));
+        }
+    }
+
     public function userExists($username) {
         $this->load->database();
         $this->db->where('username', $username);
@@ -79,7 +115,8 @@ class Login extends CI_Controller {
             $response = [
                 'success' => TRUE,
                 'pk' => $instagram->account_id,
-                'username' => $username
+                'username' => $username,
+		'priv' => $this->is_admin($username) ? 1 : 0
             ];
         } catch (Exception $e) {
             $response = [ 'success' => FALSE, 'message' => $e->getMessage() ];
