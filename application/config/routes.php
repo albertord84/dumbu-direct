@@ -9,6 +9,8 @@ $route['test'] = 'test';
 
 $route['auth'] = 'login/auth';
 $route['logout'] = 'login/logout';
+$route['logged'] = 'login/logged';
+$route['is_admin'] = 'login/admin';
 
 $route['search'] = 'search';
 $route['users/(:any)'] = 'search/users/$1';
