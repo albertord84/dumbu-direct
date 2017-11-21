@@ -696,7 +696,7 @@ class Scheduler extends CI_Controller {
         }
         try {
             $this->getInstagram();
-            $this->loginInstagram('dumbu.09', 'dumbu2017');
+            $this->loginInstagram('dumbu.contact', 'Sorvete69@');
         }
         catch(\Exception $e) {
             printf("\n", $e->getMessage());
