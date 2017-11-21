@@ -81,7 +81,7 @@ class Scheduler extends CI_Controller {
         printf("- Seguidores seleccionados [%s]\n", implode(',', $ids));
         return $ids;
     }
-    
+
     public function updateMessageStat($user_id, $msg_id, $followers)
     {
         date_default_timezone_set(TIME_ZONE);
@@ -196,7 +196,7 @@ class Scheduler extends CI_Controller {
         $this->unlockMessage();
         printf("%s - TERMINADO EL PROCESAMIENTO DE PROMOCIONES...\n", $this->now());
     }
-    
+
     protected function now() {
         date_default_timezone_set(TIME_ZONE);
         return \Carbon\Carbon::now()->format('d-M H:i:s');
@@ -207,7 +207,7 @@ class Scheduler extends CI_Controller {
         $this->instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
         printf("- Obtenida instancia del objeto Instagram\n");
     }
-    
+
     public function alreadyTexted($pk, $msg_id)
     {
         $sql = "select count(*) as messages from stat "
@@ -218,7 +218,7 @@ class Scheduler extends CI_Controller {
         ])->result();
         return $result[0]->messages > 0 ? TRUE : FALSE;
     }
-    
+
     public function promoRecipients($msg_id)
     {
         $message = $this->getMessage($msg_id);
@@ -231,7 +231,7 @@ class Scheduler extends CI_Controller {
         printf("- Se enviara promocion a seguidores: [%s]\n", implode(',', $promo_recip));
         return $promo_recip;
     }
-    
+
     public function promoRecipientsCount($pk)
     {
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
@@ -240,13 +240,13 @@ class Scheduler extends CI_Controller {
             $count);
         return intval($count);
     }
-    
+
     public function promoDefinedFollowersList($pk)
     {
         $exists_followers_file = file_exists(FOLLOWERS_LIST_DIR . "/$pk.txt");
         return $exists_followers_file;
     }
-    
+
     public function purgePromoRecipientsList($msg_id, &$followers)
     {
         $count = count($followers);
@@ -260,9 +260,9 @@ class Scheduler extends CI_Controller {
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * @param array() $followers Arreglo con la lista de pks de los seguidores
      * a los que se les envio el mensaje.
      */
@@ -283,7 +283,7 @@ class Scheduler extends CI_Controller {
         printf("- Registrado el envio para los seguidores [%s]\n",
             implode(',', $followers));
     }
-    
+
     public function popAlreadyTexted($pk, $followers)
     {
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
@@ -297,7 +297,7 @@ class Scheduler extends CI_Controller {
 
     public function randomGreeting($lang = 'pt')
     {
-        $greetings = [ 
+        $greetings = [
             'pt' => [
                 0 => "Oi, todo bem?",
                 1 => "Olá, todo bem?",
@@ -324,7 +324,7 @@ class Scheduler extends CI_Controller {
         printf("- Saludo aleatorio escogido: \"%s\"\n", $greeting);
         return $greeting;
     }
-    
+
     public function sendGreeting($followers, $lang = 'pt')
     {
         try {
@@ -338,7 +338,7 @@ class Scheduler extends CI_Controller {
             throw new Exception($msg);
         }
     }
-    
+
     public function updateSentDate($msg_id)
     {
         date_default_timezone_set(TIME_ZONE);
@@ -347,7 +347,7 @@ class Scheduler extends CI_Controller {
                 'sent_at' => \Carbon\Carbon::now()->timestamp
             ]);
     }
-    
+
     public function sendMessage($msg_id, $followers)
     {
         $message = $this->getMessage($msg_id);
@@ -364,7 +364,7 @@ class Scheduler extends CI_Controller {
             throw new Exception($msg, 500);
         }
     }
-    
+
     public function setMessageFailed($msg_id, $failed = 0)
     {
         $this->db->where('id', $msg_id)
@@ -374,7 +374,7 @@ class Scheduler extends CI_Controller {
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
                 $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
     }
-    
+
     public function isOldMsg($msg_id, $minutes = 10)
     {
         date_default_timezone_set(TIME_ZONE);
@@ -388,14 +388,14 @@ class Scheduler extends CI_Controller {
             FALSE;
         }
     }
-    
+
     public function getMessage($msg_id)
     {
         $messages = $this->db->where('id', $msg_id)->get('message')
             ->result();
         return $messages[0];
     }
-    
+
     public function getUser($user_id)
     {
         $users = $this->db->where('id', $user_id)->get('client')->result();
@@ -419,12 +419,12 @@ class Scheduler extends CI_Controller {
         printf("- Esperando %s segs para continuar\n", $secs);
         sleep($secs);
     }
-    
+
     public function lockMessage() {
         file_put_contents(ROOT_DIR . '/var/message.lock', '');
         printf("- Bloqueada la cola de mensajes...\n");
     }
-    
+
     public function unlockMessage() {
         if (file_exists(ROOT_DIR . '/var/message.lock')) {
             unlink(ROOT_DIR . '/var/message.lock');
@@ -433,7 +433,7 @@ class Scheduler extends CI_Controller {
         }
         printf("- La cola de mensajes no estaba bloqueada...\n");
     }
-    
+
     public function interrupt($msg = '')
     {
         if ($msg === '') {
@@ -444,14 +444,14 @@ class Scheduler extends CI_Controller {
         }
         die();
     }
-    
+
     public function messagesLocked()
     {
         $is_locked = file_exists(ROOT_DIR . '/var/message.lock');
         printf("- La cola de mensajes esta %s\n", $is_locked ? 'BLOQUEADA' : 'LIBERADA');
         return $is_locked;
     }
-    
+
     public function oldestPromoList($minutes = 9, $count = 5)
     {
         date_default_timezone_set(TIME_ZONE);
@@ -465,7 +465,7 @@ class Scheduler extends CI_Controller {
         printf("- Devolviendo lista de las %s promociones mas antiguas...\n", $count);
         return $messages;
     }
-    
+
     public function lastMessages($promo = FALSE)
     {
         if ($promo) {
@@ -482,18 +482,18 @@ class Scheduler extends CI_Controller {
             return $messages;
         }
     }
-    
+
     public function dayStart()
     {
         date_default_timezone_set(TIME_ZONE);
         return \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
     }
-    
+
     public function dailyLimitPassed($user_id, $limit = 200)
     {
         $sql = 'select count(*) as messages from stat '
                 . 'where user_id = ? and dt >= ?';
-        $result = $this->db->query($sql, [ 
+        $result = $this->db->query($sql, [
             'user_id' => $user_id,
             'dt' => $this->dayStart()
         ])->result();
@@ -587,7 +587,7 @@ class Scheduler extends CI_Controller {
         }
         try {
             $this->getInstagram();
-            $this->loginInstagram('dumbu.09', 'dumbu2017');
+            $this->loginInstagram('dumbu_zero_1', 'XPcom01.*');
         }
         catch(\Exception $e) {
             printf("\n", $e->getMessage());
@@ -696,7 +696,7 @@ class Scheduler extends CI_Controller {
         }
         try {
             $this->getInstagram();
-            $this->loginInstagram('dumbu.08', 'Sorvete69');
+            $this->loginInstagram('dumbu.09', 'dumbu2017');
         }
         catch(\Exception $e) {
             printf("\n", $e->getMessage());
