@@ -697,7 +697,7 @@ class Scheduler extends CI_Controller {
             $decision = mt_rand(1,2);
             foreach ($ptFollowers as $follower) {
                 printf("- Siguiendo a %s\n", $follower);
-                $this->instagram->follow($followers);
+                $this->instagram->follow($follower);
                 sleep(3);
             }
             if ($decision === 1) {
