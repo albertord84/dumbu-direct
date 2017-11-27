@@ -582,7 +582,7 @@ class Scheduler extends CI_Controller {
             return preg_replace('/"/', '', $data[0]);
         }, $esFollowers);
         if (count($esFollowers)>0) {
-            printf("- Colectados estos seguidores [%s] (portugues)\n",
+            printf("- Colectados estos seguidores [%s] (espanol)\n",
                    implode(',', $esFollowers));
         }
         try {
@@ -599,12 +599,14 @@ class Scheduler extends CI_Controller {
             $msgText = file_get_contents($followerMsgFile);
             $decision = mt_rand(1,2);
             if ($decision === 1) {
+              printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('en');
               $this->instagram->directMessage($enFollowers, $greeting);
               $this->randomWait();
               $this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
             }
             else {
+              printf("- Primero se la imagen promocional, luego el saludo.\n");
               $this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
               $this->randomWait();
               $greeting = $this->randomGreeting('en');
@@ -694,12 +696,14 @@ class Scheduler extends CI_Controller {
             $msgText = file_get_contents($followerMsgFile);
             $decision = mt_rand(1,2);
             if ($decision === 1) {
+              printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
               $this->randomWait();
               $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
             }
             else {
+              printf("- Primero se la imagen promocional, luego el saludo.\n");
               $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
               $this->randomWait();
               $greeting = $this->randomGreeting('pt');
