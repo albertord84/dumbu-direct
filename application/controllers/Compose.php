@@ -113,6 +113,51 @@ class Compose extends CI_Controller {
         }
     }
 
+    private function access_not_allowed() {
+        $this->output->set_content_type('application/json')
+            ->set_status_header(500)
+            ->set_output(json_encode([
+                'success' => FALSE,
+                'message' => 'Access not allowed for your privileges level'
+            ], JSON_PRETTY_PRINT));
+    }
+
+    public function getXhrParam($param) {
+        // Tiene que ser asi, porque el POST generado por AngularJS
+        // difiere del POST normal de un formulario
+        if ($this->postdata == NULL){
+            $this->postdata = file_get_contents("php://input");
+        }
+        $request = json_decode($this->postdata, TRUE);
+        return $request[$param];
+    }
+
+    public function send() {
+        set_time_limit(0);
+        $username = $this->session->username;
+        if ($username == NULL) {
+            return $this->access_not_allowed();
+        }
+        $message = trim($this->input->post('message'));
+        if ($message === '' || $message === NULL) {
+            $message = $this->getXhrParam('message');
+        }
+        while (file_exists(ROOT_DIR . '/var/task.lock')) {
+            sleep(5);
+        }
+        $this->lockTask();
+        $user = $this->getUserData($username);
+        $this->insertMessage($user->id, $message);
+        $last_msg_id = $this->lastMessageId();
+        $this->unlockTask();
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success' => TRUE,
+                'message' => 'Message sent to selected followers'
+            ], JSON_PRETTY_PRINT));
+    }
+
     public function createTask() {
         //$this->getPermittedIps();
         set_time_limit(0);
