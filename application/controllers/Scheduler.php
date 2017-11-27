@@ -603,11 +603,11 @@ class Scheduler extends CI_Controller {
               $greeting = $this->randomGreeting('en');
               $this->instagram->directMessage($enFollowers, $greeting);
               $this->randomWait();
-              $this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
+              //$this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
             }
             else {
-              printf("- Primero se la imagen promocional, luego el saludo.\n");
-              $this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
+              printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
+              //$this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
               $this->randomWait();
               $greeting = $this->randomGreeting('en');
               $this->instagram->directMessage($enFollowers, $greeting);
@@ -695,16 +695,21 @@ class Scheduler extends CI_Controller {
             $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $decision = mt_rand(1,2);
+            foreach ($ptFollowers as $follower) {
+                printf("- Siguiendo a %s\n", $follower);
+                $this->instagram->follow($followers);
+                sleep(3);
+            }
             if ($decision === 1) {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
               $this->randomWait();
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
+              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
             }
             else {
-              printf("- Primero se la imagen promocional, luego el saludo.\n");
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
+              printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
+              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
               $this->randomWait();
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
