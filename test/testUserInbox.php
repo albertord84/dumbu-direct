@@ -16,7 +16,7 @@ try {
 try {
     $threads = $ig->getV2Inbox()->inbox->threads;
     for ($i = 0; $i < count($threads); $i++) {
-        if ($i == 100) exit(0);
+        //if ($i == 100) exit(0);
         $item = $threads[ $i ]->items[0];
         $inviter = $threads[ $i ]->inviter->username;
         $pk = $threads[ $i ]->inviter->pk;
@@ -26,7 +26,7 @@ try {
         foreach ($threads[ $i ]->users as $recip) {
             $recips[] = $recip->pk;
         }
-        echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\" a [%s]" . PHP_EOL, 
+        echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\" a [%s]" . PHP_EOL,
                 intval($i) + 1, $timestamp, $inviter, $pk, substr($text, 0, 20),
                 implode(',', $recips));
     }
