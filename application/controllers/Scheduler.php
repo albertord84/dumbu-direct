@@ -608,7 +608,7 @@ class Scheduler extends CI_Controller {
             else {
               printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
               //$this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
-              $this->randomWait();
+              //$this->randomWait();
               $greeting = $this->randomGreeting('en');
               $this->instagram->directMessage($enFollowers, $greeting);
             }
@@ -630,11 +630,11 @@ class Scheduler extends CI_Controller {
             if ($decision === 1) {
               $greeting = $this->randomGreeting('es');
               $this->instagram->directMessage($esFollowers, $greeting);
-              $this->randomWait();
-              $this->instagram->directPhoto($esFollowers, ROOT_DIR . '/web/img/es.beginners.png');
+              //$this->randomWait();
+              //$this->instagram->directPhoto($esFollowers, ROOT_DIR . '/web/img/es.beginners.png');
             }
             else {
-              $this->instagram->directPhoto($esFollowers, ROOT_DIR . '/web/img/es.beginners.png');
+              //$this->instagram->directPhoto($esFollowers, ROOT_DIR . '/web/img/es.beginners.png');
               $this->randomWait();
               $greeting = $this->randomGreeting('es');
               $this->instagram->directMessage($esFollowers, $greeting);
