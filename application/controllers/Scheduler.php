@@ -412,9 +412,10 @@ class Scheduler extends CI_Controller {
 
     public function loginInstagram($username, $password) {
         try {
+            printf("- Iniciando sesión en Instagram como %s\n", $username);
             $this->instagram->setUser($username, $password);
             $this->instagram->login();
-            printf("- Iniciada sesión en Instagram como %s\n", $username);
+            printf("- Sesión iniciada para %s\n", $username);
         } catch (Exception $ex) {
             $msg = sprintf("- No se pudo iniciar sesion para \"%s\". CAUSA: \"%s\"\n", $username, $ex->getMessage());
             throw new Exception($msg);
@@ -602,7 +603,7 @@ class Scheduler extends CI_Controller {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('en');
               $this->instagram->directMessage($enFollowers, $greeting);
-              $this->randomWait();
+              //$this->randomWait();
               //$this->instagram->directPhoto($enFollowers, ROOT_DIR . '/web/img/en.beginners.png');
             }
             else {
@@ -704,13 +705,13 @@ class Scheduler extends CI_Controller {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
-              $this->randomWait();
+              //$this->randomWait();
               //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
             }
             else {
               printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
               //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
-              $this->randomWait();
+              //$this->randomWait();
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
             }
