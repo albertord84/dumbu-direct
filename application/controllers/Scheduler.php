@@ -718,7 +718,7 @@ class Scheduler extends CI_Controller {
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            $this->updateMessageStat($user->id, $msg_id['pt'], $ptFollowers);
+            $this->insertStat($msg_id['pt'], $ptFollowers);
             printf("- Registrado el envio del mensaje\n");
             foreach ($ptFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
