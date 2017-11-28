@@ -695,11 +695,11 @@ class Scheduler extends CI_Controller {
             $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $decision = mt_rand(1,2);
-            foreach ($ptFollowers as $follower) {
+            /*foreach ($ptFollowers as $follower) {
                 printf("- Siguiendo a %s\n", $follower);
                 $this->instagram->follow($follower);
                 sleep(3);
-            }
+            }*/
             if ($decision === 1) {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
