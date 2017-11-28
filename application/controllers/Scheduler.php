@@ -593,7 +593,6 @@ class Scheduler extends CI_Controller {
         catch(\Exception $e) {
             printf("\n", $e->getMessage());
         }
-        if (true) { var_dump($enFollowers); exit(0); }
         if (count($enFollowers)>0) {
             printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $enFollowers));
@@ -718,8 +717,9 @@ class Scheduler extends CI_Controller {
             }
             $this->randomWait();
             $this->instagram->directMessage($ptFollowers, $msgText);
-            $this->updateMessageStat($user->id, $msg_id['pt'], $ptFollowers);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
+            $this->updateMessageStat($user->id, $msg_id['pt'], $ptFollowers);
+            printf("- Registrado el envio del mensaje\n");
             foreach ($ptFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
