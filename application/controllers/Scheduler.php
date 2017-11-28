@@ -594,6 +594,7 @@ class Scheduler extends CI_Controller {
             printf("\n", $e->getMessage());
         }
         if (count($enFollowers)>0) {
+            if (true) { printf("aqui...\n"); exit(0); }
             printf("- Se enviara a estos seguidores: [%s]\n",
                 implode(',', $enFollowers));
             $followerMsgFile = sprintf("%s/var/promo.beginner.en.txt", ROOT_DIR);
