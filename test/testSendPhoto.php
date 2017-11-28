@@ -1,15 +1,13 @@
 <?php
-$_creds = file_get_contents(dirname(__FILE__).'/instagram_credentials');
-$creds = explode(':', $_creds);
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
-$username = $creds[0];
-$password = $creds[1];
-$uid='alberto_dreyes';
-$photoFileName=dirname(__FILE__).'/assets/img/photo.jpg';
+$username = $argv[1];
+$password = $argv[2];
+$destUser=$argv[3];
+$photoFileName=$argv[4];
 $debug = true;
-$truncatedDebug = false;
+$truncatedDebug = true;
 $captionText = '';
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
@@ -20,8 +18,9 @@ try {
     exit(0);
 }
 try {
-    $uId = $ig->getUsernameId($uid);
-    $ig->directPhoto($uId, "$photoFileName", "Esto es probando enviar fotos...");
+    var_dump($ig->getUserInfoById(3670825632));
+    //printf("Se enviará al perfil: %s\n", $pk);
+    //$ig->directPhoto($pk, "$photoFileName", "Esto es probando para alternar saludos y fotos...");
 } catch (\Exception $e) {
-    echo 'Something went wrong trying to post photo to '.$uid.': '.$e->getMessage()."\n";
+    echo 'Something went wrong trying to post photo to '.$destUser.': '.$e->getMessage()."\n";
 }

@@ -4,8 +4,8 @@ date_default_timezone_set('UTC');
 require __DIR__.'/../vendor/autoload.php';
 $username = $argv[1];
 $password = $argv[2];
-$uid = $argv[3]; // id del perfil, no el nombre del usuario
-$msg = NULL; // $argv[4];
+$uid = $argv[3];
+$msg = $argv[4];
 $debug = true;
 $truncatedDebug = true;
 $captionText = '';
@@ -18,30 +18,6 @@ function guid() {
     $five = mt_rand(0, 65535);
     return strtolower(sprintf('%04X%04X%04X%04X%04X', $one, $two, $three, $four, $five));
 }
-
-/*$message = "%s ====== %s" .
-        PHP_EOL . PHP_EOL .
-        "Ganhe milhares de seguidores qualificados por área" .
-        PHP_EOL . PHP_EOL .
-        "de interesse ou geolocalização, turbine seu perfil!" .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============" .
-        PHP_EOL . PHP_EOL .
-        "- 50%% desconto o primeiro mes (use o código promocional INSTA50P)" .
-        PHP_EOL . PHP_EOL .
-        "- 15 dias de teste gratis (use o código promocional INSTA15D)" .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============" .
-        PHP_EOL . PHP_EOL .
-        "Esta promoção é valida apenas essa semana!" .
-        PHP_EOL . PHP_EOL .
-        "Acesse www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
-        "Tem dúvidas se a nossa ferramenta funciona?! Esta mensagem" .
-        PHP_EOL . PHP_EOL .
-        "foi enviada por www.dumbu.pro." .
-        PHP_EOL . PHP_EOL .
-        "============ %s ============";*/
 
 $message = "Saudações para meus seguidores, tenha um ótimo dia!";
 
