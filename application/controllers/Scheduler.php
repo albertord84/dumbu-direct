@@ -615,8 +615,12 @@ class Scheduler extends CI_Controller {
             }
             $this->randomWait();
             $this->instagram->directMessage($enFollowers, $msgText);
-            $this->updateMessageStat($user->id, $msg_id['en'], $enFollowers);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
+            $this->insertStat($msg_id['en'], $enFollowers);
+            $this->db->where('id', $msg_id['en']);
+            $this->db->update('message', [
+                'sent_at' => \Carbon\Carbon::now()->timestamp
+            ]);
             foreach ($enFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
@@ -642,8 +646,12 @@ class Scheduler extends CI_Controller {
             }
             $this->randomWait();
             $this->instagram->directMessage($esFollowers, $msgText);
-            $this->updateMessageStat($user->id, $msg_id['es'], $esFollowers);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
+            $this->insertStat($msg_id['es'], $esFollowers);
+            $this->db->where('id', $msg_id['es']);
+            $this->db->update('message', [
+                'sent_at' => \Carbon\Carbon::now()->timestamp
+            ]);
             foreach ($esFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
@@ -719,6 +727,10 @@ class Scheduler extends CI_Controller {
             $this->instagram->directMessage($ptFollowers, $msgText);
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
             $this->insertStat($msg_id['pt'], $ptFollowers);
+            $this->db->where('id', $msg_id['pt']);
+            $this->db->update('message', [
+                'sent_at' => \Carbon\Carbon::now()->timestamp
+            ]);
             foreach ($ptFollowers as $data) {
                 rep_in_file($beginnersFiles, $data);
             }
