@@ -5,7 +5,7 @@ jQuery(function(){
 
   var store = Redux.createStore(reducer);
 
-  var userModel = {
+  window.userModel = {
     userName: ko.observable(''),
     password: ko.observable(''),
     pk: ko.observable(0),
@@ -16,17 +16,20 @@ jQuery(function(){
 
   ko.applyBindings(userModel);
 
+  // Actualizar la UI
+  store.subscribe(function(){
+    var state = store.getState().user;
+    _.forEach(state, function(val, prop){
+      _.invoke(userModel, prop, val);
+    });
+  });
+
   var userNameElem = jQuery('#username');
   var userNameObservable = Rx.Observable.fromEvent(userNameElem, 'keyup')
   .map(function(event){ return jQuery(event.target).val(); });
 
   userNameObservable.subscribe(function(value){
-    store.dispatch({
-      type: UserAction.SET_NAME, payload: value
-    });
-    Rx.Observable.of(store)
-    .map(function(s){ return s.getState().user.userName; })
-    .subscribe(userModel.userName);
+    store.dispatch({ type: UserAction.SET_NAME, payload: value });
   });
   
   var passwordElem = jQuery('#password');
@@ -34,15 +37,18 @@ jQuery(function(){
   .map(function(event){ return jQuery(event.target).val(); });
 
   passwordObservable.subscribe(function(value){
-    store.dispatch({
-      type: UserAction.SET_PASS, payload: value
-    });
-    Rx.Observable.of(store)
-    .map(function(s){ return s.getState().user.password; })
-    .subscribe(userModel.password);
+    store.dispatch({ type: UserAction.SET_PASS, payload: value });
   });
 
-  userNameObservable.filter(function(val){
-    return _.trim(val).length > 2;
+  userNameObservable.combineLatest(passwordObservable, function(u, p){
+    return _.trim(u).length > 2 && _.trim(p).length > 2;
+  }).subscribe(function(canLogIn) {
+    store.dispatch({ type: UserAction.SET_CAN_LOG_IN, payload: canLogIn });
+  });
+  
+  var btnElem = jQuery('#bt-auth');
+  Rx.Observable.fromEvent(btnElem, 'click')
+  .subscribe(function(e){
+    store.dispatch({ type: UserAction.SET_LOGGING, payload: true });
   });
 });

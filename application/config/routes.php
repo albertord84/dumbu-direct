@@ -6,6 +6,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['user/login'] = 'user/login';
+$route['user/auth'] = 'user/auth';
 
 $route['test'] = 'test';
 
