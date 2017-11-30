@@ -9,11 +9,14 @@ class User extends CI_Controller {
     public $permitted_ips = [ '127.0.0.1' ];
     
     public function index() {
+    	if ($this->session->username !== NULL) {
+			return $this->load->view('search_followers_form', []);
+		}
         return $this->load->view('login_form', []);
     }
     
     public function login() {
-        return $this->load->view('login_form', []);
+        return $this->index();
     }
     
     public function auth() {

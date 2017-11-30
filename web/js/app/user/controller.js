@@ -19,7 +19,7 @@ jQuery(function () {
 			username: store.getState().user.userName,
 			password: store.getState().user.password
 		}, function (data) {
-			document.location.href = Dumbu.siteUrl + '/search';
+			document.location.href = Dumbu.siteUrl + '/search/followers';
 		}).fail(function (res) {
 			if (typeof console !== 'undefined') {console.log(arguments);}
 			store.dispatch({type: UserAction.SET_LOGGING, payload: false});
@@ -75,7 +75,7 @@ jQuery(function () {
 		})
 		.subscribe(function (e) {
 			btnElem.click();
-		})
+		});
 
 	Rx.Observable.fromEvent(passwordElem, 'keyup')
 		.filter(function (e) {
@@ -83,5 +83,5 @@ jQuery(function () {
 		})
 		.subscribe(function (e) {
 			btnElem.click();
-		})
+		});
 });

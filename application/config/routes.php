@@ -8,6 +8,9 @@ $route['translate_uri_dashes'] = FALSE;
 $route['user/login'] = 'user/login';
 $route['user/auth'] = 'user/auth';
 
+$route['search/followers'] = 'search/index';
+$route['search/followers/(:any)'] = 'search/followers/$1';
+
 $route['test'] = 'test';
 
 ////////////////////////////////////////////////////////////////////
