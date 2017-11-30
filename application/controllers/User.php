@@ -38,12 +38,13 @@ class User extends CI_Controller {
             $instagram->login();
             $this->session->pk = $instagram->account_id;
             $this->session->username = $username;
-            // Determinar priv del usuario si esta en la BD
+            $is_admin = $this->is_admin($username);
+			$this->session->is_admin = $is_admin;
             $response = [
                 'success' => TRUE,
                 'pk' => $instagram->account_id,
                 'username' => $username,
-                //'priv' => $this->is_admin($username) ? 1 : 0
+                'priv' => $is_admin ? 1 : 0
             ];
         } catch (Exception $e) {
             $response = [ 'success' => FALSE, 'message' => $e->getMessage() ];
@@ -53,5 +54,23 @@ class User extends CI_Controller {
             ->set_status_header($response['success'] ? 200 : 500)
             ->set_output(json_encode($response));
     }
-    
+
+	private function is_admin($username)
+	{
+		$this->load->database();
+		$this->db->where('username', $username);
+		$query = $this->db->get('client');
+		$users = $query->result();
+		$is_admin = $users[0]->priv == 1;
+		return $is_admin;
+	}
+
+	private function user_exists($username) {
+		$this->load->database();
+		$this->db->where('username', $username);
+		$query = $this->db->get('client');
+		return $query->num_rows() == 0 ? FALSE : TRUE;
+	}
+
+
 }

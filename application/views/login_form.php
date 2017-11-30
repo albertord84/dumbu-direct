@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <span class="help-block"></span>
                                         </div>
                                         <button type="button" class="btn btn-lg btn-success btn-block"
-                                                id="bt-auth" data-bind="enable: canLogIn, visible: !logging()">Log in</button>
+                                                id="btAuth" data-bind="enable: canLogIn, visible: !logging()">Log in</button>
                                         <div class="text-center">
                                             <img src="<?php echo base_url('img/loading-small.gif'); ?>"
                                                  data-bind="visible: logging">

@@ -10,6 +10,8 @@ $route['user/auth'] = 'user/auth';
 
 $route['test'] = 'test';
 
+////////////////////////////////////////////////////////////////////
+
 $route['auth'] = 'login/auth';
 $route['logout'] = 'login/logout';
 $route['logged'] = 'login/logged';
