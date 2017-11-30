@@ -18,9 +18,12 @@ try {
     exit(0);
 }
 try {
-    var_dump($ig->getUserInfoById(3670825632));
-    //printf("Se enviará al perfil: %s\n", $pk);
-    //$ig->directPhoto($pk, "$photoFileName", "Esto es probando para alternar saludos y fotos...");
+    $pk = $ig->getUserNameId($destUser);
+} catch (\Exception $e) {
+    echo 'Something went wrong trying to get user info: '.$e->getMessage()."\n";
+}
+try {
+    $ig->directPhoto($pk, "$photoFileName", "Esto es probando para alternar saludos y fotos...");
 } catch (\Exception $e) {
     echo 'Something went wrong trying to post photo to '.$destUser.': '.$e->getMessage()."\n";
 }
