@@ -11,6 +11,8 @@ $route['user/auth'] = 'user/auth';
 $route['search/followers'] = 'search/index';
 $route['search/followers/(:any)'] = 'search/followers/$1';
 
+$route['compose/message'] = 'compose';
+
 $route['test'] = 'test';
 
 ////////////////////////////////////////////////////////////////////

@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            placeholder="Select reference profiles..." class="typeahead"
                                            required />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-success" type="button"
+                                        <button class="btn btn-success text-them" type="button"
 											data-bind="disable: results().length === 0">
                                             <i class="glyphicon glyphicon-pencil"
                                                aria-hidden="true"></i>Text&CloseCurlyQuote; em
