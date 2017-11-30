@@ -666,8 +666,8 @@ class Scheduler extends CI_Controller {
     public function textBeginnersDumbuPRO() {
         $msg_id = [ 'pt' => 41, 'en' => 42, 'es' => 43 ];
         $this->load->database();
-        $sender = 'dumbu.contact';
-        $senderPass = 'Sorvete69@';
+        $sender = 'dumbu.help';
+        $senderPass = 'Sorvete69*';
         $user = $this->getUserByName($sender);
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
         date_default_timezone_set(TIME_ZONE);
