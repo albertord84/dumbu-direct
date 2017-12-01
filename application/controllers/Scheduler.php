@@ -666,8 +666,8 @@ class Scheduler extends CI_Controller {
     public function textBeginnersDumbuPRO() {
         $msg_id = [ 'pt' => 41, 'en' => 42, 'es' => 43 ];
         $this->load->database();
-        $sender = 'dumbu_03';
-        $senderPass = 'XPcom01.*';
+        $sender = 'dumbu.08';
+        $senderPass = 'Sorvete69';
         $user = $this->getUserByName($sender);
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
         date_default_timezone_set(TIME_ZONE);
@@ -675,7 +675,7 @@ class Scheduler extends CI_Controller {
         $now = new \Carbon\Carbon;
         printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
         $timestamp = $now->timestamp;
-        $followersCount = mt_rand(3, 5);
+        $followersCount = mt_rand(2, 5);
         $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
         $ptFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'PT') !== FALSE) {
@@ -713,13 +713,13 @@ class Scheduler extends CI_Controller {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
-              //$this->randomWait();
-              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
+              $this->randomWait();
+              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
             }
             else {
               printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
-              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
-              //$this->randomWait();
+              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.png');
+              $this->randomWait();
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
             }
