@@ -714,11 +714,13 @@ class Scheduler extends CI_Controller {
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
               $this->randomWait();
+              printf("- Enviando imagen promocional.\n");
               $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
             }
             else {
               printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
               $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
+				printf("- Enviada la imagen promocional.\n");
               $this->randomWait();
               $greeting = $this->randomGreeting('pt');
               $this->instagram->directMessage($ptFollowers, $greeting);
