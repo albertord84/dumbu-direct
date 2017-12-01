@@ -4,7 +4,8 @@ var initialUserState = {
 	pk: 0,
 	priv: 0,
 	logging: false,
-	canLogIn: false
+	canLogIn: false,
+	error: ''
 };
 
 var UserAction = {
@@ -14,7 +15,8 @@ var UserAction = {
 	SET_PK: '[User] SET_PK',
 	SET_PRIV: '[User] SET_PRIV',
 	SET_LOGGING: '[User] SET_LOGGING',
-	SET_CAN_LOG_IN: '[User] SET_CAN_LOG_IN'
+	SET_CAN_LOG_IN: '[User] SET_CAN_LOG_IN',
+	SET_ERROR: '[User] SET_ERROR'
 };
 
 function user(state, action) {
@@ -42,6 +44,9 @@ function user(state, action) {
 		}
 		case UserAction.SET_CAN_LOG_IN: {
 			return Object.assign({}, state, {canLogIn: action.payload});
+		}
+		case UserAction.SET_ERROR: {
+			return Object.assign({}, state, {error: action.payload});
 		}
 		default: {
 			return state;

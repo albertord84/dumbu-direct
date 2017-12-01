@@ -29,7 +29,7 @@ class User extends CI_Controller {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
         
-        // Aqui se debe limpiar la sesion anterior
+        $this->clean_previous_instagram_session($username);
         sleep(5);
         
         $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
@@ -75,5 +75,21 @@ class User extends CI_Controller {
 		return $query->num_rows() == 0 ? FALSE : TRUE;
 	}
 
+	private function clean_previous_instagram_session($username)
+	{
+		$dir = INSTAGRAM_SESSIONS . '/' . $username;
+		if (file_exists($dir)) {
+			shell_exec("rm -r " . $dir);
+		}
+	}
 
+	public function logout() {
+		if ($this->session->username !== NULL) {
+			$this->cleanInstagramApiSession($this->session->username);
+		}
+		session_destroy();
+		$this->session->username = NULL;
+		$this->session->set_userdata([]);
+		$this->load->view('login');
+	}
 }

@@ -2,6 +2,11 @@ body .container {
   margin-top: 10px;
 }
 
+#loginForm div.alert-danger {
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
+
 #search-container, #compose-container {
   margin-top: 10px;
 }

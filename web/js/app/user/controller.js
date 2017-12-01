@@ -11,7 +11,8 @@ jQuery(function () {
 		pk: ko.observable(0),
 		priv: ko.observable(0),
 		logging: ko.observable(false),
-		canLogIn: ko.observable(false)
+		canLogIn: ko.observable(false),
+		error: ko.observable('')
 	};
 
 	function auth() {
@@ -19,8 +20,20 @@ jQuery(function () {
 			username: store.getState().user.userName,
 			password: store.getState().user.password
 		}, function (data) {
-			document.location.href = Dumbu.siteUrl + '/search/followers';
+			if (data.success) {
+				document.location.href = Dumbu.siteUrl + '/search/followers';
+			}
+			else {
+				store.dispatch({
+					type: UserAction.SET_ERROR,
+					payload: 'Something happened trying to log in!'
+				});
+			}
 		}).fail(function (res) {
+			store.dispatch({
+				type: UserAction.SET_ERROR,
+				payload: res.statusText + ': ' + res.responseJSON.message
+			});
 			if (typeof console !== 'undefined') {console.log(arguments);}
 			store.dispatch({type: UserAction.SET_LOGGING, payload: false});
 		});
@@ -44,6 +57,7 @@ jQuery(function () {
 
 	userNameObservable.subscribe(function (value) {
 		store.dispatch({type: UserAction.SET_NAME, payload: value});
+		store.dispatch({type: UserAction.SET_ERROR, payload: ''});
 	});
 
 	var passwordElem = jQuery('#password');
@@ -54,6 +68,7 @@ jQuery(function () {
 
 	passwordObservable.subscribe(function (value) {
 		store.dispatch({type: UserAction.SET_PASS, payload: value});
+		store.dispatch({type: UserAction.SET_ERROR, payload: ''});
 	});
 
 	userNameObservable.combineLatest(passwordObservable, function (u, p) {

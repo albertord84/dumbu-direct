@@ -12,6 +12,15 @@ class Compose extends CI_Controller {
         if ($this->session->username !== NULL) {
             $this->session->follower_ids = $this->input->post('follower_ids');
             $this->session->follower_names = $this->input->post('follower_names');
+            if ($this->session->follower_names === NULL ||
+				$this->session->follower_ids === NULL) {
+				return $this->load->view('errors/html/error_general', [
+					'heading' => 'Missing data',
+					'message' => 'You have to select followers first. Go to '.
+						sprintf("<a href=\"%s\">", site_url('search')).
+						'search</a>...'
+				]);
+			}
             $this->load->view('compose_direct_message', [
                 'username' => $this->session->username,
                 'is_admin' => $this->session->is_admin != NULL,
@@ -20,20 +29,6 @@ class Compose extends CI_Controller {
             ]);
         } else {
             $this->load->view('login');
-        }
-    }
-
-    public function getPermittedIps()
-    {
-        if (file_exists(ROOT_DIR . '/etc/permitted_ips')) {
-            $data = read_file(ROOT_DIR . '/etc/permitted_ips');
-            $lines = explode(PHP_EOL, $data);
-            foreach ($lines as $ip) {
-                if (trim($ip) == '' || $ip == '127.0.0.1') {
-                    continue;
-                }
-                $this->permitted_ips[] = $ip;
-            }
         }
     }
 

@@ -1,29 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'login';
+$route['default_controller'] = 'user/login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['user/login'] = 'user/login';
 $route['user/auth'] = 'user/auth';
+$route['logout'] = 'user/logout';
 
 $route['search/followers'] = 'search/index';
 $route['search/followers/(:any)'] = 'search/followers/$1';
+$route['search'] = 'search/index';
 
 $route['compose/message'] = 'compose';
+$route['compose'] = 'compose';
 
 $route['test'] = 'test';
 
 ////////////////////////////////////////////////////////////////////
-
-$route['auth'] = 'login/auth';
-$route['logout'] = 'login/logout';
-$route['logged'] = 'login/logged';
-$route['is_admin'] = 'login/admin';
-
-$route['search'] = 'search';
-$route['users/(:any)'] = 'search/users/$1';
 
 $route['compose'] = 'compose';
 $route['user/dashboard'] = 'compose/createtask';

@@ -61,14 +61,41 @@ jQuery(function () {
 		});
 	}
 
+	function prepareSubmitForm() {
+		var frm = jQuery('#search-form');
+		frm.attr({
+			'action': Dumbu.siteUrl + '/compose/message',
+			'method': 'POST'
+		});
+		//
+		var hiddenNames = document.createElement('input');
+		jQuery(hiddenNames).attr({
+			'type': 'hidden',
+			'name': 'follower_names'
+		});
+		//
+		var hiddenIds = document.createElement('input');
+		jQuery(hiddenIds).attr({
+			'type': 'hidden',
+			'name': 'follower_ids'
+		});
+		//
+		frm.append(hiddenIds);
+		frm.append(hiddenNames);
+		jQuery('body').append(frm);
+		//
+		return frm;
+	}
+
 	Rx.Observable.fromEvent(jQuery(document), 'click')
 		.filter(function (e) {
 			return jQuery(e.target).hasClass('close remove-profile')
 		})
-		.subscribe(function (e) {
-			var userName = jQuery(e.target).parent()
-				.siblings('.panel-body').find('h4').text();
-			var profile = _.find(store.getState().search.results, { username: userName });
+		.map(function (e) {
+			return jQuery('button.remove-profile').index(e.target);
+		})
+		.subscribe(function (index) {
+			var profile = store.getState().search.results[index];
 			store.dispatch({type: SearchAction.REMOVE_RESULT, payload: profile});
 		});
 
@@ -77,36 +104,16 @@ jQuery(function () {
 			return jQuery(e.target).hasClass('text-them')
 		})
 		.subscribe(function (e) {
-			var frm = jQuery('#search-form');
-			frm.attr({
-				'action': Dumbu.siteUrl + '/compose/message',
-				'method': 'POST'
-			});
+			var frm = prepareSubmitForm();
 			var selectedProfiles = store.getState().search.results;
-			//
 			var profileIds = _.reduce(selectedProfiles, function(_concat, prof, i) {
 				return prof.pk + ( i > 0 ? "," : "" ) + _concat;
 			}, "");
-			var hiddenIds = document.createElement('input');
-			jQuery(hiddenIds).attr({
-				'type': 'hidden',
-				'value': profileIds,
-				'name': 'follower_ids'
-			});
-			frm.append(hiddenIds);
-			//
 			var profileNames = _.reduce(selectedProfiles, function(_concat, prof, i) {
 				return prof.username + ( i > 0 ? "," : "" ) + _concat;
 			}, "");
-			var hiddenNames = document.createElement('input');
-			jQuery(hiddenNames).attr({
-				'type': 'hidden',
-				'value': profileNames,
-				'name': 'follower_names'
-			});
-			//
-			frm.append(hiddenNames);
-			jQuery('body').append(frm);
+			frm.find('input[name=follower_ids]').val(profileIds);
+			frm.find('input[name=follower_names]').val(profileNames);
 			frm.submit();
 		});
 

@@ -49,6 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <img src="<?php echo base_url('img/loading-small.gif'); ?>"
                                                  data-bind="visible: logging">
                                         </div>
+										<div class="alert alert-danger small"
+											 data-bind="visible: error().length!==0">
+											<p><b>Error:</b>&nbsp;<span data-bind="text: error"></span></p>
+										</div>
                                     </fieldset>
                                 </form>
                             </div>
