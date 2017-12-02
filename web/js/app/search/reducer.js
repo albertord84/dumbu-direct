@@ -42,3 +42,10 @@ function search(state, action) {
 		}
 	}
 }
+
+var reducer = Redux.combineReducers({
+	user: user,
+	search: search
+});
+
+window.store = Redux.createStore(reducer);

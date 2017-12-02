@@ -1,33 +1,4 @@
 jQuery(function () {
-	var reducer = Redux.combineReducers({
-		user: user,
-		search: search
-	});
-
-	window.store = Redux.createStore(reducer);
-
-	window.searchModel = {
-		userName: ko.observable(''),
-		pk: ko.observable(0),
-		priv: ko.observable(0),
-		//
-		query: ko.observable(''),
-		results: ko.observableArray()
-	};
-
-	ko.applyBindings(searchModel);
-
-	// Actualizar la UI
-	store.subscribe(function () {
-		var userState = store.getState().user;
-		var searchState = store.getState().search;
-		_.forEach(userState, function (val, prop) {
-			_.invoke(searchModel, prop, val);
-		});
-		_.forEach(searchState, function (val, prop) {
-			_.invoke(searchModel, prop, val);
-		});
-	});
 
 	function initAutocomplete() {
 		var datasource = new Bloodhound({

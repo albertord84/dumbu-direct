@@ -34,8 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            placeholder="Select reference profiles..." class="typeahead"
                                            required />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-success text-them" type="button"
-											data-bind="disable: results().length === 0">
+                                        <button class="btn btn-success text-them" type="button">
                                             <i class="glyphicon glyphicon-pencil"
                                                aria-hidden="true"></i>Text&CloseCurlyQuote; em
                                         </button>
@@ -45,25 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </form>
                     </div>
                 </div>
-				<div data-bind="if: results().length > 0">
-					<div class="row selected-profs" data-bind="foreach: results">
-						<div class="panel panel-default">
-							<div class="panel-heading text-center">
-								<button type="button" class="close remove-profile"
-										aria-label="Close"><span aria-hidden="true">&times;</span>
-								</button>
-								<img class="card-img-top" alt="Profile photo"
-									data-bind="attr: { src: $data.profile_pic_url }">
-							</div>
-							<div class="panel-body text-center">
-								<h4 class="" data-bind="text: $data.username"></h4>
-								<div class="text-muted" data-bind="text: $data.full_name"></div>
-							</div>
-							<div class="panel-footer text-center text-muted small">
-								<span data-bind="text: $data.byline"></span>
-							</div>
-						</div>
-					</div>
+				<div class="row selected-profs">
 				</div>
             </div>
         </div>
@@ -76,10 +57,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
 		<script src="<?php echo base_url('js/lib/redux.js'); ?>"></script>
 		<script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
-		<script src="<?php echo base_url('js/lib/knockout.js'); ?>"></script>
 		<script>var Dumbu = Dumbu || Object.assign({ siteUrl: "<?php echo site_url(); ?>" });</script>
 		<script src="<?php echo base_url('js/app/user/reducer.js') . '?' . d_guid(); ?>"></script>
 		<script src="<?php echo base_url('js/app/search/reducer.js') . '?' . d_guid(); ?>"></script>
 		<script src="<?php echo base_url('js/app/search/controller.js') . '?' . d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/search/view.js') . '?' . d_guid(); ?>"></script>
     </body>
 </html>
