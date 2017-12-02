@@ -1,19 +1,4 @@
 jQuery(function () {
-	var reducer = Redux.combineReducers({
-		user: user
-	});
-
-	var store = Redux.createStore(reducer);
-
-	window.userModel = {
-		userName: ko.observable(''),
-		password: ko.observable(''),
-		pk: ko.observable(0),
-		priv: ko.observable(0),
-		logging: ko.observable(false),
-		canLogIn: ko.observable(false),
-		error: ko.observable('')
-	};
 
 	function auth() {
 		jQuery.post(Dumbu.siteUrl + '/user/auth', {
@@ -38,16 +23,6 @@ jQuery(function () {
 			store.dispatch({type: UserAction.SET_LOGGING, payload: false});
 		});
 	}
-
-	ko.applyBindings(userModel);
-
-	// Actualizar la UI
-	store.subscribe(function () {
-		var state = store.getState().user;
-		_.forEach(state, function (val, prop) {
-			_.invoke(userModel, prop, val);
-		});
-	});
 
 	var userNameElem = jQuery('#username');
 	var userNameObservable = Rx.Observable.fromEvent(userNameElem, 'keyup')

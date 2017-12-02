@@ -53,3 +53,9 @@ function user(state, action) {
 		}
 	}
 }
+
+var reducer = Redux.combineReducers({
+	user: user
+});
+
+var store = Redux.createStore(reducer);

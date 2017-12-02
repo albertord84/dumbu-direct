@@ -32,26 +32,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="form-group">
                                             <input type="text" class="form-control input-lg" id="username"
                                                    name="username" value="" required="" autocomplete="off"
-                                                   title="Please, enter you username" data-bind="disable: logging"
-                                                   placeholder="Instagram username...">
+                                                   title="Please, enter you username" placeholder="Instagram username...">
                                             <span class="help-block"></span>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control input-lg" id="password"
                                                    name="password" value="" required="" autocomplete="off"
-                                                   placeholder="Password..." data-bind="disable: logging"
-                                                   title="Please enter your password">
+                                                   placeholder="Password..." title="Please enter your password">
                                             <span class="help-block"></span>
                                         </div>
                                         <button type="button" class="btn btn-lg btn-success btn-block"
-                                                id="btAuth" data-bind="enable: canLogIn, visible: !logging()">Log in</button>
+                                                id="btAuth" disabled="true">Log in</button>
                                         <div class="text-center">
                                             <img src="<?php echo base_url('img/loading-small.gif'); ?>"
-                                                 data-bind="visible: logging">
+												class="hidden loading">
                                         </div>
-										<div class="alert alert-danger small"
-											 data-bind="visible: error().length!==0">
-											<p><b>Error:</b>&nbsp;<span data-bind="text: error"></span></p>
+										<div class="alert alert-danger small hidden">
+											<p><b>Error:</b>&nbsp;<span class="text"></span></p>
 										</div>
                                     </fieldset>
                                 </form>
@@ -78,10 +75,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/jquery.blockUI.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/redux.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/knockout.js'); ?>"></script>
         <img src="<?php echo base_url('img/loading.gif') . '?' . d_guid(); ?>" class="hidden loading" />
         <script>var Dumbu = Dumbu || Object.assign({ siteUrl: "<?php echo site_url(); ?>" });</script>
         <script src="<?php echo base_url('js/app/user/reducer.js') . '?' . d_guid(); ?>"></script>
-        <script src="<?php echo base_url('js/app/user/controller.js') . '?' . d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/user/controller.js') . '?' . d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/user/view.js') . '?' . d_guid(); ?>"></script>
     </body>
 </html>

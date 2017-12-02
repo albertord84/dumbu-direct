@@ -154,7 +154,6 @@ class Compose extends CI_Controller {
     }
 
     public function createTask() {
-        //$this->getPermittedIps();
         set_time_limit(0);
         $username = $this->session->username;
         if ($username == NULL) {

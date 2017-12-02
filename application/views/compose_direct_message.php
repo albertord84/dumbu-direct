@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
-<html data-ng-app="dumbu">
+<html>
     <head>
         <title>DUMBU ::: Direct Message</title>
         <meta charset='utf-8'>
@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css').'?'.d_guid(); ?>">
     </head>
-    <body data-ng-controller="compose">
+    <body>
         <div id="compose-container" class="container">
             <?php include __DIR__ . '/navbar.php'; ?>
             <div class="row">
@@ -32,23 +32,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="span4 well">
                         <form id="formCompose" accept-charset="UTF-8"
                               action="<?php echo site_url('user/dashboard'); ?>" method="POST">
-                            <fieldset data-ng-disabled="processing">
+                            <fieldset>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <textarea class="form-control input-lg"
-                                                  id="message" name="_m"
-                                                  placeholder="Type in your direct message..."
-                                                  rows="5" form="formCompose"
-                                                  data-ng-model="msgText"></textarea>
-                                        <input type="hidden" name="message"
-                                               value="{{msgText}}">
+                                        <textarea id="message" class="form-control input-lg"
+											  placeholder="Type in your direct message..."
+											  rows="5" form="formCompose"></textarea>
+										<input type="hidden" name="message"
+											data-bind="value: message">
                                     </div>
                                 </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"
-                                                type="submit" 
-                                                data-ng-disabled="!msgText">Post Direct Message</button>
+												data-bind="enable: ready"
+                                                type="submit">Post Direct Message</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -58,18 +56,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/angular.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
-        <script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
-        <script src="<?php echo base_url('js/app/dumbu.js').'?'.d_guid(); ?>"></script>
-        <script src="<?php echo base_url('js/app/controller/compose.js').'?'.d_guid(); ?>"></script>
-        <script src="<?php echo base_url('js/app/service/compose.js').'?'.d_guid(); ?>"></script>
-        <script>
-          Dumbu.siteUrl = "<?php echo site_url(); ?>";
-          Dumbu.baseUrl = "<?php echo base_url(); ?>";
-        </script>
+		<script src="<?php echo base_url('js/lib/typeahead.min.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/jquery.pulsate.min.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/handlebars.min.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script> <!-- required by sweetalert -->
+		<script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/redux.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/knockout.js'); ?>"></script>
+		<script>
+			var Dumbu = Dumbu || Object.assign({
+				siteUrl: "<?php echo site_url(); ?>",
+				baseUrl: "<?php echo base_url(); ?>"
+			});
+		</script>
+		<script src="<?php echo base_url('js/app/compose/reducer.js').'?'.d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/compose/controller.js').'?'.d_guid(); ?>"></script>
     </body>
 </html>
