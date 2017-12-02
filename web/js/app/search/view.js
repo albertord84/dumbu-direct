@@ -27,8 +27,8 @@ jQuery(function () {
 			_.forEach(state.results, function(o, i, a) {
 				var compiledHtml = profileTmpl({
 					profile_pic_url: o.profile_pic_url,
-					full_name: o.full_name,
-					username: o.username,
+					full_name: _.trim(o.full_name),
+					username: _.trim(o.username),
 					byline: o.byline
 				});
 				container.append(compiledHtml);

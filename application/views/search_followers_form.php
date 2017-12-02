@@ -25,7 +25,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <h1>DUMBU</h1>
                             <p>Get more real followers</p>
                         </div>
-                        <form role="form" id="search-form">
+                        <form role="form" id="search-form" method="POST"
+							action="<?php echo site_url('/compose/message'); ?>">
                             <div class="form-group">
                                 <img class="async-loading hidden"
                                      src="<?php echo base_url('img/loading-small.gif'); ?>">
@@ -41,6 +42,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </span>
                                 </div>
                             </div>
+							<input type="hidden" name="follower_ids">
+							<input type="hidden" name="follower_names">
                         </form>
                     </div>
                 </div>

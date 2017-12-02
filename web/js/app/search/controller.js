@@ -32,32 +32,6 @@ jQuery(function () {
 		});
 	}
 
-	function prepareSubmitForm() {
-		var frm = jQuery('#search-form');
-		frm.attr({
-			'action': Dumbu.siteUrl + '/compose/message',
-			'method': 'POST'
-		});
-		//
-		var hiddenNames = document.createElement('input');
-		jQuery(hiddenNames).attr({
-			'type': 'hidden',
-			'name': 'follower_names'
-		});
-		//
-		var hiddenIds = document.createElement('input');
-		jQuery(hiddenIds).attr({
-			'type': 'hidden',
-			'name': 'follower_ids'
-		});
-		//
-		frm.append(hiddenIds);
-		frm.append(hiddenNames);
-		jQuery('body').append(frm);
-		//
-		return frm;
-	}
-
 	Rx.Observable.fromEvent(jQuery(document), 'click')
 		.filter(function (e) {
 			return jQuery(e.target).hasClass('close remove-profile')
@@ -75,17 +49,15 @@ jQuery(function () {
 			return jQuery(e.target).hasClass('text-them')
 		})
 		.subscribe(function (e) {
-			var frm = prepareSubmitForm();
 			var selectedProfiles = store.getState().search.results;
-			var profileIds = _.reduce(selectedProfiles, function(_concat, prof, i) {
-				return prof.pk + ( i > 0 ? "," : "" ) + _concat;
-			}, "");
-			var profileNames = _.reduce(selectedProfiles, function(_concat, prof, i) {
-				return prof.username + ( i > 0 ? "," : "" ) + _concat;
-			}, "");
-			frm.find('input[name=follower_ids]').val(profileIds);
-			frm.find('input[name=follower_names]').val(profileNames);
-			frm.submit();
+			var profileIds = [], profileNames = [];
+			Rx.Observable.from(selectedProfiles).pluck('pk')
+				.subscribe(function (id) { profileIds.push(id); });
+			Rx.Observable.from(selectedProfiles).pluck('username')
+				.subscribe(function (username) { profileNames.push(username); });
+			jQuery('input[name=follower_ids]').val(profileIds.join(','));
+			jQuery('input[name=follower_names]').val(profileNames.join(','));
+			jQuery('#search-form').submit();
 		});
 
 	initAutocomplete();
