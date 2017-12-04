@@ -508,7 +508,7 @@ class Promo extends CI_Controller {
 			$this->load->database();
 			if ($group == 'active') {
 				$this->db->where('sent', 0);
-				$this->db->where('failed', 0);
+				$this->db->or_where('sent', 2);
 			} else if ($group == 'sent') {
 				$this->db->where('sent', 1);
 			} else if ($group == 'failed') {
