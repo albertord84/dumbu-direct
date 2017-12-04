@@ -17,7 +17,7 @@ angular.module('dumbu')
                     $scope.activePage = Math.round(promos.count / 5);
                     $timeout(function(){
                     	Dumbu.unblockUI();
-					}, 3000);
+					}, 2000);
                 });
             },
 
@@ -26,6 +26,9 @@ angular.module('dumbu')
                 var Promo = $resource(Dumbu.siteUrl + '/promo/sent');
                 var promos = Promo.query(function () {
                     $scope.sentPromos = promos;
+					$timeout(function(){
+						Dumbu.unblockUI();
+					}, 2000);
                 });
             },
 
@@ -38,7 +41,7 @@ angular.module('dumbu')
 					$scope.failedPage = Math.round(promos.count / 5);
 					$timeout(function(){
 						Dumbu.unblockUI();
-					}, 3000);
+					}, 2000);
                 });
             },
             
@@ -385,6 +388,11 @@ angular.module('dumbu')
 					}, function(){
 						$log.log(arguments);
 					});
+				}
+				if (key===13 && _.trim($scope.searchTerms).length===0) {
+					Dumbu.blockUI();
+					var method = _.camelCase('get' + ' ' + tabs[activeTab]);
+					_.invoke(self, method, $scope);
 				}
 			}
 
