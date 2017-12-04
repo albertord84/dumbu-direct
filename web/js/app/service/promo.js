@@ -375,7 +375,7 @@ angular.module('dumbu')
 					Promo.get(function(data){
 						$timeout(function(){
 							var promos = tabs[activeTab] + 'Promos';
-							var promos = tabs[activeTab] + 'Count';
+							var count = tabs[activeTab] + 'Count';
 							_.set($scope, promos, data.results);
 							_.set($scope, count, data.results.length);
 						}, 1000);
