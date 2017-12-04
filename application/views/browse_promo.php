@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="panel-heading text-muted">Promotions</div>
                         <div class="panel-body">
 							<input type="text" data-ng-model="searchTerms" class="small pull-right"
-								placeholder="Search terms..." data-ng-keyup="change($event)">
+								placeholder="Search terms..." data-ng-keyup="changeSearchTerms($event)">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#active" data-toggle="tab">Active</a></li>
                                 <li><a href="#sent" data-toggle="tab">Sent</a></li>

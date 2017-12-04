@@ -17,6 +17,8 @@ $route['compose/message'] = 'compose';
 $route['compose'] = 'compose';
 $route['send/message'] = 'compose/send';
 
+$route['promo/search/(:any)/(:any)'] = 'promo/search/$1/$2';
+
 $route['test'] = 'test';
 
 ////////////////////////////////////////////////////////////////////

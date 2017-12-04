@@ -502,4 +502,28 @@ class Promo extends CI_Controller {
                 'results' => $results
             ], JSON_PRETTY_PRINT));
     }
+
+    public function search($group, $text) {
+		if ($this->session->is_admin) {
+			$this->load->database();
+			$this->db->where('sent', ($group === 'active' ? 0 : 1));
+			$this->db->where('promo', 1);
+			$this->db->like('msg_text', $text);
+			$this->db->limit(5);
+			$promos = $this->db->get('message')->result();
+			foreach ($promos as $promo) {
+				$q = $this->db->query('select id, username, pk from client where id = ?', [ $promo->user_id ])
+					->result();
+				$promo->sender = $q[0];
+			}
+			return $this->output->set_content_type('application/json')
+				->set_status_header(200)
+				->set_output(json_encode([
+					'results' => $promos
+				], JSON_PRETTY_PRINT));
+		}
+		else {
+			return $this->access_not_allowed();
+		}
+	}
 }

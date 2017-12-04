@@ -357,7 +357,34 @@ angular.module('dumbu')
 				}, function(){
 					$log.log(arguments);
 				});
-            }
+            },
+
+			changeSearchTerms: function ($scope, $event) {
+            	var tabs = [
+            		'active', 'sent', 'stopped'
+				];
+				var activeTab = $('div.tab-pane').index($('div.active'));
+				var key = $event.originalEvent.keyCode;
+				if (key===13 && _.trim($scope.searchTerms).length!==0) {
+					Dumbu.blockUI();
+					var Promo = $resource(Dumbu.siteUrl + '/promo/search/:tab/:t',
+						{
+							tab: tabs[activeTab],
+							t: new String($scope.searchTerms).split(' ')[0]
+						});
+					Promo.get(function(data){
+						$timeout(function(){
+							$scope.activePromos = data.results;
+							$scope.activeCount = data.results.length;
+						}, 1000);
+						$timeout(function(){
+							Dumbu.unblockUI();
+						}, 2000);
+					}, function(){
+						$log.log(arguments);
+					});
+				}
+			}
 
         };
         return self;

@@ -71,7 +71,11 @@ angular.module('dumbu')
 
 		$scope.modifyText = function () {
 			promoService.modifyText($scope.selectedPromo, $scope);
-		}
+		};
+
+		$scope.changeSearchTerms = function ($event) {
+			promoService.changeSearchTerms($scope, $event);
+		};
     }
 ])
 
