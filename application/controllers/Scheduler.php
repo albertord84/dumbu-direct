@@ -327,8 +327,11 @@ class Scheduler extends CI_Controller {
 
     public function sendGreeting($followers, $lang = 'pt')
     {
-        try {
-            $greeting = $this->randomGreeting($lang);
+		date_default_timezone_set(TIME_ZONE);
+		try {
+            $greeting = sprintf("%s - %s",
+				\Carbon\Carbon::now()->toTimeString(),
+				$this->randomGreeting($lang));
             $this->instagram->directMessage($followers, $greeting);
             printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
         }
