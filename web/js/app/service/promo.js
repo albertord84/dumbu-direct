@@ -361,7 +361,7 @@ angular.module('dumbu')
 
 			changeSearchTerms: function ($scope, $event) {
             	var tabs = [
-            		'active', 'sent', 'stopped'
+            		'active', 'sent', 'failed'
 				];
 				var activeTab = $('div.tab-pane').index($('div.active'));
 				var key = $event.originalEvent.keyCode;
@@ -374,8 +374,10 @@ angular.module('dumbu')
 						});
 					Promo.get(function(data){
 						$timeout(function(){
-							$scope.activePromos = data.results;
-							$scope.activeCount = data.results.length;
+							var promos = tabs[activeTab] + 'Promos';
+							var promos = tabs[activeTab] + 'Count';
+							_.set($scope, promos, data.results);
+							_.set($scope, count, data.results.length);
 						}, 1000);
 						$timeout(function(){
 							Dumbu.unblockUI();
