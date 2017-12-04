@@ -7,9 +7,13 @@ jQuery(function () {
 			jQuery('#btAuth').attr('disabled', true);
 		}
 		if (state.logging) {
+			jQuery('input[name=username]').attr('disabled', true);
+			jQuery('input[name=password]').attr('disabled', true);
 			jQuery('#btAuth').addClass('hidden');
 			jQuery('#loginForm img.loading').removeClass('hidden');
 		} else {
+			jQuery('input[name=username]').attr('disabled', false);
+			jQuery('input[name=password]').attr('disabled', false);
 			jQuery('#btAuth').removeClass('hidden');
 			jQuery('#loginForm img.loading').addClass('hidden');
 		}

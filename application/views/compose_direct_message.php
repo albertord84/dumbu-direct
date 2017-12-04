@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php } ?>
                     <div class="span4 well">
                         <form id="formCompose" accept-charset="UTF-8"
-                              action="<?php echo site_url('user/dashboard'); ?>" method="POST">
+                              action="<?php echo site_url('send/message'); ?>" method="POST">
                             <fieldset>
                                 <div class="row">
                                     <div class="col-xs-12">
