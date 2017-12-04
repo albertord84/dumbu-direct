@@ -506,7 +506,14 @@ class Promo extends CI_Controller {
     public function search($group, $text) {
 		if ($this->session->is_admin) {
 			$this->load->database();
-			$this->db->where('sent', ($group === 'active' ? 0 : 1));
+			if ($group === 'active') {
+				$this->db->where('sent', 0);
+				$this->db->where('failed', 0);
+			} else if ($group === 'sent') {
+				$this->db->where('sent', 1);
+			} else if ($group === 'failed') {
+				$this->db->where('failed', 1);
+			}
 			$this->db->where('promo', 1);
 			$this->db->like('msg_text', $text);
 			$this->db->limit(5);
