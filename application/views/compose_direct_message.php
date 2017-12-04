@@ -38,14 +38,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <textarea id="message" class="form-control input-lg"
 											  placeholder="Type in your direct message..."
 											  rows="5" form="formCompose"></textarea>
-										<input type="hidden" name="message"
-											data-bind="value: message">
+										<input type="hidden" name="message">
                                     </div>
                                 </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"
-												data-bind="enable: ready"
+												disabled="true"
                                                 type="submit">Post Direct Message</button>
                                     </div>
                                 </div>
@@ -65,7 +64,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<script src="<?php echo base_url('js/lib/sweetalert.min.js'); ?>"></script>
 		<script src="<?php echo base_url('js/lib/redux.js'); ?>"></script>
 		<script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
-		<script src="<?php echo base_url('js/lib/knockout.js'); ?>"></script>
 		<script>
 			var Dumbu = Dumbu || Object.assign({
 				siteUrl: "<?php echo site_url(); ?>",
@@ -74,5 +72,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</script>
 		<script src="<?php echo base_url('js/app/compose/reducer.js').'?'.d_guid(); ?>"></script>
 		<script src="<?php echo base_url('js/app/compose/controller.js').'?'.d_guid(); ?>"></script>
+		<script src="<?php echo base_url('js/app/compose/view.js').'?'.d_guid(); ?>"></script>
     </body>
 </html>

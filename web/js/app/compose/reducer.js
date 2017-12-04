@@ -28,3 +28,9 @@ function composeReducer(state, action) {
 		}
 	}
 }
+
+var reducer = Redux.combineReducers({
+	compose: composeReducer
+});
+
+store = Redux.createStore(reducer);

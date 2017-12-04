@@ -15,6 +15,7 @@ $route['search'] = 'search/index';
 
 $route['compose/message'] = 'compose';
 $route['compose'] = 'compose';
+$route['send/message'] = 'compose/send';
 
 $route['test'] = 'test';
 
