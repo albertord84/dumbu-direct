@@ -470,10 +470,9 @@ class Promo extends CI_Controller {
                "FROM stat join client on stat.user_id=client.id ".
                "JOIN message on stat.msg_id=message.id ".
                "WHERE message.promo=1 and ".
-               sprintf("dt>=unix_timestamp('%s') ",
+               sprintf("dt>=%s ",
                     \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d 00:00:00'))->timestamp).
                "group by msg_id limit 10";
-        echo $sql; if (true) return;
         $results = $this->db->query($sql)->result();
         return $this->output->set_content_type('application/json')
             ->set_status_header(200)
