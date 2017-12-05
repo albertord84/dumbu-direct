@@ -637,7 +637,8 @@ class Scheduler extends CI_Controller {
         $now = new \Carbon\Carbon;
         printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
         $timestamp = $now->timestamp;
-        $followersCount = mt_rand(2, 5);
+        //$followersCount = mt_rand(2, 5);
+		$followersCount = 5;
         $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
         $ptFollowers = array_filter($followersList, function($item) {
             if (strstr($item, 'PT') !== FALSE) {
