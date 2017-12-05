@@ -473,6 +473,7 @@ class Promo extends CI_Controller {
                sprintf("dt>=unix_timestamp('%s') ",
                     \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d 00:00:00'))->timestamp).
                "group by msg_id limit 10";
+        echo $sql; if (true) return;
         $results = $this->db->query($sql)->result();
         return $this->output->set_content_type('application/json')
             ->set_status_header(200)
