@@ -548,7 +548,7 @@ class Scheduler extends CI_Controller {
     public function textBeginnersDumbuPRO() {
         $msg_id = [ 'pt' => 41, 'en' => 42, 'es' => 43 ];
         $this->load->database();
-        $sender = 'dumbu_zero_1';
+        $sender = 'dumbu_03';
         $senderPass = 'XPcom01.*';
         $user = $this->getUserByName($sender);
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
