@@ -548,7 +548,7 @@ class Scheduler extends CI_Controller {
     public function textBeginnersDumbuPRO() {
         $msg_id = [ 'pt' => 41, 'en' => 42, 'es' => 43 ];
         $this->load->database();
-        $sender = 'dumbu_03';
+        $sender = 'dumbudirectadmin';
         $senderPass = 'XPcom01.*';
         $user = $this->getUserByName($sender);
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
@@ -586,15 +586,16 @@ class Scheduler extends CI_Controller {
             $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
             $msgText = file_get_contents($followerMsgFile);
             $decision = mt_rand(1,2);
-            /*foreach ($ptFollowers as $follower) {
-                printf("- Siguiendo a %s\n", $follower);
-                $this->instagram->follow($follower);
-                sleep(3);
-            }*/
             if ($decision === 1) {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
-              $this->instagram->directMessage($ptFollowers, $greeting);
+              try {
+                $this->instagram->directMessage($ptFollowers, $greeting);
+              } catch (\Exception $e) {
+                $n = new \Carbon\Carbon();
+                printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
+                exit(0);
+              }
               $this->randomWait();
               printf("- Enviando imagen promocional.\n");
               $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
@@ -605,10 +606,22 @@ class Scheduler extends CI_Controller {
 				printf("- Enviada la imagen promocional.\n");
               $this->randomWait();
               $greeting = $this->randomGreeting('pt');
-              $this->instagram->directMessage($ptFollowers, $greeting);
+              try {
+                $this->instagram->directMessage($ptFollowers, $greeting);
+              } catch (\Exception $e) {
+                $n = new \Carbon\Carbon();
+                printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
+                exit(0);
+              }
             }
             $this->randomWait();
-            $this->instagram->directMessage($ptFollowers, $msgText);
+            try {
+                $this->instagram->directMessage($ptFollowers, $msgText);
+            } catch (\Exception $e) {
+                $n = new \Carbon\Carbon();
+                printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
+                exit(0);
+            }
             printf("- Enviado el mensaje a los seguidores seleccionados\n");
             $this->insertStat($msg_id['pt'], $ptFollowers);
             $this->db->where('id', $msg_id['pt']);
@@ -625,84 +638,4 @@ class Scheduler extends CI_Controller {
         printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
     }
 
-    public function textBeginnersDumbuPRO2() {
-        $msg_id = [ 'pt' => 41, 'en' => 42, 'es' => 43 ];
-        $this->load->database();
-        $sender = 'dumbu_03';
-        $senderPass = 'XPcom01.*';
-        $user = $this->getUserByName($sender);
-        $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
-        date_default_timezone_set(TIME_ZONE);
-        $this->load->database();
-        $now = new \Carbon\Carbon;
-        printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
-        $timestamp = $now->timestamp;
-        //$followersCount = mt_rand(2, 5);
-		$followersCount = 5;
-        $followersList = explode(PHP_EOL, shell_exec("head -n $followersCount $beginnersFiles"));
-        $ptFollowers = array_filter($followersList, function($item) {
-            if (strstr($item, 'PT') !== FALSE) {
-                $data = explode(',', $item);
-                return $data[0] !== null;
-            }
-        });
-        $ptFollowers = array_map(function($f) {
-            $data = explode(',', $f);
-            return preg_replace('/"/', '', $data[0]);
-        }, $ptFollowers);
-        if (count($ptFollowers)>0) {
-            printf("- Colectados estos seguidores [%s] (portugues)\n",
-                   implode(',', $ptFollowers));
-        }
-        try {
-            $this->getInstagram();
-            $this->loginInstagram($sender, $senderPass);
-        }
-        catch(\Exception $e) {
-            printf("\n", $e->getMessage());
-        }
-        if (count($ptFollowers)>0) {
-            printf("- Se enviara a estos seguidores: [%s]\n",
-                implode(',', $ptFollowers));
-            $followerMsgFile = sprintf("%s/var/promo.beginner.pt.txt", ROOT_DIR);
-            $msgText = file_get_contents($followerMsgFile);
-            $decision = mt_rand(1,2);
-            /*foreach ($ptFollowers as $follower) {
-                printf("- Siguiendo a %s\n", $follower);
-                $this->instagram->follow($follower);
-                sleep(3);
-            }*/
-            if ($decision === 1) {
-              printf("- Primero se enviara saludo, luego imagen promocional.\n");
-              $greeting = $this->randomGreeting('pt');
-              $this->instagram->directMessage($ptFollowers, $greeting);
-              $this->randomWait();
-              printf("- Enviando imagen promocional.\n");
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
-            }
-            else {
-              printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
-                printf("- Enviada la imagen promocional.\n");
-              $this->randomWait();
-              $greeting = $this->randomGreeting('pt');
-              $this->instagram->directMessage($ptFollowers, $greeting);
-            }
-            $this->randomWait();
-            $this->instagram->directMessage($ptFollowers, $msgText);
-            printf("- Enviado el mensaje a los seguidores seleccionados\n");
-            $this->insertStat($msg_id['pt'], $ptFollowers);
-            $this->db->where('id', $msg_id['pt']);
-            $this->db->update('message', [
-                'sent_at' => \Carbon\Carbon::now()->timestamp
-            ]);
-            foreach ($ptFollowers as $data) {
-                rep_in_file($beginnersFiles, $data);
-            }
-            printf("- Sacados de la lista los seguidores texteados\n");
-        }
-        $endTime = new \Carbon\Carbon;
-        printf("- Se notifico a %s beginners\n", $followersCount);
-        printf("* %s - TERMINADO EL ENVIO A LOS BEGINNERS\n", $endTime->toTimeString());
-    }
 }
