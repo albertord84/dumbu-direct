@@ -543,6 +543,8 @@ class Scheduler extends CI_Controller {
             ]);
             // Cambiando el remitente a la cuenta de respaldo
             if ($promo->backup !== NULL) {
+                printf("Intercambiando remitente de %s a %s\n",
+                    $promo->user_id, $promo->backup);
                 $this->db->update('message', [
                     'user_id' => $promo->backup,
                     'backup' => $promo->user_id,
