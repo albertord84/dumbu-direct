@@ -157,6 +157,7 @@ class Promo extends CI_Controller {
             $this->load->database();
             $data = [
                 'user_id' => $this->input->post('sender_id'),
+                'backup' => $this->input->post('backup_id')
                 'msg_text' => $this->input->post('promo'),
                 'sent' => 2,
                 'promo' => 1,

@@ -84,6 +84,7 @@ angular.module('dumbu')
     function ($scope, $log, promoService)
     {
         promoService.senderTypeahead($scope);
+        promoService.backupTypeahead($scope);
     }
 ])
 

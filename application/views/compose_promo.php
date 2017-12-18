@@ -53,6 +53,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                value="{{senderId}}">
                                     </div>
                                 </div><br>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input type="text" class="form-control input-lg typeahead"
+                                               id="backup-name" data-ng-model="backup"
+                                               name="backup" placeholder="Search name of backup account...">
+                                        <input type="hidden" name="backup_id"
+                                               value="{{backupId}}">
+                                    </div>
+                                </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"

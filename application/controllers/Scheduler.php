@@ -541,6 +541,13 @@ class Scheduler extends CI_Controller {
                 'processing' => NOT_PROCESSING,
                 'sent_at' => date("U")
             ]);
+            // Cambiando el remitente a la cuenta de respaldo
+            if ($promo->backup !== NULL) {
+                $this->db->update('message', [
+                    'user_id' => $promo->backup,
+                    'backup' => NULL,
+                ]);
+            }
         }
         printf("Se reactivaron %s promociones\n", count($promos));
     }
@@ -595,6 +602,7 @@ class Scheduler extends CI_Controller {
               } catch (\Exception $e) {
                 $n = new \Carbon\Carbon();
                 printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
+                write_file(ROOT_DIR . '/var/bounced.txt', "");
                 exit(0);
               }
               $this->randomWait();

@@ -78,6 +78,33 @@ angular.module('dumbu')
                 });
             },
 
+            backupTypeahead: function($scope)
+            {
+                var datasource = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    remote: {
+                        url: Dumbu.siteUrl + '/promo/sender/%QUERY',
+                        wildcard: '%QUERY'
+                    }
+                });
+
+                $('#backup-name').typeahead(null, {
+                    name: 'backup-names',
+                    hint: true,
+                    highlight: true,
+                    display: 'username',
+                    source: datasource,
+                    minLength: 3
+                });
+
+                $('#backup-name').on({
+                    'typeahead:selected': function (e, datum) {
+                        self.selectBackup($scope, datum);
+                    }
+                });
+            },
+
             senderChangeTypeahead: function($scope)
             {
                 var datasource = new Bloodhound({
@@ -100,7 +127,7 @@ angular.module('dumbu')
 
                 $('#sender-name').on({
                     'typeahead:selected': function (e, datum) {
-                        $scope.newSender = datum;
+                        $scope.newBackup = datum;
                     },
                     'typeahead:asyncrequest': function (jq, query, dsName) {
                         $('.async-loading').removeClass('hidden');
@@ -114,6 +141,12 @@ angular.module('dumbu')
             selectSender: function ($scope, sender)
             {
                 $scope.senderId = sender.id;
+                $scope.$digest();
+            },
+
+            selectBackup: function ($scope, sender)
+            {
+                $scope.backupId = sender.id;
                 $scope.$digest();
             },
 
