@@ -52,8 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <input type="hidden" name="sender_id"
                                                value="{{senderId}}">
                                     </div>
-                                </div><br>
-                                <div class="row">
                                     <div class="col-xs-6">
                                         <input type="text" class="form-control input-lg typeahead"
                                                id="backup-name" data-ng-model="backup"
