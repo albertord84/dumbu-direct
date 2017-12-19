@@ -501,7 +501,7 @@ class Scheduler extends CI_Controller {
         return \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
     }
 
-    public function dailyLimitPassed($user_id, $limit = 200)
+    public function dailyLimitPassed($user_id, $limit = 100)
     {
         $sql = 'select count(*) as messages from stat '
                 . 'where user_id = ? and dt >= ?';
