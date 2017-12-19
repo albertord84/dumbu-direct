@@ -519,7 +519,7 @@ class Scheduler extends CI_Controller {
         date_default_timezone_set(TIME_ZONE);
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $hours = 11;
+        $hours = 8;
         $pastTime = $now->subHours($hours)->timestamp;
         printf("Reactivando promociones con mas de %sh\n", $hours);
         $sql = sprintf("select id from message ".
