@@ -62,6 +62,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                value="{{backupId}}">
                                     </div>
                                 </div><br>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control"
+                                               id="hours" data-ng-model="hours"
+                                               name="hours" placeholder="Hours interval...">
+                                    </div>
+                                </div><br>
                                 <div class="row text-center">
                                     <div class="col-xs-12">
                                         <button class="btn btn-info btn-lg btn-block"

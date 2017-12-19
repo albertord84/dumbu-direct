@@ -159,6 +159,7 @@ class Promo extends CI_Controller {
                 'user_id' => $this->input->post('sender_id'),
                 'backup' => $this->input->post('backup_id'),
                 'msg_text' => $this->input->post('promo'),
+                'hours' => $this->input->post('hours'),
                 'sent' => 2,
                 'promo' => 1,
                 'processing' => 0,
