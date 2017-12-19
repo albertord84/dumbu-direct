@@ -45,16 +45,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     </div>
                                 </div><br>
                                 <div class="row">
-                                    <div class="col-xs-12">
+                                    <div class="col-xs-6">
                                         <input type="text" class="form-control input-lg typeahead"
                                                id="sender-name" data-ng-model="sender"
-                                               name="sender" placeholder="Search name of the promotion sender...">
+                                               name="sender" placeholder="Search name of promotion sender...">
                                         <input type="hidden" name="sender_id"
                                                value="{{senderId}}">
                                     </div>
                                 </div><br>
                                 <div class="row">
-                                    <div class="col-xs-12">
+                                    <div class="col-xs-6">
                                         <input type="text" class="form-control input-lg typeahead"
                                                id="backup-name" data-ng-model="backup"
                                                name="backup" placeholder="Search name of backup account...">
@@ -64,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div><br>
                                 <div class="row">
                                     <div class="col-xs-4">
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control input-lg"
                                                id="hours" data-ng-model="hours"
                                                name="hours" placeholder="Hours interval...">
                                     </div>
