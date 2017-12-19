@@ -522,7 +522,7 @@ class Scheduler extends CI_Controller {
         $hours = 8;
         $pastTime = $now->subHours($hours)->timestamp;
         printf("Reactivando promociones con mas de %sh\n", $hours);
-        $sql = sprintf("select id from message ".
+        $sql = sprintf("select id,user_id,backup from message ".
                "where sent_at <= %d ".
                "and promo=%d and failed=%d and processing=%d ".
                "and sent=%d",
