@@ -545,6 +545,7 @@ class Scheduler extends CI_Controller {
             if ($promo->backup !== NULL) {
                 printf("Intercambiando remitente de %s a %s\n",
                     $promo->user_id, $promo->backup);
+                $this->db->where('id', $promo->id);
                 $this->db->update('message', [
                     'user_id' => $promo->backup,
                     'backup' => $promo->user_id,
