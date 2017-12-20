@@ -74,6 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 </span>
                                                 <span class="pull-right">
 													<a href data-ng-click="changeHours(activePromo)" class="promo-action text-danger" title="Change reactivation hours"><i class="fa fa-hourglass-end"></i></a>
+                                                    &nbsp;
 												</span>
 												<span class="pull-right">
 													<a href data-ng-click="collectFollowers(activePromo.sender.pk)"
