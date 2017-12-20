@@ -34,8 +34,8 @@ angular.module('dumbu')
             promoService.changeHours(promo, $scope);
         };
 
-        $scope.modifyHours = function(promo) {
-            promoService.changeHours(promo, $scope);
+        $scope.modifyHours = function() {
+            promoService.modifyHours();
         };
 
 		$scope.refreshActive = function() {
