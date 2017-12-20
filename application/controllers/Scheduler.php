@@ -525,6 +525,12 @@ class Scheduler extends CI_Controller {
                     'failed' => 0,
                     'processing' => 0,
                 ]);
+                if ($promo->backup !== NULL) {
+                    $this->db->update('message', [
+                        'user_id' => $promo->backup,
+                        'backup' => $promo->user_id,
+                    ]);
+                }
             }
         }
     }
