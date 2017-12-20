@@ -222,8 +222,8 @@ class Scheduler extends CI_Controller {
         $message = $this->getMessage($msg_id);
         $pk = $this->getUser($message->user_id)->pk;
         $followers_file = FOLLOWERS_LIST_DIR . '/' . $pk . '.txt';
-        //$c = mt_rand(1, 5);
-        $c = 10;
+        $c = mt_rand(5, 10);
+        //$c = 10;
         $followers = trim(shell_exec("head -n $c $followers_file"));
         if ($followers == '') { return NULL; }
         $promo_recip = explode(PHP_EOL, $followers);
