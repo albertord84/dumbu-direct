@@ -443,10 +443,10 @@ class Scheduler extends CI_Controller {
     public function interrupt($msg = '')
     {
         if ($msg === '') {
-            printf("INTERRUMPIDO!!!\n");
+            printf("%s - INTERRUMPIDO!!!\n", $this->now());
         }
         else {
-            printf("INTERRUMPIDO!!! CAUSA: %s\n", $msg);
+            printf("%s - INTERRUMPIDO!!! CAUSA: %s\n", $this->now(), $msg);
         }
         die();
     }
