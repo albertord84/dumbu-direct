@@ -243,7 +243,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="form-group">
                                     <input type="text" class="form-control input-lg"
                                         id="hours" data-ng-model="selectedPromo.hours"
-                                        name="hours" placeholder="Reactivation hours...">
+                                        data-ng-bind="selectedPromo.hours" name="hours"
+                                        placeholder="Reactivation hours...">
                                 </div>
                             </div>
                         </div><br>
@@ -251,11 +252,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="form-group">
                                 <div class="col-xs-6">
                                     <button class="btn btn-success btn-lg btn-block"
-                                            data-ng-click="modifyHours()">Accept</button>
+                                        data-ng-click="modifyHours()"
+                                        data-ng-disabled="!selectedPromo.hours">Accept</button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button class="btn btn-danger btn-lg btn-block"
-                                            data-dismiss="modal">Cancel</button>
+                                        data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
