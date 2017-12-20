@@ -206,7 +206,7 @@ angular.module('dumbu')
                     Dumbu.blockUI();
                     var Promo = $resource(Dumbu.siteUrl + '/promo/:id/hours/:hours', {
                         id: promo.id,
-                        hours: promos.hours
+                        hours: promo.hours
                     });
                     Promo.save(function(){
                         $timeout(function(){
