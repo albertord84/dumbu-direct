@@ -18,6 +18,7 @@ $route['compose'] = 'compose';
 $route['send/message'] = 'compose/send';
 
 $route['promo/search/(:any)/(:any)'] = 'promo/search/$1/$2';
+$route['promo/(:any)/hours/(:any)'] = 'promo/hours/$1/$2';
 
 $route['test'] = 'test';
 

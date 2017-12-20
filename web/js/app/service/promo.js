@@ -189,6 +189,27 @@ angular.module('dumbu')
                     Dumbu.unblockUI();
                 });
             },
+
+            changeHours: function(promo, $scope) {
+                self.setScope($scope);
+                $('div.promo-change-hours').modal('show');
+            },
+            
+            modifyHours: function() {
+                var promo = self.$scope.selectedPromo;
+                Dumbu.blockUI();
+                var Promo = $resource(Dumbu.siteUrl + '/promo/:id/hours/:hours', {
+                    id: promo.id,
+                    hours: promos.hours
+                });
+                Promo.save(function(){
+                    $timeout(function(){
+                        Dumbu.unblockUI();
+                    }, 1000);
+                }, function(){
+                    Dumbu.unblockUI();
+                });
+            },
             
             removePromo: function(promo, $scope)
             {

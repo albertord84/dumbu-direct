@@ -30,6 +30,15 @@ angular.module('dumbu')
             promoService.removePromo(promo, $scope);
         };
 
+        $scope.changeHours = function(promo) {
+            promoService.changeHours(promo, $scope);
+        };
+
+        $scope.modifyHours = function(promo) {
+            $scope.selectedPromo = promo;
+            promoService.changeHours(promo, $scope);
+        };
+
 		$scope.refreshActive = function() {
 			Dumbu.blockUI();
 			promoService.getActive($scope);

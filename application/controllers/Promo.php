@@ -190,6 +190,21 @@ class Promo extends CI_Controller {
         }
     }
     
+    public function hours($promo_id, $hours) {
+        if ($this->session->is_admin) {
+            $this->load->database();
+            $this->db->where('id', $promo_id);
+            $this->db->update('message', [ 'hours' => $hours ]);
+            $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(['success'=>TRUE], JSON_PRETTY_PRINT));
+            return;
+        }
+        else {
+            show_error('You have not enough privileges to access here...', 500);
+        }
+    }
+    
     private function delete($msg_id)
     {
         $this->load->database();

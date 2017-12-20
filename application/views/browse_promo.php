@@ -70,7 +70,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </td>
                                             <td>
                                                 <span class="pull-right">
-													<a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                                    <a href data-ng-click="removePromo(activePromo)" class="promo-action text-danger" title="Remove promo"><i class="fa fa-remove"></i></a>
+                                                </span>
+                                                <span class="pull-right">
+													<a href data-ng-click="changeHours(activePromo)" class="promo-action text-danger" title="Change reactivation hours"><i class="fa fa-hourglass-end"></i></a>
 												</span>
 												<span class="pull-right">
 													<a href data-ng-click="collectFollowers(activePromo.sender.pk)"
@@ -227,6 +230,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</div>
+        <div class="modal fade promo-change-hours">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title"><b>Modify reactivation hours</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg"
+                                        id="hours" data-ng-model="selectedPromo.hours"
+                                        name="hours" placeholder="Reactivation hours...">
+                                </div>
+                            </div>
+                        </div><br>
+                        <div class="row text-center">
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <button class="btn btn-success btn-lg btn-block"
+                                            data-ng-click="modifyHours()">Accept</button>
+                                </div>
+                                <div class="col-xs-6">
+                                    <button class="btn btn-danger btn-lg btn-block"
+                                            data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/angular.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
