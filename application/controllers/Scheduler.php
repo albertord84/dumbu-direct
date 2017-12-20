@@ -510,6 +510,7 @@ class Scheduler extends CI_Controller {
 
     public function startPromoAfterHours() {
         $this->load->database();
+        printf("Reactivando promociones de acuerdo al plazo establecido\n");
         $now = new \Carbon\Carbon;
         $sql = sprintf("select * from message where hours is not null " .
             "and promo=1 and failed=1 and sent<>0");
