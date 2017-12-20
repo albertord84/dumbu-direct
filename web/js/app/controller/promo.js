@@ -35,7 +35,6 @@ angular.module('dumbu')
         };
 
         $scope.modifyHours = function(promo) {
-            $scope.selectedPromo = promo;
             promoService.changeHours(promo, $scope);
         };
 

@@ -191,6 +191,7 @@ angular.module('dumbu')
             },
 
             changeHours: function(promo, $scope) {
+                $scope.selectedPromo = promo;
                 self.setScope($scope);
                 $('div.promo-change-hours').modal('show');
                 $timeout(function(){
