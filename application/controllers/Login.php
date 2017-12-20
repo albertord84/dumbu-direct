@@ -101,7 +101,6 @@ class Login extends CI_Controller {
         $instagram->setUser($username, $password);
 
         try {
-            date_default_timezone_set(TIME_ZONE);
             set_time_limit(0);
             $instagram->login();
             $this->session->pk = $instagram->account_id;

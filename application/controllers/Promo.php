@@ -247,7 +247,6 @@ class Promo extends CI_Controller {
             ]);
             return;
         }
-        date_default_timezone_set(TIME_ZONE);
         $log = ROOT_DIR . '/var/messages.log';
         $log_age = filemtime($log);
         $ten_secs_ago = intval(date('U')) - 10;
@@ -346,7 +345,6 @@ class Promo extends CI_Controller {
     }
     
     public function enqueue($msg_id) {
-        date_default_timezone_set(TIME_ZONE);
         if($this->input->method()!=='put' || $this->session->is_admin == NULL) {
             return $this->access_not_allowed();
         }
@@ -366,7 +364,6 @@ class Promo extends CI_Controller {
     }
 
 	public function start($msg_id) {
-		date_default_timezone_set(TIME_ZONE);
 		if($this->input->method()!=='put' || $this->session->is_admin == NULL) {
 			return $this->access_not_allowed();
 		}
@@ -393,7 +390,6 @@ class Promo extends CI_Controller {
 	}
 
 	public function pause($msg_id) {
-		date_default_timezone_set(TIME_ZONE);
 		if($this->input->method()!=='put' || $this->session->is_admin == NULL) {
 			return $this->access_not_allowed();
 		}

@@ -23,6 +23,7 @@ class Scheduler extends CI_Controller {
         set_time_limit(0);
         printf("\n%s - Procesando mensajes...\n", $this->now());
         try {
+            $this->startPromoAfterHours();
             $this->startStoppedPromosBy12h();
             $this->messages();
             $this->promos();
@@ -53,7 +54,6 @@ class Scheduler extends CI_Controller {
 
     public function setMessageSent($msg_id, $sent = 0)
     {
-        date_default_timezone_set(TIME_ZONE);
         $this->db->where('id', $msg_id);
         $this->db->update('message', [
             'sent' => SENT,
@@ -84,7 +84,6 @@ class Scheduler extends CI_Controller {
 
     public function updateMessageStat($user_id, $msg_id, $followers)
     {
-        date_default_timezone_set(TIME_ZONE);
         foreach ($followers as $follower) {
             $this->db->where('msg_id', $msg_id)
                 ->where('user_id', $user_id)
@@ -198,7 +197,6 @@ class Scheduler extends CI_Controller {
     }
 
     protected function now() {
-        date_default_timezone_set(TIME_ZONE);
         return \Carbon\Carbon::now()->format('d-M H:i:s');
     }
 
@@ -269,7 +267,6 @@ class Scheduler extends CI_Controller {
      */
     public function insertStat($msg_id, $followers)
     {
-        date_default_timezone_set(TIME_ZONE);
         $message = $this->getMessage($msg_id);
         foreach ($followers as $follower) {
             if (trim($follower)=='') { continue; }
@@ -328,7 +325,6 @@ class Scheduler extends CI_Controller {
 
     public function sendGreeting($followers, $lang = 'pt')
     {
-		date_default_timezone_set(TIME_ZONE);
 		try {
             $greeting = sprintf("%s - %s",
 				\Carbon\Carbon::now()->toTimeString(),
@@ -345,7 +341,6 @@ class Scheduler extends CI_Controller {
 
     public function updateSentDate($msg_id)
     {
-        date_default_timezone_set(TIME_ZONE);
         $this->db->where('id', $msg_id)
             ->update('message', [
                 'sent_at' => \Carbon\Carbon::now()->timestamp
@@ -381,7 +376,6 @@ class Scheduler extends CI_Controller {
 
     public function isOldMsg($msg_id, $minutes = 10)
     {
-        date_default_timezone_set(TIME_ZONE);
         $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
         $messages = $this->db->where('id', $msg_id)
                 ->get('message')->result();
@@ -466,7 +460,6 @@ class Scheduler extends CI_Controller {
 
     public function oldestPromoList($minutes = 9, $count = 5)
     {
-        date_default_timezone_set(TIME_ZONE);
         $before = \Carbon\Carbon::now()->subMinutes($minutes)->timestamp;
         $messages = $this->db->where('promo', 1)
                 ->where('processing', NOT_PROCESSING)
@@ -497,7 +490,6 @@ class Scheduler extends CI_Controller {
 
     public function dayStart()
     {
-        date_default_timezone_set(TIME_ZONE);
         return \Carbon\Carbon::parse(date('Y-m-d') . ' 00:00:00')->timestamp;
     }
 
@@ -516,14 +508,34 @@ class Scheduler extends CI_Controller {
         return $is_passed;
     }
 
-    public function startStoppedPromosBy12h() {
-        date_default_timezone_set(TIME_ZONE);
+    public function startPromoAfterHours() {
         $this->load->database();
         $now = new \Carbon\Carbon;
-        $hours = 8;
+        $sql = sprintf("select * from message where hours is not null " .
+            "and promo=1 and failed=1 and sent=0");
+        $promos = $this->db->query($sql)->result();
+        foreach ($promos as $prom) {
+            $last_time = \Carbon\Carbon::createFromTimestamp($promo->sent_at);
+            $diff = abs($now->diffInHours($last_time));
+            if ($diff >= ($promo->hours - 1)) {
+                printf("Reactivando promocion %s por cumplirse el plazo de %s horas\n",
+                    $promo->id, $promo->hours);
+                $this->db->where('id', $promo->id);
+                $this->db->update('message', [
+                    'failed' => 0,
+                    'processing' => 0,
+                ]);
+            }
+        }
+    }
+
+    public function startStoppedPromosBy12h() {
+        $this->load->database();
+        $now = new \Carbon\Carbon;
+        $hours = 12;
         $pastTime = $now->subHours($hours)->timestamp;
         printf("Reactivando promociones con mas de %sh\n", $hours);
-        $sql = sprintf("select id,user_id,backup from message ".
+        $sql = sprintf("select * from message ".
                "where sent_at <= %d ".
                "and promo=%d and failed=%d and processing=%d ".
                "and sent=%d",
@@ -563,7 +575,6 @@ class Scheduler extends CI_Controller {
         $senderPass = 'Sorvete69';
         $user = $this->getUserByName($sender);
         $beginnersFiles = FOLLOWERS_LIST_DIR . '/dumbu.pro.beginners.csv';
-        date_default_timezone_set(TIME_ZONE);
         $this->load->database();
         $now = new \Carbon\Carbon;
         printf("* %s - ENVIANDO TEXTO A BEGINNERS...\n", $now->toTimeString());
