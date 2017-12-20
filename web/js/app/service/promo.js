@@ -202,8 +202,8 @@ angular.module('dumbu')
             modifyHours: function() {
                 var promo = self.$scope.selectedPromo;
                 $('div.promo-change-hours').modal('hide');
+                Dumbu.blockUI();
                 $timeout(function(){
-                    Dumbu.blockUI();
                     var Promo = $resource(Dumbu.siteUrl + '/promo/:id/hours/:hours', {
                         id: promo.id,
                         hours: promo.hours
@@ -213,7 +213,9 @@ angular.module('dumbu')
                             Dumbu.unblockUI();
                         }, 1000);
                     }, function(){
-                        Dumbu.unblockUI();
+                        $timeout(function(){
+                            Dumbu.unblockUI();
+                        }, 1000);
                     });
                 }, 2000);
             },
