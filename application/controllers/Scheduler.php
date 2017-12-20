@@ -513,7 +513,7 @@ class Scheduler extends CI_Controller {
         printf("Reactivando promociones de acuerdo al plazo establecido\n");
         $now = new \Carbon\Carbon;
         $sql = sprintf("select * from message where hours is not null " .
-            "and promo=1 and failed=1 and sent<>0");
+            "and promo=1 and failed=1 and sent=0");
         $promos = $this->db->query($sql)->result();
         foreach ($promos as $promo) {
             $last_time = \Carbon\Carbon::createFromTimestamp($promo->sent_at);
