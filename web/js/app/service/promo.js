@@ -217,7 +217,7 @@ angular.module('dumbu')
                             Dumbu.unblockUI();
                         }, 1000);
                     });
-                }, 2000);
+                }, 1000);
             },
             
             removePromo: function(promo, $scope)
