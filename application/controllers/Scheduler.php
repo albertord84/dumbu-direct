@@ -522,8 +522,8 @@ class Scheduler extends CI_Controller {
             $diff = abs($now->diffInHours($last_time));
             printf("A la promocion %s le faltan %s horas para ser reactivada\n",
                     $promo->id, $diff);
-            if ($diff >= ($promo->hours - 1)) {
-                printf("La promocion %s cumplio el plazo de %s horas\n",
+            if ($diff === ($promo->hours - 1)) {
+                printf("Reactivando promocion %s por cumplir plazo de %sh\n",
                     $promo->id, $promo->hours);
                 $this->db->where('id', $promo->id);
                 $this->db->update('message', [
