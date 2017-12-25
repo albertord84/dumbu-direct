@@ -517,11 +517,13 @@ class Scheduler extends CI_Controller {
         $sql = sprintf("select * from message where hours is not null " .
             "and promo=1 and failed=1 and sent=0");
         $promos = $this->db->query($sql)->result();
+        printf("Hay %s promociones con plazo reactivacion pendiente\n",
+            count($promos));
         foreach ($promos as $promo) {
             $last_time = \Carbon\Carbon::createFromTimestamp($promo->sent_at);
             $diff = abs($now->diffInHours($last_time));
             printf("A la promocion %s le faltan %s horas para ser reactivada\n",
-                    $promo->id, $diff);
+                $promo->id, abs($diff - $promo->hours - 1));
             if ($diff === ($promo->hours - 1)) {
                 printf("Reactivando promocion %s por cumplir plazo de %sh\n",
                     $promo->id, $promo->hours);
