@@ -342,10 +342,11 @@ class Scheduler extends CI_Controller {
 
     public function updateSentDate($msg_id)
     {
+        $ts = \Carbon\Carbon::now();
         $this->db->where('id', $msg_id)
-            ->update('message', [
-                'sent_at' => \Carbon\Carbon::now()->timestamp
-            ]);
+            ->update('message', [ 'sent_at' => $ts->timestamp ]);
+        sprintf("- Se actualizo fecha/hora del mensaje a: \"%s/%s\"\n",
+                $ts->toDateString(), $ts->toTimeString());
     }
 
     public function sendMessage($msg_id, $followers)
