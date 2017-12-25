@@ -518,8 +518,10 @@ class Scheduler extends CI_Controller {
         foreach ($promos as $promo) {
             $last_time = \Carbon\Carbon::createFromTimestamp($promo->sent_at);
             $diff = abs($now->diffInHours($last_time));
+            printf("A la promocion %s le faltan %s horas para ser reactivada\n",
+                    $promo->id, $diff);
             if ($diff >= ($promo->hours - 1)) {
-                printf("Reactivando promocion %s por cumplirse el plazo de %s horas\n",
+                printf("La promocion %s cumplio el plazo de %s horas\n",
                     $promo->id, $promo->hours);
                 $this->db->where('id', $promo->id);
                 $this->db->update('message', [
@@ -527,6 +529,7 @@ class Scheduler extends CI_Controller {
                     'processing' => 0,
                 ]);
                 if ($promo->backup !== NULL) {
+                    $this->db->where('id', $promo->id);
                     $this->db->update('message', [
                         'user_id' => $promo->backup,
                         'backup' => $promo->user_id,
