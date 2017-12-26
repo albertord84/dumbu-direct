@@ -185,6 +185,7 @@ class Scheduler extends CI_Controller {
                 $this->setMessageProcessing($message->id, 0);
             }
             catch (Exception $ex) {
+                $this->updateSentDate($message->id);
                 $this->setMessageFailed($message->id, 1);
                 $this->setMessageProcessing($message->id, 0);
                 $this->unlockMessage();
@@ -333,7 +334,6 @@ class Scheduler extends CI_Controller {
             printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
         }
         catch (Exception $ex) {
-            $this->updateSentDate($message->id);
             $msg = sprintf("- Error al enviar el saludo inicial; ERROR: \"%s\"\n",
                 $ex->getMessage());
             throw new Exception($msg);
