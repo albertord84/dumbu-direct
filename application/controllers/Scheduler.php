@@ -185,6 +185,7 @@ class Scheduler extends CI_Controller {
                 $this->setMessageProcessing($message->id, 0);
             }
             catch (Exception $ex) {
+                $this->updateSentDate($message->id);
                 $this->setMessageFailed($message->id, 1);
                 $this->setMessageProcessing($message->id, 0);
                 $this->unlockMessage();
@@ -344,7 +345,7 @@ class Scheduler extends CI_Controller {
         $ts = \Carbon\Carbon::now();
         $this->db->where('id', $msg_id)
             ->update('message', [ 'sent_at' => $ts->timestamp ]);
-        sprintf("- Se actualizo fecha/hora del mensaje a: \"%s/%s\"\n",
+        printf("- Se actualizo fecha/hora del mensaje a: \"%s/%s\"\n",
                 $ts->toDateString(), $ts->toTimeString());
     }
 
@@ -373,7 +374,6 @@ class Scheduler extends CI_Controller {
                 ]);
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
                 $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
-        $this->updateSentDate($msg_id);
     }
 
     public function isOldMsg($msg_id, $minutes = 10)
