@@ -373,7 +373,7 @@ class Scheduler extends CI_Controller {
                 'failed' => $failed
             ]);
         $this->db->where('id', $msg_id);
-        $promos = $this->get('message')->result();
+        $promos = $this->db->get('message')->result();
         $promo = $promos[0];
         if ($promo->promo === 1) {
             if ($promo->hours > 12 && $promo->hours < 36) {
