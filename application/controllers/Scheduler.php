@@ -369,11 +369,25 @@ class Scheduler extends CI_Controller {
     public function setMessageFailed($msg_id, $failed = 0)
     {
         $this->db->where('id', $msg_id)
-                ->update('message', [
-                    'failed' => $failed
-                ]);
+            ->update('message', [
+                'failed' => $failed
+            ]);
+        $this->db->where('id', $msg_id);
+        $promos = $this->get('message')->result();
+        $promo = $promos[0];
+        if ($promo->promo === 1) {
+            if ($promo->hours > 12 && $promo->hours < 36) {
+                $h = $promo->hours + 12;
+                $this->db->where('id', $msg_id);
+                $this->db->update('message', [ 'hours' => $h ]);
+            }
+            if ($promo->hours === NULL || $promo->hours === 0) {
+                $this->db->where('id', $msg_id);
+                $this->db->update('message', [ 'hours' => 12 ]);
+            }
+        }
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
-                $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
+            $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
     }
 
     public function isOldMsg($msg_id, $minutes = 10)
