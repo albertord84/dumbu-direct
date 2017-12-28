@@ -385,6 +385,8 @@ class Scheduler extends CI_Controller {
                 $this->db->where('id', $msg_id);
                 $this->db->update('message', [ 'hours' => 12 ]);
             }
+            printf("- Se aumento el plazo de ractivacion de la promocion %s\n",
+                $promo->id);
         }
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
             $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
