@@ -380,13 +380,15 @@ class Scheduler extends CI_Controller {
                 $h = $promo->hours + 12;
                 $this->db->where('id', $msg_id);
                 $this->db->update('message', [ 'hours' => $h ]);
+                printf("- La promocion %s se reactivara a las %sh\n",
+                    $promo->id, $h);
             }
             if ($promo->hours === NULL || $promo->hours === 0) {
                 $this->db->where('id', $msg_id);
                 $this->db->update('message', [ 'hours' => 12 ]);
+                printf("- La promocion %s se reactivara a las 12h\n",
+                    $promo->id);
             }
-            printf("- Se aumento el plazo de ractivacion de la promocion %s\n",
-                $promo->id);
         }
         printf("- Se establecio el estado del mensaje a \"%s\"...\n",
             $failed == 0 ? 'NO FALLIDO' : 'FALLIDO');
