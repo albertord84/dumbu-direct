@@ -7,4 +7,5 @@ $truncatedDebug = false;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 $ig->setVerifySSL(false);
 //$ig->setProxy('http://70.39.250.32:33128');
-$ig->login($username, $password);
+$ig->setUser($username, $password);
+$ig->login();
