@@ -27,10 +27,10 @@ if (count($matches)===1) {
 	exit(0);
 }
 
-if (strstr($data, 'challenge_required')!==FALSE) {
+if (strstr($data, 'checkpoint_required')!==FALSE) {
 	try {
 		// - If challenge required, get challenge URL
-		$challengeRegex = '/"challenge": \{"url": "(.*)", "api_path"/';
+		$challengeRegex = '/"checkpoint_url": "(.*)", "lock".*/';
 		preg_match($challengeRegex, $data, $matches, PREG_OFFSET_CAPTURE, 0);
 		$challengeUrl = $matches[1][0];
 		echo "Challenging at '$challengeUrl'" . PHP_EOL;
