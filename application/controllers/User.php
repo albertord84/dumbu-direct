@@ -37,7 +37,7 @@ class User extends CI_Controller {
         
         try {
             set_time_limit(0);
-            $instagram->login($username, $password);
+            $instagram->login($username, $password, true);
             $this->session->pk = $instagram->account_id;
             $this->session->username = $username;
             $is_admin = $this->is_admin($username);
