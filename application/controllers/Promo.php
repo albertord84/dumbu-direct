@@ -322,9 +322,9 @@ class Promo extends CI_Controller {
             'password' => '****************'
         ]));*/
         $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-        $instagram->setUser($user->username, $user->password);
+        //$instagram->setUser($user->username, $user->password);
         try {
-            $instagram->login();
+            $instagram->login($user->username, $user->password);
         }
         catch (Exception $ex) {
             return $this->error_response(sprintf("Error login \"%s\" to Instagram: %s",

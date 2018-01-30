@@ -330,7 +330,7 @@ class Scheduler extends CI_Controller {
             $greeting = sprintf("%s - %s",
 				\Carbon\Carbon::now()->toTimeString(),
 				$this->randomGreeting($lang));
-            $this->instagram->directMessage($followers, $greeting);
+            $this->instagram->direct->sendText([ 'users' => $followers ], $greeting);
             printf("- Enviado saludo \"%s\" a los seguidores escogidos\n", $greeting);
         }
         catch (Exception $ex) {
@@ -353,7 +353,7 @@ class Scheduler extends CI_Controller {
     {
         $message = $this->getMessage($msg_id);
         try {
-            $this->instagram->directMessage($followers, $message->msg_text);
+            $this->instagram->direct->sendText([ 'users' => $followers ], $message->msg_text);
             printf("- Se envio el mensaje \"%s...\"; a los seguidores [%s]\n",
                 trim(substr($message->msg_text, 0, 15)), implode(", ", $followers));
         }
@@ -431,8 +431,8 @@ class Scheduler extends CI_Controller {
     public function loginInstagram($username, $password) {
         try {
             printf("- Iniciando sesión en Instagram como %s\n", $username);
-            $this->instagram->setUser($username, $password);
-            $this->instagram->login();
+            //$this->instagram->setUser($username, $password);
+            $this->instagram->login($username, $password);
             printf("- Sesión iniciada para %s\n", $username);
         } catch (Exception $ex) {
             $msg = sprintf("- No se pudo iniciar sesion para \"%s\". CAUSA: \"%s\"\n", $username, $ex->getMessage());
@@ -645,7 +645,7 @@ class Scheduler extends CI_Controller {
               printf("- Primero se enviara saludo, luego imagen promocional.\n");
               $greeting = $this->randomGreeting('pt');
               try {
-                $this->instagram->directMessage($ptFollowers, $greeting);
+                $this->instagram->direct->sendText([ 'users' => $ptFollowers ], $greeting);
               } catch (\Exception $e) {
                 $n = new \Carbon\Carbon();
                 printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
@@ -654,16 +654,16 @@ class Scheduler extends CI_Controller {
               }
               $this->randomWait();
               printf("- Enviando imagen promocional.\n");
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
+              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
             }
             else {
               printf("- Primero se enviara la imagen promocional, luego el saludo.\n");
-              $this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
+              //$this->instagram->directPhoto($ptFollowers, ROOT_DIR . '/web/img/pt.beginners.jpg');
 				printf("- Enviada la imagen promocional.\n");
               $this->randomWait();
               $greeting = $this->randomGreeting('pt');
               try {
-                $this->instagram->directMessage($ptFollowers, $greeting);
+                $this->instagram->direct->sendText([ 'users' => $ptFollowers ], $greeting);
               } catch (\Exception $e) {
                 $n = new \Carbon\Carbon();
                 printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());
@@ -672,7 +672,7 @@ class Scheduler extends CI_Controller {
             }
             $this->randomWait();
             try {
-                $this->instagram->directMessage($ptFollowers, $msgText);
+                $this->instagram->direct->sendText([ 'users' => $ptFollowers ], $msgText);
             } catch (\Exception $e) {
                 $n = new \Carbon\Carbon();
                 printf(" - %s Ocurrio una excepcion. Se detuvo el envio.\n", $n->toTimeString());

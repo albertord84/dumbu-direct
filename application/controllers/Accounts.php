@@ -134,10 +134,10 @@ class Accounts extends CI_Controller {
         $user = $users[0];
 
         $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-        $instagram->setUser($user->username, $user->password);
+        //$instagram->setUser($user->username, $user->password);
 
         try {
-            $instagram->login();
+            $instagram->login($user->username, $user->password);
         } catch (\Exception $ex) {
             return $this->output->set_content_type('application/json')
                 ->set_status_header(500)

@@ -21,9 +21,9 @@ class Search extends CI_Controller {
 		if ($this->session->username !== NULL) {
 			$user = $this->get_user_data($this->session->username);
 			$instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-			$instagram->setUser($this->session->username, $user->password);
+			//$instagram->setUser($this->session->username, $user->password);
 			try {
-				$instagram->login();
+				$instagram->login($this->session->username, $user->password);
 			} catch (\Exception $ex) {
 				$response = ['message' => $ex->getMessage()];
 				return $this->output->set_content_type('application/json')
