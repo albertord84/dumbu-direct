@@ -23,14 +23,14 @@ $message = "Saudações para meus seguidores, tenha um ótimo dia!";
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
-    $ig->setUser($username, $password);
-    $ig->login();
+    //$ig->setUser($username, $password);
+    $ig->login($username, $password);
 } catch (\Exception $e) {
     echo 'Something went wrong trying to login: '.$e->getMessage()."\n";
     exit(0);
 }
 try {
-    $ig->directMessage($uid, $msg == NULL ?
+    $ig->direct->sendText([ 'users' => [$uid] ], $msg == NULL ?
             sprintf($message, guid(), guid(), guid(), guid(), guid()) :
             $msg);
 } catch (\Exception $e) {

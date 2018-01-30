@@ -9,7 +9,7 @@ $debug = FALSE;
 $truncatedDebug = TRUE;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
-    $ig->setUser($username, $password);
+    //$ig->setUser($username, $password);
     $ig->login($username, $password);
 } catch (\Exception $e) {
     printf("Something went wrong trying to login: %s\n",

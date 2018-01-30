@@ -41,8 +41,8 @@ $message = "Ganhe milhares de seguidores qualificados por área " .
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
-    $ig->setUser($username, $password);
-    $ig->login();
+    //$ig->setUser($username, $password);
+    $ig->login($username, $password);
 } catch (\Exception $e) {
     printf('Something went wrong trying to login: %s\n', $e->getMessage());
     exit(0);

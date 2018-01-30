@@ -11,8 +11,8 @@ $truncatedDebug = false;
 
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 try {
-    $ig->setUser($username, $password);
-    $ig->login();
+    //$ig->setUser($username, $password);
+    $ig->login($username, $password);
 } catch (\Exception $e) {
     echo 'Something went wrong trying to login: '.$e->getMessage()."\n";
     exit(0);
