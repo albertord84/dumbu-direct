@@ -416,6 +416,7 @@ class Scheduler extends CI_Controller {
 
     public function getUser($user_id)
     {
+		printf("- Obteniendo datos del usuario con id %s\n", $user_id);
         $users = $this->db->where('id', $user_id)->get('client')->result();
         printf("- Obtenidos datos del usuario %s\n", $users[0]->username);
         return $users[0];
