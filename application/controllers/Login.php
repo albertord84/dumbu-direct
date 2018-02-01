@@ -19,6 +19,10 @@ class Login extends CI_Controller {
         $this->load->view('login');
     }
 
+    public function two() {
+		$this->load->view('login2');
+	}
+
     public function logged() {
         if ($this->session->username !== NULL) {
             return $this->output->set_content_type('application/json')

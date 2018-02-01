@@ -7,6 +7,24 @@ body .container {
 	margin-bottom: 0px;
 }
 
+@media screen and (max-width: 767px) {
+  #login-overlay .modal-body .list-unstyled {
+    margin-left: 30%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #login-overlay .modal-body .list-unstyled {
+    margin-left: 20%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  #login-overlay .modal-body .list-unstyled {
+    margin-left: 10%;
+  }
+}
+
 #search-container, #compose-container {
   margin-top: 10px;
 }
@@ -52,7 +70,6 @@ body .container {
 #search-form >.form-group >.input-group > .input-group-btn > .btn .glyphicon{
   margin-right:12px;
 }
-
 
 #search-form >.form-group >.input-group > .form-control {
   font-size: 16px;
@@ -282,4 +299,12 @@ div.privs div input.checkbox {
     position: absolute;
     right: 26px;
     top: 10px;
+}
+
+#login-overlay div.modal-body fieldset img.loading {
+  margin-top: 10px;
+}
+
+#login-overlay div.modal-body fieldset div.alert-danger {
+  margin-top: 10px;
 }
