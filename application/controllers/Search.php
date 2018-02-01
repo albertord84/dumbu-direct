@@ -31,7 +31,7 @@ class Search extends CI_Controller {
 					->set_output(json_encode($response));
 			}
 			try {
-				$response = $instagram->searchUsers($query)->users;
+				$response = $instagram->people->search($query)->getUsers();
 			} catch (Exception $e) {
 				$response = ['message' => $e->getMessage()];
 				return $this->output->set_content_type('application/json')
