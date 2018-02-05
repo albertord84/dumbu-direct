@@ -305,6 +305,7 @@ div.privs div input.checkbox {
   margin-top: 10px;
 }
 
-#login-overlay div.modal-body fieldset div.alert-danger {
+#login-overlay div.modal-body fieldset div.alert-danger,
+#login-overlay div.modal-body fieldset div.alert-info {
   margin-top: 10px;
 }

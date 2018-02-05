@@ -1,6 +1,6 @@
 jQuery(function () {
 
-	function initAutocomplete() {
+	/*function initAutocomplete() {
 		var datasource = new Bloodhound({
 			datumTokenizer: Bloodhound.tokenizers.obj.whitespace('username'),
 			queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -30,7 +30,7 @@ jQuery(function () {
 				$('.async-loading').addClass('hidden');
 			}
 		});
-	}
+	}*/
 
 	Rx.Observable.fromEvent(jQuery(document), 'click')
 		.filter(function (e) {
@@ -60,5 +60,5 @@ jQuery(function () {
 			jQuery('#search-form').submit();
 		});
 
-	initAutocomplete();
+	//initAutocomplete();
 });

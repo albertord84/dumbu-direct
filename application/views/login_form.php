@@ -10,7 +10,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta content='width=device-width,initial-scale=1' name='viewport'>
         <link rel="icon" type="image/png" href="<?php echo base_url('img/icon.png'); ?>">
         <link rel='stylesheet' href='<?php echo base_url('css/bootstrap.min.css'); ?>'/>
-        <link rel='stylesheet' href='<?php echo base_url('css/bootstrap-theme.min.css'); ?>'/>
         <link rel="stylesheet" href="<?php echo base_url('css/font-awesome.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css'); ?>?<?php echo d_guid(); ?>">
