@@ -64,7 +64,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             window.location = Dumbu.siteUrl + '/search/index';
                         }, 2000);
                     }).fail((response) => {
-                        this.setState({error: response.responseJSON.message});
+                        if ('undefined' !== typeof console) { console.log(arguments); }
+                        this.setState({ error: 'Login error. See console...' });
                     }).always(() => {
                         this.setState({logging: false});
                     });
