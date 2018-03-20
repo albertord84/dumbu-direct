@@ -17,7 +17,7 @@ try {
     exit(0);
 }
 try {
-    $userId = $ig->getUsernameId($profile);
+    $userId = $ig->people->getUserIdForName($profile);
     printf("%s id is: %s\n", $profile, $userId);
 } catch (\Exception $e) {
     printf("Something went wrong trying to get %s id: %s\n",
@@ -26,13 +26,14 @@ try {
 }
 $maxId = "AQD5HOdVtIfxUFUWlnNHQ94Q8g0L-gVQnqrDUXOHyDaGziBCsERVa0mFx-MUyGMjMEavMxktAVOqcGJp7qVOG88FO9LXp3qpSj95iZIvIGQHtg";
 $c = 0; $i = 0;
+$rankToken = \InstagramAPI\Signatures::generateUUID();
 do {
     /*if ($c === 3) {
         exit(0);
     }*/
     // 
     try {
-        $response = $ig->getUserFollowers($userId, $maxId);
+        $response = $ig->people->getFollowers($userId, $rankToken);
     } catch (\Exception $e) {
         printf("Something went wrong trying to get %s followers: %s\n",
             $profile, $e->getMessage());

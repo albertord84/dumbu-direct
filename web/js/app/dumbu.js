@@ -1,9 +1,3 @@
-if (typeof angular !== 'undefined'){
-    angular.module('dumbu', [
-        'ngResource', 'ngCookies', 'ngSanitize'
-    ]);
-}
-
 var Dumbu = {
 
     blockUI: function (msg) {
@@ -33,6 +27,16 @@ var Dumbu = {
 
 	showModal: function (selector) {
 		jQuery(selector).modal('show');
-	}
+    }
 
 };
+
+var dumbu = Dumbu;
+
+var e = 'undefined' !== typeof React ? React.createElement : {};
+
+function log(d) {
+    if ('undefined' !== typeof console) {
+        console.log(d);
+    }
+}

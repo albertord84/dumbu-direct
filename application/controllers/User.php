@@ -87,7 +87,6 @@ class User extends CI_Controller {
 			$this->clean_previous_instagram_session($this->session->username);
 		}
 		session_destroy();
-		$this->session->username = NULL;
 		$this->session->set_userdata([]);
 		$this->load->view('login_form');
 	}

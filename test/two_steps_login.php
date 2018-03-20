@@ -3,7 +3,7 @@ require __DIR__.'/../vendor/autoload.php';
 $php = '/usr/bin/php';
 
 $ig = new InstagramAPI\Instagram(true, false);
-$ig->login('yordanoweb', 'Kaperuza25');
+$ig->login('yordanoweb', 'blahblah');
 $uid = $ig->people->getUserIdForName('dumbu.08');
 echo $uid . PHP_EOL;
 if(true)exit();

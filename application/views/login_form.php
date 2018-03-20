@@ -11,137 +11,191 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="icon" type="image/png" href="<?php echo base_url('img/icon.png'); ?>">
         <link rel='stylesheet' href='<?php echo base_url('css/bootstrap.min.css'); ?>'/>
         <link rel="stylesheet" href="<?php echo base_url('css/font-awesome.min.css'); ?>">
-        <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
-        <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css'); ?>?<?php echo d_guid(); ?>">
+        <style>
+            #root {
+                width: 300px;
+                margin: 40px auto;
+            }
+            #root .login-form #bt-auth {
+                width: 90%;
+                margin: 10px auto 0px auto;
+            }
+            #root .login-form img.loading {
+                margin-top: 15px;
+            }
+        </style>
     </head>
     <body>
         <div id="root"></div>
+        <img class="hidden" src="<?php echo base_url('img/preloader.gif'); ?>" />
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/babel.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/react.production.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/create-react-class.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/react-dom.production.min.js'); ?>"></script>
-        <script>var Dumbu = Dumbu || Object.assign({ siteUrl: "<?php echo site_url(); ?>" });</script>
-        <script type="text/babel">
-            class LoginForm extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {
-                        username: '',
-                        password: '',
-                        canLogIn: false,
-                        logging: false,
-                        error: '',
-                        message: ''
-                    };
-                }
-                keyUp(event) {
-                    this.setState({ message: '', error: '' });
-                    if (event.keyCode === 13 && this.state.canLogIn) {
-                        this.checkAuth();
-                        return;
-                    }
-                    if (event.target.id === 'username') {
-                        this.setState({ username: _.trim(event.target.value) });
-                    } else if (event.target.id === 'password') {
-                        this.setState({ password: event.target.value });
-                    }
-                    this.setState({
-                        canLogIn: (this.state.username.length > 2 && this.state.password.length > 2)
-                    });
-                }
-                checkAuth() {
-                    this.setState({logging: true});
-                    $.post(Dumbu.siteUrl + '/user/auth',{
-                        username: this.state.username,
-                        password: this.state.password
-                    }, (response) => {
-                        this.setState({message: 'Redirecting...'});
-                        setTimeout(() => {
-                            window.location = Dumbu.siteUrl + '/search/index';
-                        }, 2000);
-                    }).fail((response) => {
-                        if ('undefined' !== typeof console) { console.log(arguments); }
-                        this.setState({ error: 'Login error. See console...' });
-                    }).always(() => {
-                        this.setState({logging: false});
-                    });
-                }
-                componentDidMount() {
-                    Rx.Observable.fromEvent(window, 'keyup')
-                        .filter((event) => {
-                            return event.target.id === 'username' ||
-                                event.target.id === 'password'
-                        })
-                        .subscribe((event) => this.keyUp(event));
-                }
-                render() {
-                    const canLogIn = this.state.canLogIn;
-                    const logging = this.state.logging;
-                    const message = this.state.message;
-                    const error = this.state.error;
-                    return (
-                        <div id="login-overlay" className="modal-dialog">
-                            <div className="modal-content">
-                                <div className="modal-header text-center">
-                                    <h4 className="modal-title" id="myModalLabel">Login to your Instagram <i className="fa fa-instagram" aria-hidden="true"></i></h4>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="row">
-                                        <div className="col-xs-12 col-sm-6">
-                                            <div className="well">
-                                                <fieldset>
-                                                    <div className="form-group">
-                                                        <input type="text" className="form-control input-lg" id="username"
-                                                            name="username" autocomplete="off"
-                                                            title="Please, enter you username"
-                                                            placeholder="Instagram username..."
-                                                            autofocus="on" disabled={logging}/>
-                                                        <span className="help-block"></span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="password" className="form-control input-lg" id="password"
-                                                            name="password" autocomplete="off"
-                                                            placeholder="Password..." title="Please enter your password"
-                                                            disabled={logging}/>
-                                                        <span className="help-block"></span>
-                                                    </div>
-                                                    <button type="button" className={logging?"hidden":"btn btn-lg btn-success btn-block"}
-                                                            id="btAuth" disabled={!canLogIn || logging}
-                                                            onClick={() => this.checkAuth()}>Log in</button>
-                                                    <div className={logging?"text-center":"hidden"}>
-                                                        <img src="<?php echo base_url('img/loading-small.gif'); ?>"
-                                                            className="loading"/>
-                                                    </div>
-                                                    <div className={error===''?"hidden":"alert alert-danger small"}>
-                                                        <p><b>Error:</b>&nbsp;<span className="text">{error}</span></p>
-                                                    </div>
-                                                    <div className={message===''?"hidden":"alert alert-info small"}>
-                                                        <p className="text">{message}</p>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                        <div className="col-xs-12 col-sm-6">
-                                            <p className="lead text-center">Sign up, <span className="text-success text-uppercase"><b>Try for free!</b></span></p>
-                                            <ul className="list-unstyled">
-                                                <li><span className="fa fa-check text-success"></span> Increase your followers!</li>
-                                                <li><span className="fa fa-check text-success"></span> Text other users!</li>
-                                                <li><span className="fa fa-check text-success"></span> Post to possible customers!</li>
-                                                <li><span className="fa fa-check text-success"></span> Start a campaign!</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <script src="<?php echo base_url('js/app/dumbu.js'); ?>"></script>
+        <script>
+            var paths = {
+                siteUrl: "<?php echo site_url(); ?>",
+                baseUrl: "<?php echo base_url(); ?>"
+            };
+            var Dumbu = 'undefined' !== typeof Dumbu ?
+                        Object.assign(Dumbu, paths) : Object.assign(paths);
+        </script>
+        <script>
+            var initialState = {
+                userName: '',
+                password: '',
+                loading: false,
+                error: '',
+                info: ''
+            };
+            var UserNameField = createReactClass({
+                render: function() {
+                    return e('div', { className: 'row' },
+                        e('div', { className: "form-group" },
+                            e('input', {
+                                type: "text",
+                                class: "form-control input-lg",
+                                id: "username",
+                                name: "username",
+                                autocomplete: "off",
+                                title: "Please, enter you username",
+                                placeholder: "Instagram username...",
+                                autofocus: "on",
+                                onChange: this.props.userNameChange,
+                                disabled: this.props.loading }
+                            )
+                        )
                     );
                 }
-            }
-            ReactDOM.render(<LoginForm/>, document.getElementById('root'));
+            });
+            var PasswordField = createReactClass({
+                render: function() {
+                    return e('div', { className: 'row' },
+                        e('div', { className: "form-group" },
+                            e('input', {
+                                type: "password",
+                                class: "form-control input-lg",
+                                id: "password",
+                                name: "password",
+                                autocomplete: "off",
+                                title: "Account password",
+                                placeholder: "Password...",
+                                onChange: this.props.passwordChange,
+                                disabled: this.props.loading }
+                            )
+                        )
+                    );
+                }
+            });
+            var SubmitButton = createReactClass({
+                onClick: function() {
+                    this.props.auth();
+                },
+                render: function() {
+                    var loading = this.props.loading;
+                    return e('div', { className: 'row text-center' },
+                        e('div', { className: loading ? "hidden" : "form-group" },
+                            e('button', {
+                                type: "button",
+                                class: "btn btn-lg btn-success btn-block",
+                                id: "bt-auth", onClick: this.onClick }, 'Log In'
+                            )
+                        ),
+                        loading ? e('img', { className: "loading", src: Dumbu.baseUrl + "img/preloader.gif" }) : ''
+                    );
+                }
+            });
+            var LoginForm = createReactClass({
+                getInitialState: function() {
+                    return initialState;
+                },
+                render: function() {
+                    var userName = this.state.userName;
+                    var password = this.state.password;
+                    var info = this.state.info;
+                    var error = this.state.error;
+                    var loading = this.state.loading;
+                    return e('div', { className: 'row login-form' },
+                        e('div', { className: 'row form-group text-center text-muted' },
+                            e('h4', null, 'Login to your Instagram ',
+                                e('i', { className: "fa fa-instagram" })
+                            )
+                        ),
+                        e(UserNameField, { userNameChange: this.userNameChange, loading: loading }),
+                        e(PasswordField, { passwordChange: this.passwordChange, loading: loading }),
+                        e(SubmitButton, { auth: this.auth, loading: loading }),
+                        info === '' ? '' : e('div', { className: 'small alert alert-info text-center' }, info),
+                        error === '' ? '' : e('div', { className: 'small alert alert-danger text-center' }, error)
+                    );
+                },
+                userNameChange: function(ev) {
+                    this.setState({
+                        info: '', error: '',
+                        userName: _.trim(ev.target.value)
+                    });
+                },
+                passwordChange: function(ev) {
+                    this.setState({
+                        info: '', error: '',
+                        password: _.trim(ev.target.value)
+                    });
+                },
+                validate: function() {
+                    var userName = _.trim(this.state.userName);
+                    var password = _.trim(this.state.password);
+                    if (userName === '') {
+                        this.setState({ error: 'You must enter the username...' });
+                        $('#username').focus();
+                        return false;
+                    }
+                    if (password === '') {
+                        this.setState({ error: 'You must enter the password...' });
+                        $('#password').focus();
+                        return false;
+                    }
+                    return true;
+                },
+                auth: function() {
+                    var self = this;
+                    var isValid = self.validate();
+                    if (!isValid) return;
+                    self.setState({ loading: true });
+                    $.ajax({
+                        type: 'POST',
+                        url: Dumbu.siteUrl + '/user/auth',
+                        data: {
+                            username: self.state.userName,
+                            password: self.state.password
+                        },
+                        success: function() {
+                            window.location = Dumbu.siteUrl + '/search';
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            log(arguments);
+                            self.setState({
+                                error: jqXHR.responseJSON.message,
+                                loading: false
+                            })
+                        }
+                    });
+                },
+                componentDidMount() {
+                    window['cmp'] = this;
+                    var self = this;
+                    Rx.Observable.fromEvent(document, 'keyup')
+                    .filter(function(ev) {
+                        var isOurForm = ev.target.id === 'username' ||
+                                        ev.target.id === 'password';
+                        return ev.keyCode === 13 && isOurForm;
+                    }).subscribe(self.auth);
+                }
+            });
+            ReactDOM.render(e(LoginForm), document.getElementById('root'));
         </script>
     </body>
 </html>

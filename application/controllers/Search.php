@@ -7,21 +7,20 @@ class Search extends CI_Controller {
     public $instagram = NULL;
 
     public function index() {
-        //if ($this->session->username !== NULL) {
+        if ($this->session->username !== NULL) {
             $this->load->view('search_followers_form', [
                 'username' => $this->session->username,
                 'is_admin' => $this->session->is_admin != NULL
             ]);
-        /*} else {
+        } else {
             $this->load->view('login_form');
-        }*/
+        }
     }
 
     public function followers($query) {
 		if ($this->session->username !== NULL) {
 			$user = $this->get_user_data($this->session->username);
 			$instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-			//$instagram->setUser($this->session->username, $user->password);
 			try {
 				$instagram->login($this->session->username, $user->password);
 			} catch (\Exception $ex) {
