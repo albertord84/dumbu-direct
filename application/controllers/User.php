@@ -33,7 +33,6 @@ class User extends CI_Controller {
         sleep(5);
         
         $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
-        //$instagram->setUser($username, $password);
         
         try {
             set_time_limit(0);

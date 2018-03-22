@@ -13,20 +13,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url('css/font-awesome.min.css'); ?>">
         <style>
             #root {
-                width: 300px;
-                margin: 40px auto;
+                width: 350px;
+                margin: 10px auto;
             }
-            #root .login-form #bt-auth {
+            #root #bt-auth {
                 width: 90%;
-                margin: 10px auto 0px auto;
+                margin: 10px auto;
             }
-            #root .login-form img.loading {
-                margin-top: 15px;
+            @media only screen and (max-width: 350px) {
+                #root {
+                    width: 280px;
+                }
             }
         </style>
     </head>
     <body>
-        <div id="root"></div>
+        <div class="container" id="root"></div>
         <img class="hidden" src="<?php echo base_url('img/preloader.gif'); ?>" />
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
@@ -55,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             };
             var UserNameField = createReactClass({
                 render: function() {
-                    return e('div', { className: 'row' },
+                    return e('div', { className: '' },
                         e('div', { className: "form-group" },
                             e('input', {
                                 type: "text",
@@ -75,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
             var PasswordField = createReactClass({
                 render: function() {
-                    return e('div', { className: 'row' },
+                    return e('div', { className: '' },
                         e('div', { className: "form-group" },
                             e('input', {
                                 type: "password",
@@ -98,8 +100,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 },
                 render: function() {
                     var loading = this.props.loading;
-                    return e('div', { className: 'row text-center' },
-                        e('div', { className: loading ? "hidden" : "form-group" },
+                    return e('div', { className: 'text-center' },
+                        loading ? '' : e('div', { className: "form-group" },
                             e('button', {
                                 type: "button",
                                 class: "btn btn-lg btn-success btn-block",
@@ -108,6 +110,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ),
                         loading ? e('img', { className: "loading", src: Dumbu.baseUrl + "img/preloader.gif" }) : ''
                     );
+                }
+            });
+            var Header = createReactClass({
+                render: function() {
+                    return e('div', { className: 'form-group text-center text-muted' },
+                        e('h4', { className: '' }, 'Login to your Instagram ',
+                            e('i', { className: "fa fa-instagram" })
+                        )
+                    )
                 }
             });
             var LoginForm = createReactClass({
@@ -120,12 +131,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var info = this.state.info;
                     var error = this.state.error;
                     var loading = this.state.loading;
-                    return e('div', { className: 'row login-form' },
-                        e('div', { className: 'row form-group text-center text-muted' },
-                            e('h4', null, 'Login to your Instagram ',
-                                e('i', { className: "fa fa-instagram" })
-                            )
-                        ),
+                    return e('div', { className: 'login-form' },
+                        e(Header),
                         e(UserNameField, { userNameChange: this.userNameChange, loading: loading }),
                         e(PasswordField, { passwordChange: this.passwordChange, loading: loading }),
                         e(SubmitButton, { auth: this.auth, loading: loading }),
@@ -164,7 +171,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var self = this;
                     var isValid = self.validate();
                     if (!isValid) return;
-                    self.setState({ loading: true });
+                    self.setState({ loading: true, error: '', info: '' });
                     $.ajax({
                         type: 'POST',
                         url: Dumbu.siteUrl + '/user/auth',
@@ -178,7 +185,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         error: function(jqXHR, textStatus, errorThrown) {
                             log(arguments);
                             self.setState({
-                                error: jqXHR.responseJSON.message,
+                                error: 'undefined' === typeof jqXHR.responseJSON ?
+                                    jqXHR.statusText :
+                                    jqXHR.responseJSON.message,
                                 loading: false
                             })
                         }

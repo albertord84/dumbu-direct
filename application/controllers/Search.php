@@ -8,7 +8,7 @@ class Search extends CI_Controller {
 
     public function index() {
         if ($this->session->username !== NULL) {
-            $this->load->view('search_followers_form', [
+            $this->load->view('search_followers', [
                 'username' => $this->session->username,
                 'is_admin' => $this->session->is_admin != NULL
             ]);
@@ -22,7 +22,7 @@ class Search extends CI_Controller {
 			$user = $this->get_user_data($this->session->username);
 			$instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
 			try {
-				$instagram->login($this->session->username, $user->password);
+				$instagram->login($this->session->username, $user->password, false, 10800);
 			} catch (\Exception $ex) {
 				$response = ['message' => $ex->getMessage()];
 				return $this->output->set_content_type('application/json')

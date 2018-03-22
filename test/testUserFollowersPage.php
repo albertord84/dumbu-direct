@@ -16,16 +16,13 @@ $c = 0; $i = 0;
 $maxId = 'AQAzbtDkohaaia77Aj9BmKOeTM2nZh1swUcZP6l1NNgsG8GmCW8rxKxOE149qpfE8yIfdlkMwlsbwYOVTgY0Oka-08L0gIXxy-JfhhfDLG5IfA';
 $response = $ig->people->getFollowers($userId, null, $maxId);
 $rankToken = \InstagramAPI\Signatures::generateUUID();
-//do {
-    $response = $ig->people->getFollowers($userId, null, $maxId);
-    //$maxId = $response->getNextMaxId();
-    printf("next maxId: %s\n", $maxId);
-    sleep(5);
-    $users = $response->getUsers();
-    foreach ($users as $user) {
-        printf("%s - %s\n", ++$c, $user->getPk());
-    }
-    sleep(5);
-//} while ($maxId !== null);
+$response = $ig->people->getFollowers($userId, null, $maxId);
+printf("next maxId: %s\n", $maxId);
+sleep(5);
+$users = $response->getUsers();
+foreach ($users as $user) {
+    printf("%s - %s\n", ++$c, $user->getPk());
+}
+sleep(5);
 printf('ended...\n');
 
