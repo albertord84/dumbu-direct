@@ -9,11 +9,18 @@ class Compose extends CI_Controller {
     public $permitted_ips = [ '127.0.0.1' ];
 
     public function index() {
+        /*if (true) {
+            return $this->load->view('compose_message', [
+                'username' => 'yordanoweb',
+                'profiles' => '12341234,768567856,324564562',
+                'usernames' => 'adidas,microsoft,cocacola'
+            ]);
+        }*/
         if ($this->session->username !== NULL) {
-            $this->session->follower_ids = $this->input->post('follower_ids');
-            $this->session->follower_names = $this->input->post('follower_names');
-            if ($this->session->follower_names === NULL ||
-				$this->session->follower_ids === NULL) {
+            $this->session->profiles = $this->input->post('profiles');
+            $this->session->usernames = $this->input->post('usernames');
+            if ($this->session->usernames === NULL ||
+				$this->session->profiles === NULL) {
 				return $this->load->view('errors/html/error_general', [
 					'heading' => 'Missing data',
 					'message' => 'You have to select followers first. Go to '.
@@ -21,14 +28,13 @@ class Compose extends CI_Controller {
 						'search</a>...'
 				]);
 			}
-            $this->load->view('compose_direct_message', [
+            return $this->load->view('compose_message', [
                 'username' => $this->session->username,
-                'is_admin' => $this->session->is_admin != NULL,
-                'follower_ids' => $this->session->follower_ids,
-                'follower_names' => $this->session->follower_names
+                'profiles' => $this->session->profiles,
+                'usernames' => $this->session->usernames
             ]);
         } else {
-            $this->load->view('login');
+            $this->load->view('login_form');
         }
     }
 

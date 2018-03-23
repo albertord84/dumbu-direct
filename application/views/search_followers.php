@@ -12,137 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel='stylesheet' href='<?php echo base_url('css/bootstrap.min.css'); ?>'/>
         <link rel="stylesheet" href="<?php echo base_url('css/font-awesome.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('css/sweetalert.css'); ?>">
-        <style>
-            #logo {
-                color: #666;
-                width:100%;
-            }
-            #logo h1 {
-                font-size: 60px;
-                text-shadow: 1px 2px 3px #999;
-                font-family: Roboto, sans-serif;
-                font-weight: 700;
-                letter-spacing: -1px;
-            }
-            #logo p{
-                padding-bottom: 20px;
-                opacity: 0.5;
-            }
-            .twitter-typeahead {
-                float: left;
-                width: 100%;
-            }
-            .typeahead {
-                background-color: #fff;
-            }
-            .typeahead:focus {
-                border: 2px solid #0097cf;
-            }
-            .tt-query {
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-                -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-            }
-            .tt-hint {
-                color: #999
-            }
-            .tt-menu {
-                position: absolute;
-                width: 500px;
-                margin-top: -10px;
-                z-index: 9999;
-                width: 100%;
-                margin: 12px 0;
-                padding: 8px 0;
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border: 1px solid rgba(0, 0, 0, 0.2);
-                -webkit-border-radius: 5px;
-                -moz-border-radius: 5px;
-                border-radius: 5px;
-                -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-                -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-                box-shadow: 0 5px 10px rgba(0,0,0,.2);
-            }
-            .tt-suggestion {
-                padding: 3px 20px;
-                font-size: 18px;
-                line-height: 24px;
-            }
-            .tt-suggestion:hover {
-                cursor: pointer;
-                color: #fff;
-                background-color: #0097cf;
-            }
-            .tt-suggestion.tt-cursor {
-                color: #fff;
-                background-color: #0097cf;
-            }
-            .tt-suggestion p {
-                margin: 0;
-            }
-            #search-form {
-                max-width: 500px;
-                margin-right: auto;
-                margin-left: auto;
-            }
-            #search-form >.form-group >.input-group > .form-control {
-                height: 40px;
-            }
-            #search-form >.form-group >.input-group > .input-group-btn > .btn{
-                height: 40px;
-                font-size: 16px;
-                font-weight: 300;
-            }
-            #search-form >.form-group >.input-group > .input-group-btn > .btn .glyphicon{
-                margin-right:12px;
-            }
-            #search-form >.form-group >.input-group > .form-control {
-                font-size: 16px;
-                font-weight: 300;
-            }
-            #search-form >.form-group >.input-group > .form-control:focus {
-                border-color: #33A444;
-                outline: 0;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
-                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(0, 109, 0, 0.8);
-            }
-            #search-form .form-group img.async-loading {
-                position: absolute;
-                z-index: 9000;
-                margin: 8px 0 0 350px;
-            }
-            .form-group .input-group .twitter-typeahead input.form-control {
-                height: 40px;
-            }
-            .card-img-top {
-                width: 140px;
-                height: 140px;
-                border-radius: 50%;
-                margin: 10px;
-            }
-            .selected-profs {
-                min-width: 480px;
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: center;
-            }
-            .selected-profs .panel {
-                min-width: 250px;
-                margin: 10px;
-            }
-
-            .selected-profs .panel-heading {
-                background: none;
-                background-image: none;
-                background-color: transparent;
-            }
-        </style>
+        <link rel="stylesheet" href="<?php echo base_url('css/dumbu.css'); ?>">
     </head>
     <body>
         <div id="root" class="container">
@@ -156,7 +26,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/react.production.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/create-react-class.js'); ?>"></script>
-        <script src="<?php echo base_url('js/lib/react-dom.production.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/react-dom.production.min.js'); ?>">
+        </script>
+        <script src="<?php echo base_url('js/lib/js.cookie.js'); ?>"></script>
         <script src="<?php echo base_url('js/app/dumbu.js'); ?>"></script>
         <script>
             var paths = {
@@ -307,7 +179,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         $(input).attr({ type: 'hidden', name: key, value: value });
                         $(form).append(input);
                     });
-                    $(form).attr('action', Dumbu.siteUrl + '/compose/message');
+                    $(form).attr({
+                        'method': 'POST',
+                        'action': Dumbu.siteUrl + '/compose/message'
+                    });
                     $(document.body).append(form);
                     setTimeout(function(){
                         $(form).submit();
