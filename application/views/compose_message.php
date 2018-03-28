@@ -35,8 +35,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var Dumbu = 'undefined' !== typeof Dumbu ? Object.assign(Dumbu, {
 				siteUrl: "<?php echo site_url(); ?>",
 				baseUrl: "<?php echo base_url(); ?>",
-                profiles: "<?php echo $profiles; ?>",
-                usernames: "<?php echo $usernames; ?>"
+                profiles: "<?php echo isset($profiles) ? $profiles : ''; ?>",
+                usernames: "<?php echo isset($usernames) ? $usernames : ''; ?>"
 			}) : Dumbu;
 		</script>
         <script type="text/javascript">
@@ -58,14 +58,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         )
                     );
                 }
-            })
+            });
+            var ComposeForm = createReactClass({
+                render: function() {
+                    return e('form', { id: "formCompose",
+                                       action: Dumbu.siteUrl + "/send/message",
+                                       method: "POST" },
+                        e('fieldset', null,
+                            e('div', { className: "row" },
+                                e('div', { className: "col-xs-12" },
+                                    e('textarea', { id: "message",
+                                        className: "form-control input-lg",
+                                        placeholder: "Type in your direct message...",
+                                        rows: "5", form: "formCompose",
+                                        onChange: this.props.changeMsgText })
+                                ),
+                                e('div', { className: 'col-xs-12' }, e('p')),
+                                e('div', { className: "col-xs-12" },
+                                    e('button', { 
+                                        className: "btn btn-info btn-lg btn-block",
+                                        disabled: !this.props.canSend,
+                                        type: "submit" },
+                                        'Post Direct Message'
+                                    )
+                                )
+                            )
+                        )
+                    );
+                }
+            });
             var ComposeMessage = createReactClass({
                 getInitialState: function() {
                     return initialState;
                 },
+                changeMsgText: function(ev) {
+                    var value = ev.target.value;
+                    this.setState({
+                        message: value,
+                        canSend: _.trim(value).length > 10
+                    });
+                },
                 render: function() {
                     return e('div', null,
-                        e(Header)
+                        e(Header),
+                        e(ComposeForm, {
+                            changeMsgText: this.changeMsgText,
+                            canSend: this.state.canSend
+                        })
                     );
                 }
             })
