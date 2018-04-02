@@ -13,6 +13,8 @@ $route['search/followers'] = 'search/index';
 $route['search/followers/(:any)'] = 'search/followers/$1';
 $route['search'] = 'search/index';
 
+$route['send/direct'] = 'direct/index';
+
 $route['compose/message'] = 'compose';
 $route['compose'] = 'compose';
 $route['send/message'] = 'compose/send';

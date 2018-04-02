@@ -62,19 +62,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var ComposeForm = createReactClass({
                 render: function() {
                     return e('form', { id: "formCompose",
-                                       action: Dumbu.siteUrl + "/send/message",
+                                       action: Dumbu.siteUrl + "/send/direct",
                                        method: "POST" },
                         e('fieldset', null,
                             e('div', { className: "row" },
-                                e('div', { className: "col-xs-12" },
+                                e('div', { className: "col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3" },
                                     e('textarea', { id: "message",
                                         className: "form-control input-lg",
                                         placeholder: "Type in your direct message...",
                                         rows: "5", form: "formCompose",
-                                        onChange: this.props.changeMsgText })
+                                        onChange: this.props.changeMsgText }),
+                                    e('input', {
+                                        type: 'hidden',
+                                        value: this.props.profiles,
+                                        name: 'profiles'
+                                    }),
+                                    e('input', {
+                                        type: 'hidden',
+                                        value: this.props.usernames,
+                                        name: 'usernames'
+                                    }),
+                                    e('input', {
+                                        type: 'hidden',
+                                        value: this.props.message,
+                                        name: 'message'
+                                    })
                                 ),
-                                e('div', { className: 'col-xs-12' }, e('p')),
-                                e('div', { className: "col-xs-12" },
+                                e('div', { className: 'col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3' }, e('p')),
+                                e('div', { className: "col-xs-12 col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3" },
                                     e('button', { 
                                         className: "btn btn-info btn-lg btn-block",
                                         disabled: !this.props.canSend,
@@ -99,11 +114,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     });
                 },
                 render: function() {
+                    var profiles = this.state.profiles.join(',');
+                    var usernames = this.state.usernames.join(',');
+                    var message = this.state.message;
                     return e('div', null,
                         e(Header),
                         e(ComposeForm, {
                             changeMsgText: this.changeMsgText,
-                            canSend: this.state.canSend
+                            canSend: this.state.canSend,
+                            profiles: profiles,
+                            usernames: usernames,
+                            message: message
                         })
                     );
                 }

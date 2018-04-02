@@ -115,7 +115,7 @@ class Login extends CI_Controller {
                 'success' => TRUE,
                 'pk' => $instagram->account_id,
                 'username' => $username,
-		'priv' => $this->is_admin($username) ? 1 : 0
+		        'priv' => $this->is_admin($username) ? 1 : 0
             ];
         } catch (Exception $e) {
             $response = [ 'success' => FALSE, 'message' => $e->getMessage() ];
