@@ -2,6 +2,10 @@ body .container {
   margin-top: 10px;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 #loginForm div.alert-danger {
 	margin-top: 10px;
 	margin-bottom: 0px;
@@ -308,4 +312,14 @@ div.privs div input.checkbox {
 #login-overlay div.modal-body fieldset div.alert-danger,
 #login-overlay div.modal-body fieldset div.alert-info {
   margin-top: 10px;
+}
+
+div.inbox-header h1 {
+  text-shadow: 1px 2px 3px #999;
+  font-size: 60px;
+}
+div.inbox {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }

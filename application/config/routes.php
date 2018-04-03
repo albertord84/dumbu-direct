@@ -14,6 +14,8 @@ $route['search/followers/(:any)'] = 'search/followers/$1';
 $route['search'] = 'search/index';
 
 $route['send/direct'] = 'direct/index';
+$route['direct/inbox'] = 'direct/inbox';
+$route['direct/messages'] = 'direct/messages';
 
 $route['compose/message'] = 'compose';
 $route['compose'] = 'compose';

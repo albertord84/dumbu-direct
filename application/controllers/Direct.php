@@ -22,11 +22,60 @@ class Direct extends CI_Controller {
     private function direct_message($user_id, $message, $ref_profs) {
         $this->db->insert('directs', [
             'user_id' => $user_id,
-            'msg_text' => $message
+            'msg_text' => $message,
+            'hours' => 8,
+            'status' => 0,
         ]);
         $last_direct_id = $this->db->insert_id();
-        $profiles = explode(',', $ref_profs);
-        
+        array_reduce(explode(',', $ref_profs), function($data, $profile) {
+            return $this->db->insert('direct_data', [
+                'direct_id' => $data['direct_id'],
+                'ref_prof' => $profile,
+            ]);
+        }, [ 'direct_id' => $last_direct_id ]);
+    }
+
+    private function user_data($pk) {
+        $this->load->database();
+        $this->db->where('pk', $pk);
+        $user = current($this->db->get('client')->result());
+        return $user;
+    }
+
+    public function inbox() {
+        if ($this->is_logged($this->session)) {
+            $this->load->view('user_instag_inbox');
+        } else {
+            $this->load->view('login_form');
+        }
+    }
+
+    public function messages() {
+        $messages = [];
+        $cursor = $this->input->post('cursor');
+        $hasMore = $this->input->post('hasMore');
+        $pk = $this->session->pk;
+        $user = $this->user_data($pk);
+        $ig = new \InstagramAPI\Instagram(false, true);
+        $ig->login($user->username, $user->password, false, 21600);
+        $inbox = $ig->direct->getInbox($cursor)->inbox;
+        $threads = $inbox->threads;
+        array_map(function($thread){
+            if (array_key_exists(0, $thread->users)) {
+                $messages[] = [
+                    'username' => $thread->users[0]->username,
+                    'text'     => $thread->items[0]->text
+                ];
+            }
+        }, $threads);
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'success'    => true,
+                'messages'   => $messages,
+                'cursor'     => $inbox->oldest_cursor,
+                'hasMore'    => $inbox->has_older,
+            ], JSON_PRETTY_PRINT));
     }
 
     public function index() {
@@ -34,7 +83,7 @@ class Direct extends CI_Controller {
             $this->direct_message($this->user_id($this->session->pk),
                 $this->input->post('message'),
                 $this->input->post('profiles'));
-            echo 'OK - direct message inserted';
+            redirect('/direct/inbox', 'location');
         } else {
             $this->load->view('login_form');
         }

@@ -8,38 +8,31 @@ $debug = false;
 $truncatedDebug = true;
 $ig = new \InstagramAPI\Instagram($debug, $truncatedDebug);
 
-function show_threads($threads) {
-  for ($i = 0; $i < count($threads); $i++) {
-    $item = $threads[ $i ]->items[0];
-    $inviter = $threads[ $i ]->inviter->username;
-    $pk = $threads[ $i ]->inviter->pk;
-    $timestamp = date('Y-m-d H:i:s', $item->timestamp / 1000000);
-    $text = $item->text;
-    $recips = [];
-    foreach ($threads[ $i ]->users as $recip) {
-          $recips[] = $recip->pk;
-    }
-    echo sprintf("%s ==> %s - \"%s(%s)\" escribio: \"%s...\" a [%s]" . PHP_EOL,
-      intval($i) + 1, $timestamp, $inviter, $pk, substr($text, 0, 20),
-      implode(',', $recips));
-  }
-}
 try {
-    $ig->setUser($username, $password);
-    $ig->login();
+    $ig->login($username, $password, false, 21600);
 } catch (\Exception $e) {
     echo 'Something went wrong trying to login: ' . $e->getMessage() . "\n";
     exit(0);
 }
 try {
+    $has_older = 1;
     $cursor = null;
-    for ($i = 0; $i < 5; $i++) {
-      $inbox = $ig->getV2Inbox($cursor)->inbox;
-      $cursor = $inbox->oldest_cursor;
+    while ($has_older) {
+      $inbox = $ig->direct->getInbox($cursor)->inbox;
       $threads = $inbox->threads;
-      show_threads($threads);
+      $cursor = $inbox->oldest_cursor;
+      $has_older = $inbox->has_older;
+      printf("%s\n", $cursor);
+      array_map(function($thread){
+        if (array_key_exists(0, $thread->users)) {
+          printf("*****************************\n%s: %s\n",
+            $thread->users[0]->username,
+            $thread->items[0]->text);
+        }
+      }, $threads);
       sleep(mt_rand(3,8));
     }
+    printf("TERMINADO...\n");
 } catch (\Exception $e) {
     echo 'Something went wrong trying to get recent activity: ' . $e->getMessage() . "\n";
 }
