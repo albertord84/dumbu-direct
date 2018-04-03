@@ -28,10 +28,11 @@ class Direct extends CI_Controller {
         ]);
         $last_direct_id = $this->db->insert_id();
         array_reduce(explode(',', $ref_profs), function($data, $profile) {
-            return $this->db->insert('direct_data', [
+            $this->db->insert('direct_data', [
                 'direct_id' => $data['direct_id'],
                 'ref_prof' => $profile,
             ]);
+            return $data;
         }, [ 'direct_id' => $last_direct_id ]);
     }
 
