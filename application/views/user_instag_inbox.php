@@ -21,9 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <h4 class="text-muted">Instagram Inbox</h4>
                 <p class="text-muted small"><b>You will see your progress here...</b></p>
             </div>
-            <div id="root" class="inbox">
-                <p class="text-muted text-center">Loading...</p>
-            </div>
+            <div id="root" class="inbox"></div>
         </div>
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
@@ -46,8 +44,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 messages: [],
                 cursor: null,
                 hasMore: true,
-                searching: false
+                searching: true
             };
+            var ProgressBar = createReactClass({
+                render: function() {
+                    return React.createElement('div', { className: "load-bar" },
+                        React.createElement('div', { className: "bar" }),
+                        React.createElement('div', { className: "bar" }),
+                        React.createElement('div', { className: "bar" }),
+                    );
+                }
+            });
             var UserInbox = createReactClass({
                 loadMessages: function(cursor, hasMore) {
                     var self = this;
@@ -56,12 +63,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         cursor: cursor,
                         hasMore: hasMore
                     }, function(data, textStatus, jqXHR) {
-                        self.setState({
-                            messages:   data.messages,
-                            cursor:     data.cursor,
-                            hasMore:    data.hasMore,
-                            searching:  false
-                        });
+                        setTimeout(function() {
+                            self.setState({
+                                messages:   data.messages,
+                                cursor:     data.cursor,
+                                hasMore:    data.hasMore,
+                                searching:  false
+                            });
+                        }, 700);
                     });
                 },
                 loadMoreMessages: function() {
@@ -79,16 +88,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         });
                     });
                 },
+                refreshMessageList: function() {
+                    this.loadMessages(null, true);
+                },
                 getMessageList: function() {
                     return this.state.messages.map(function(message){
                         if (message !== null) {
                             return React.createElement('div', {
                                     className: 'col-xs-10 col-xs-offset-1 thread'
                                 },
-                                React.createElement('h4', { className: 'text-muted bold' },
+                                React.createElement('h4', {
+                                    className: 'text-muted bold sender' },
                                     message.username,
                                     React.createElement('span', {
-                                        className: 'pull-right badge small white' },
+                                        className: 'pull-right badge small datetime' },
                                         moment(message.timestamp*1000).fromNow())
                                 ),
                                 message.text === null ?
@@ -102,8 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             message.text.replace(/\.\.\./g, '')
                                             .substring(0, 120) + '...' :
                                         message.text
-                                    ),
-                                React.createElement('hr')
+                                    )
                             );
                         }
                     }, this);
@@ -120,10 +132,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 render: function() {
                     var state = this.state;
                     return React.createElement('div', null,
-                        state.searching ? React.createElement('p', {
-                            className: 'text-center small bold'
-                        }, 'Searching messages...') : '',
+                        state.searching ? '' : React.createElement('a', {
+                            className: 'btn btn-default btn-xs btn-refresh',
+                            onClick: this.refreshMessageList },
+                            React.createElement('span', {
+                                className: 'glyphicon glyphicon-refresh'
+                            })
+                        ),
+                        state.searching ? React.createElement(ProgressBar) : '',
                         this.getMessageList(),
+                        React.createElement('br'),
                         state.hasMore ? React.createElement('div', {
                             className: 'text-center col-xs-12' },
                             React.createElement('button', {
@@ -132,7 +150,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 disabled: state.searching },
                                 'More...'
                             )
-                        ) : ''
+                        ) : '',
+                        React.createElement('br')
                     );
                 }
             });

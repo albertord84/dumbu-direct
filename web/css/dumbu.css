@@ -329,7 +329,66 @@ div.inbox {
   margin-right: auto;
 }
 
-div.inbox div.thread span.badge.white {
-  color: white;
+div.inbox div.thread {
+  border-radius: 2px;
+  margin-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  background-color: #b0e2f9 !important;
+  transition: box-shadow .25s, -webkit-box-shadow .25s;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+div.inbox div.thread .sender {
+  margin-bottom: 20px;
+}
+
+div.inbox div.thread .datetime {
+  color: #888;
   font-size: 10px;
+  background-color: #7772;
+}
+
+div.inbox a.btn-refresh {
+  position: absolute;
+  margin-top: -35px;
+  margin-left: -25px;
+}
+
+/* load progress */
+
+.load-bar {
+  position: relative;
+  margin-top: -5px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 3px;
+  background-color: #fdba2c;
+}
+.bar {
+  content: "";
+  display: inline;
+  position: absolute;
+  width: 0;
+  height: 100%;
+  left: 50%;
+  text-align: center;
+}
+.bar:nth-child(1) {
+  background-color: #da4733;
+  animation: loading 3s linear infinite;
+}
+.bar:nth-child(2) {
+  background-color: #3b78e7;
+  animation: loading 3s linear 1s infinite;
+}
+.bar:nth-child(3) {
+  background-color: #fdba2c;
+  animation: loading 3s linear 2s infinite;
+}
+@keyframes loading {
+    from {left: 50%; width: 0;z-index:100;}
+    33.3333% {left: 0; width: 100%;z-index: 10;}
+    to {left: 0; width: 100%;}
 }
