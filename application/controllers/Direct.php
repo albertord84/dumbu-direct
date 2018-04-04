@@ -63,8 +63,9 @@ class Direct extends CI_Controller {
         $messages = array_map(function($thread){
             if (array_key_exists(0, $thread->users)) {
                 return [
-                    'username' => $thread->users[0]->username,
-                    'text'     => $thread->items[0]->text
+                    'username'  => $thread->users[0]->username,
+                    'text'      => $thread->items[0]->text,
+                    'timestamp' => substr($thread->items[0]->timestamp, 0, 10),
                 ];
             }
         }, $threads);

@@ -28,7 +28,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url('js/lib/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/lodash.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/bootstrap.min.js'); ?>"></script>
-		<script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script>
+        <script src="<?php echo base_url('js/lib/core.min.js'); ?>"></script>
+		<script src="<?php echo base_url('js/lib/moment.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/rx.all.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/react.production.min.js'); ?>"></script>
         <script src="<?php echo base_url('js/lib/create-react-class.js'); ?>"></script>
@@ -82,16 +83,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     return this.state.messages.map(function(message){
                         if (message !== null) {
                             return React.createElement('div', {
-                                    className: 'col-xs-10 col-xs-offset-1'
+                                    className: 'col-xs-10 col-xs-offset-1 thread'
                                 },
                                 React.createElement('h4', { className: 'text-muted bold' },
-                                    message.username),
-                                message.text === null ? '' : React.createElement('p', {
-                                    className: 'small' },
-                                    message.text.length > 119 ?
-                                        message.text.replace(/\.\.\./g, '').substring(0, 120)
-                                        + '...' : message.text
+                                    message.username,
+                                    React.createElement('span', {
+                                        className: 'pull-right badge small white' },
+                                        moment(message.timestamp*1000).fromNow())
                                 ),
+                                message.text === null ?
+                                    React.createElement('p', {
+                                        className: 'text-muted small' },
+                                        '[Empty message]'
+                                    ) :
+                                    React.createElement('p', {
+                                        className: 'small' },
+                                        message.text.length > 119 ?
+                                            message.text.replace(/\.\.\./g, '')
+                                            .substring(0, 120) + '...' :
+                                        message.text
+                                    ),
                                 React.createElement('hr')
                             );
                         }

@@ -202,6 +202,10 @@ body .container {
   background-color: white;
 }
 
+.white {
+  color: white;
+}
+
 .pos-fixed {
   position: fixed;
 }
@@ -318,8 +322,14 @@ div.inbox-header h1 {
   text-shadow: 1px 2px 3px #999;
   font-size: 60px;
 }
+
 div.inbox {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+}
+
+div.inbox div.thread span.badge.white {
+  color: white;
+  font-size: 10px;
 }
