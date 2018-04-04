@@ -134,12 +134,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     return React.createElement('div', null,
                         state.searching ? '' : React.createElement('a', {
                             className: 'btn btn-default btn-xs btn-refresh',
-                            onClick: this.refreshMessageList },
+                            onClick: this.refreshMessageList,
+                            title: 'Refresh the message list' },
                             React.createElement('span', {
                                 className: 'glyphicon glyphicon-refresh'
                             })
                         ),
                         state.searching ? React.createElement(ProgressBar) : '',
+                        React.createElement('hr'),
                         this.getMessageList(),
                         React.createElement('br'),
                         state.hasMore ? React.createElement('div', {
