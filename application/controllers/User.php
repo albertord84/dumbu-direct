@@ -37,6 +37,11 @@ class User extends CI_Controller {
         try {
             set_time_limit(0);
             $instagram->login($username, $password, true);
+            $is_registered = $this->user_exists($username);
+            if (!$is_registered) {
+                throw new Exception("The user is not registered. " .
+                    "Please, sign up first", 1);
+            }
             $this->session->pk = $instagram->account_id;
             $this->session->username = $username;
             $is_admin = $this->is_admin($username);

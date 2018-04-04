@@ -63,16 +63,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         });
                     });
                 },
+                loadMoreMessages: function() {
+                    var self = this;
+                    self.setState({ searching: true });
+                    $.post(Dumbu.siteUrl + '/direct/messages', {
+                        cursor: self.state.cursor,
+                        hasMore: self.state.hasMore
+                    }, function(data, textStatus, jqXHR) {
+                        self.setState({
+                            messages:   self.state.messages.concat(data.messages),
+                            cursor:     data.cursor,
+                            hasMore:    data.hasMore,
+                            searching:  false
+                        });
+                    });
+                },
                 getMessageList: function() {
                     return this.state.messages.map(function(message){
-                        return React.createElement('div', {
-                                className: 'col-xs-12'
-                            },
-                            React.createElement('h4', { className: 'text-muted bold' },
-                                message.username),
-                            React.createElement('p', { className: 'small' },
-                                message.text)
-                        );
+                        if (message !== null) {
+                            return React.createElement('div', {
+                                    className: 'col-xs-10 col-xs-offset-1'
+                                },
+                                React.createElement('h4', { className: 'text-muted bold' },
+                                    message.username),
+                                message.text === null ? '' : React.createElement('p', {
+                                    className: 'small' },
+                                    message.text.length > 119 ?
+                                        message.text.replace(/\.\.\./g, '').substring(0, 120)
+                                        + '...' : message.text
+                                ),
+                                React.createElement('hr')
+                            );
+                        }
                     }, this);
                 },
                 getInitialState: function() {
@@ -90,7 +112,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         state.searching ? React.createElement('p', {
                             className: 'text-center small bold'
                         }, 'Searching messages...') : '',
-                        this.getMessageList()
+                        this.getMessageList(),
+                        state.hasMore ? React.createElement('div', {
+                            className: 'text-center col-xs-12' },
+                            React.createElement('button', {
+                                className: 'btn btn-primary btn-xs',
+                                onClick: this.loadMoreMessages,
+                                disabled: state.searching },
+                                'More...'
+                            )
+                        ) : ''
                     );
                 }
             });

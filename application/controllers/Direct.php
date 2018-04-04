@@ -52,7 +52,6 @@ class Direct extends CI_Controller {
     }
 
     public function messages() {
-        $messages = [];
         $cursor = $this->input->post('cursor');
         $hasMore = $this->input->post('hasMore');
         $pk = $this->session->pk;
@@ -61,9 +60,9 @@ class Direct extends CI_Controller {
         $ig->login($user->username, $user->password, false, 21600);
         $inbox = $ig->direct->getInbox($cursor)->inbox;
         $threads = $inbox->threads;
-        array_map(function($thread){
+        $messages = array_map(function($thread){
             if (array_key_exists(0, $thread->users)) {
-                $messages[] = [
+                return [
                     'username' => $thread->users[0]->username,
                     'text'     => $thread->items[0]->text
                 ];
