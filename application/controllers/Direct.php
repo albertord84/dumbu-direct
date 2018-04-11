@@ -81,7 +81,8 @@ class Direct extends CI_Controller {
 
     public function index() {
         if ($this->is_logged($this->session)) {
-            $this->direct_message($this->user_id($this->session->pk),
+            $user_id = $this->user_id($this->session->pk);
+            $this->direct_message($user_id,
                 $this->input->post('message'),
                 $this->input->post('profiles'));
             redirect('/direct/inbox', 'location');

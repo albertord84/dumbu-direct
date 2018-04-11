@@ -358,6 +358,10 @@ div.inbox hr {
   margin-top: 0px;
 }
 
+div.inbox div.btn-more {
+  margin-bottom: 20px;
+}
+
 /* load progress */
 
 .load-bar {

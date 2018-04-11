@@ -145,15 +145,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         this.getMessageList(),
                         React.createElement('br'),
                         state.hasMore ? React.createElement('div', {
-                            className: 'text-center col-xs-12' },
+                            className: 'text-center col-xs-12 btn-more' },
                             React.createElement('button', {
                                 className: 'btn btn-primary btn-xs',
                                 onClick: this.loadMoreMessages,
                                 disabled: state.searching },
                                 'More...'
                             )
-                        ) : '',
-                        React.createElement('br')
+                        ) : ''
                     );
                 }
             });

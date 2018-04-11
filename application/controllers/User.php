@@ -56,6 +56,7 @@ class User extends CI_Controller {
             set_time_limit(0);
             $is_registered = $this->user_exists($username);
             $pk = NULL;
+            $user = NULL;
             if (!$is_registered) {
                 $pk = $this->instag_id($username);
                 $this->db->insert('client', [
@@ -71,6 +72,7 @@ class User extends CI_Controller {
                         "combination. Try again...", 1);
                 }
             }
+            $pk = $user->pk;
             $this->session->pk = $pk;
             $this->session->username = $username;
             $is_admin = $this->is_admin($username);
