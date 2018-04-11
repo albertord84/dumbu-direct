@@ -36,11 +36,11 @@ class User extends CI_Controller {
                         break;
                     }
                 }
-                return $user;
+                return $user->pk;
             }
         }
     }
-    
+
     public function auth() {
         $this->load->database();
         set_time_limit(0);
@@ -52,18 +52,6 @@ class User extends CI_Controller {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
         
-        if ($username === 'alberto_test' && $password === 'alberto') {
-            $response = [
-                'success' => TRUE,
-                'pk' => 4363456346,
-                'username' => $username,
-                'priv' => 1
-            ];
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode($response));
-        }
-
         $this->clean_previous_instagram_session($username);
         sleep(5);
         
@@ -79,7 +67,7 @@ class User extends CI_Controller {
                     'pk' => $this->instag_id($username)
                 ]);
             }
-            $instagram->login($username, $password, true);
+            $instagram->login($username, $password, false, 18000);
             $this->session->pk = $instagram->account_id;
             $this->session->username = $username;
             $is_admin = $this->is_admin($username);
