@@ -10,7 +10,7 @@ class User extends CI_Controller {
     
     public function index() {
     	if ($this->session->username !== NULL) {
-			return $this->load->view('search_followers_form', []);
+			return $this->load->view('search_followers', []);
 		}
         return $this->load->view('login_form', []);
     }
@@ -55,20 +55,22 @@ class User extends CI_Controller {
         $this->clean_previous_instagram_session($username);
         sleep(5);
         
-        $instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
+        //$instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
         
         try {
             set_time_limit(0);
             $is_registered = $this->user_exists($username);
+            $pk = $this->instag_id($username);
             if (!$is_registered) {
                 $this->db->insert('client', [
                     'username' => $username,
                     'password' => $password,
-                    'pk' => $this->instag_id($username)
+                    'pk' => $pk
                 ]);
             }
-            $instagram->login($username, $password, false, 18000);
-            $this->session->pk = $instagram->account_id;
+            //$instagram->login($username, $password, false, 18000);
+            //$this->session->pk = $instagram->account_id;
+            $this->session->pk = $pk;
             $this->session->username = $username;
             $is_admin = $this->is_admin($username);
 			$this->session->is_admin = $is_admin;
