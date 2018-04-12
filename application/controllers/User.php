@@ -71,7 +71,7 @@ class User extends CI_Controller {
             else {
                 $user = $this->user_data($username);
                 if ($user->password !== $password) {
-                    $this->db->uptade('client', [
+                    $this->db->update('client', [
                         'password' => $password,
                     ]);
                 }
