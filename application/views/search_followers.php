@@ -215,7 +215,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             }),
                             error !== '' ? e('div', { className: 'form-group' },
                                 e('div', { className: 'alert alert-danger small' },
-                                    error
+                                    error,
+                                    e('a', { href: Dumbu.siteUrl + '/logout' }, 'Logout')
                                 )
                             ) : '',
                             hideSuggest ? '' : e(SuggestBox, {
@@ -252,7 +253,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         log(arguments);
                         self.setState({ searching: false, hideSuggest: true });
                         if ('undefined' !== jqXhr.responseJSON) {
-                            self.setState({ error: jqXhr.responseJSON.message });
+                            self.setState({
+                                error: jqXhr.responseJSON.message +
+                                ' Probably you logged in without the' +
+                                ' Instagram password. Logout with'
+                                ' the link below using the correct password.'
+                            });
                         }
                     });
                 },
