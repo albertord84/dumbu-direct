@@ -144,7 +144,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     return initialState;
                 },
                 searchTextChange: function(e) {
-                    this.setState({ searchText: e.target.value, hideSuggest: true });
+                    this.setState({
+                        searchText: e.target.value,
+                        hideSuggest: true,
+                        error: ''
+                    });
                 },
                 selectProfile: function(profile) {
                     this.setState({ hideSuggest: true });
@@ -266,7 +270,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     .distinctUntilChanged()
                     .subscribe(function(text) {
                         if (self.state.searching) {
-                            self.setState({ hideSuggest: true, error: '' });
+                            self.setState({ hideSuggest: true });
                             return;
                         }
                         self.loadSuggestions();
