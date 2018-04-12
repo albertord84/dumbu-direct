@@ -67,6 +67,7 @@ class User extends CI_Controller {
                     'password' => $password,
                     'pk' => $pk
                 ]);
+                $user = $this->user_data($username);
             }
             else {
                 $user = $this->user_data($username);

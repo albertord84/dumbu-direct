@@ -39,6 +39,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         Object.assign(Dumbu, paths) : Object.assign(paths);
         </script>
         <script>
+            var loginErrors = {
+                'challenge': 'Check your Instagram account and' +
+                    ' answer the verification challenge.',
+                'incorrect': 'You logged in with the incorrect Instagram' +
+                    ' password. Logout and sign in with the correct password.'
+            }
             var initialState = {
                 profiles: [],
                 searchText: '',
@@ -218,6 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     error,
                                     e('p', null,
                                         e('a', {
+                                            className: 'small',
                                             href: Dumbu.siteUrl + '/logout'
                                         }, 'Logout')
                                     )
@@ -240,6 +247,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         )
                     );
                 },
+                getErrorInfo: function(message) {
+                    var errorInfo = _.filter(loginErrors, function(val, key){
+                        return message.toLowerCase().indexOf(key) !== -1;
+                    });
+                    return errorInfo[0];
+                },
                 loadSuggestions: function() {
                     var self = this;
                     var url = Dumbu.siteUrl + '/search/followers/' +
@@ -257,12 +270,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         log(arguments);
                         self.setState({ searching: false, hideSuggest: true });
                         if ('undefined' !== jqXhr.responseJSON) {
-                            self.setState({
-                                error: jqXhr.responseJSON.message +
-                                ' Probably you logged in without the' +
-                                ' Instagram password. Logout with' +
-                                ' the link below using the correct password.'
-                            });
+                            var message = jqXhr.responseJSON.message;
+                            var errorInfo = self.getErrorInfo(message);
+                            self.setState({ error: message + ' ' + errorInfo });
                         }
                     });
                 },
