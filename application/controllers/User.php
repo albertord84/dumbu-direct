@@ -39,6 +39,9 @@ class User extends CI_Controller {
                 return $user->pk;
             }
         }
+        else {
+            return 0;
+        }
     }
 
     public function auth() {

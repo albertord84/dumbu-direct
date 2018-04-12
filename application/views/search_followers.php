@@ -196,6 +196,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var searching = self.state.searching;
                     var sending = self.state.sending;
                     var profiles = self.state.profiles;
+                    var error = self.state.error;
                     return e('div', null,
                         e(Header),
                         e('form', { id: 'search-form' },
@@ -207,6 +208,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 showSuggestions: self.showSuggestions,
                                 submitData: self.submitData
                             }),
+                            error !== '' ? e('div', { className: 'form-group' },
+                                e('div', { className: 'alert alert-danger' },
+                                    error
+                                )
+                            ) : '',
                             hideSuggest ? '' : e(SuggestBox, {
                                 suggestions: suggestions,
                                 selectProfile: self.selectProfile,
@@ -236,10 +242,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             searching: false,
                             hideSuggest: false
                         });
-                    }).fail(function() {
+                    }).fail(function(jqXhr) {
                         log('error getting suggestions...');
                         log(arguments);
                         self.setState({ searching: false, hideSuggest: true });
+                        if ('undefined' !== jqXhr.responseJSON) {
+                            self.setState({ error: jqXhr.responseJSON.message });
+                        }
                     });
                 },
                 bindAutoCompleteEvents: function() {
