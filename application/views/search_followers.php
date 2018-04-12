@@ -272,7 +272,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         if ('undefined' !== jqXhr.responseJSON) {
                             var message = jqXhr.responseJSON.message;
                             var errorInfo = self.getErrorInfo(message);
-                            self.setState({ error: message + ' ' + errorInfo });
+                            self.setState({ error: errorInfo });
                         }
                     });
                 },

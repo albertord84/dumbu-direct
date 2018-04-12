@@ -13,7 +13,7 @@ class Search extends CI_Controller {
                 'is_admin' => $this->session->is_admin != NULL
             ]);
         } else {
-            $this->load->view('login_form');
+            redirect('/user/login', 'location');
         }
     }
 
