@@ -256,7 +256,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             self.setState({
                                 error: jqXhr.responseJSON.message +
                                 ' Probably you logged in without the' +
-                                ' Instagram password. Logout with'
+                                ' Instagram password. Logout with' +
                                 ' the link below using the correct password.'
                             });
                         }
