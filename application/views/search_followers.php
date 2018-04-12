@@ -46,7 +46,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 hideSuggest: true,
                 canText: false,
                 searching: false,
-                sending: false
+                sending: false,
+                error: ''
             };
             var Header = createReactClass({
                 render: function() {
