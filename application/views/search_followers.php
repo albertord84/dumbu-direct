@@ -216,7 +216,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             error !== '' ? e('div', { className: 'form-group' },
                                 e('div', { className: 'alert alert-danger small' },
                                     error,
-                                    e('a', { href: Dumbu.siteUrl + '/logout' }, 'Logout')
+                                    e('p', null,
+                                        e('a', {
+                                            href: Dumbu.siteUrl + '/logout'
+                                        }, 'Logout')
+                                    )
                                 )
                             ) : '',
                             hideSuggest ? '' : e(SuggestBox, {
