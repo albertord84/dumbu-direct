@@ -210,7 +210,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 submitData: self.submitData
                             }),
                             error !== '' ? e('div', { className: 'form-group' },
-                                e('div', { className: 'alert alert-danger' },
+                                e('div', { className: 'alert alert-danger small' },
                                     error
                                 )
                             ) : '',
@@ -266,7 +266,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     .distinctUntilChanged()
                     .subscribe(function(text) {
                         if (self.state.searching) {
-                            self.setState({ hideSuggest: true });
+                            self.setState({ hideSuggest: true, error: '' });
                             return;
                         }
                         self.loadSuggestions();
