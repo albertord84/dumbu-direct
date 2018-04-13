@@ -91,23 +91,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     this.loadMessages(null, true);
                 },
                 getMessageList: function() {
-                    return this.state.messages.map(function(message){
-                        if (message !== null) {
-                            return React.createElement('div', {
-                                    className: 'col-xs-10 col-xs-offset-1 thread'
-                                },
-                                React.createElement('h4', {
-                                    className: 'text-muted bold sender' },
-                                    message.username,
+                    var messages = this.state.messages;
+                    return React.createElement('ul', { className: 'list-group' },
+                        messages.map(function(message){
+                            if (message !== null) {
+                                return React.createElement('li', {
+                                    className: 'list-group-item thread' },
+                                    React.createElement('h4', {
+                                        className: 'text-muted bold sender' },
+                                        message.username),
                                     React.createElement('span', {
-                                        className: 'pull-right badge small datetime' },
-                                        moment(message.timestamp*1000).fromNow())
-                                ),
-                                message.text === null ?
+                                        className: 'badge small datetime' },
+                                        moment(message.timestamp*1000).fromNow()
+                                    ),
+                                    message.text === null ?
                                     React.createElement('p', {
-                                        className: 'text-muted small' },
-                                        '[Empty message]'
-                                    ) :
+                                        className: 'small' },
+                                        '[empty message]') :
                                     React.createElement('p', {
                                         className: 'small' },
                                         message.text.length > 119 ?
@@ -115,9 +115,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             .substring(0, 120) + '...' :
                                         message.text
                                     )
-                            );
-                        }
-                    }, this);
+                                );
+                            }
+                        })
+                    );
                 },
                 getInitialState: function() {
                     return initialState;
@@ -163,7 +164,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 id: "directs", className: "tab-pane" },
                                 'Directs and campaigns here...')
                         ),
-                        React.createElement('br'),
                         state.hasMore ? React.createElement('div', {
                             className: 'text-center col-xs-12 btn-more' },
                             React.createElement('button', {

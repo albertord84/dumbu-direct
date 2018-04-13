@@ -342,7 +342,7 @@ div.inbox div.thread .sender {
   margin-bottom: 20px;
 }
 
-div.inbox div.thread .datetime {
+div.inbox .thread .datetime {
   color: #888;
   font-size: 10px;
   background-color: #7772;
