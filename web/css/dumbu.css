@@ -354,12 +354,27 @@ div.inbox a.btn-refresh {
   margin-top: -25px;
 }
 
+div.inbox a.btn-directs {
+  position: relative;
+  float: right;
+  margin-top: -25px;
+  left: -25px;
+}
+
 div.inbox hr {
   margin-top: 0px;
 }
 
 div.inbox div.btn-more {
   margin-bottom: 20px;
+}
+
+div.inbox ul.nav li.active {
+  font-weight: bold;
+}
+
+div.inbox div.tab-content {
+  margin-top: 20px;
 }
 
 /* load progress */

@@ -18,8 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="container">
             <div class="text-center inbox-header">
                 <h1>DUMBU</h1>
-                <h4 class="text-muted">Instagram Inbox</h4>
-                <p class="text-muted small"><b>You will see your progress here...</b></p>
+                <p class="text-muted small"><b>See your progress here...</b></p>
             </div>
             <div id="root" class="inbox"></div>
         </div>
@@ -129,9 +128,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         self.loadMessages(self.state.cursor, self.state.hasMore);
                     }, 500);
                 },
+                showDirectsList: function() {
+
+                },
                 render: function() {
                     var state = this.state;
                     return React.createElement('div', null,
+                        state.searching ? React.createElement(ProgressBar) : '',
                         state.searching ? '' : React.createElement('a', {
                             className: 'btn btn-default btn-xs btn-refresh',
                             onClick: this.refreshMessageList,
@@ -140,9 +143,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 className: 'glyphicon glyphicon-refresh'
                             })
                         ),
-                        state.searching ? React.createElement(ProgressBar) : '',
-                        React.createElement('hr'),
-                        this.getMessageList(),
+                        React.createElement('ul', { className: "nav nav-tabs" },
+                            React.createElement('li', { className: "active" },
+                                React.createElement('a', { href: "#inbox",
+                                className: 'small', 'data-toggle': "tab" },
+                                'Inbox')
+                            ),
+                            React.createElement('li', null,
+                                React.createElement('a', { href: "#directs",
+                                className: 'small', 'data-toggle': "tab" },
+                                    'Directs/Campaigns')
+                            )
+                        ),
+                        React.createElement('div', { className: "tab-content" },
+                            React.createElement('div', {
+                                id: "inbox", className: "tab-pane active" },
+                                this.getMessageList()),
+                            React.createElement('div', {
+                                id: "directs", className: "tab-pane" },
+                                'Directs and campaigns here...')
+                        ),
                         React.createElement('br'),
                         state.hasMore ? React.createElement('div', {
                             className: 'text-center col-xs-12 btn-more' },
