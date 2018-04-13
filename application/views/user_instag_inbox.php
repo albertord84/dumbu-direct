@@ -43,7 +43,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 messages: [],
                 cursor: null,
                 hasMore: true,
-                searching: true
+                searching: true,
+                campaigns: [],
+                moreCampaigns: false
             };
             var ProgressBar = createReactClass({
                 render: function() {
@@ -91,33 +93,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     this.loadMessages(null, true);
                 },
                 getMessageList: function() {
-                    var messages = this.state.messages;
-                    return React.createElement('ul', { className: 'list-group' },
-                        messages.map(function(message){
-                            if (message !== null) {
-                                return React.createElement('li', {
-                                    className: 'list-group-item thread' },
-                                    React.createElement('h4', {
-                                        className: 'text-muted bold sender' },
-                                        message.username),
-                                    React.createElement('span', {
-                                        className: 'badge small datetime' },
-                                        moment(message.timestamp*1000).fromNow()
-                                    ),
-                                    message.text === null ?
-                                    React.createElement('p', {
-                                        className: 'small' },
-                                        '[empty message]') :
-                                    React.createElement('p', {
-                                        className: 'small' },
-                                        message.text.length > 119 ?
-                                            message.text.replace(/\.\.\./g, '')
-                                            .substring(0, 120) + '...' :
-                                        message.text
-                                    )
-                                );
-                            }
-                        })
+                    var state = this.state;
+                    var messages = state.messages;
+                    return React.createElement('div', null,
+                        React.createElement('ul', { className: 'list-group' },
+                            messages.map(function(message){
+                                if (message !== null) {
+                                    return React.createElement('li', {
+                                        className: 'list-group-item thread' },
+                                        React.createElement('h4', {
+                                            className: 'text-muted bold sender' },
+                                            message.username),
+                                        React.createElement('span', {
+                                            className: 'badge small datetime' },
+                                            moment(message.timestamp*1000).fromNow()
+                                        ),
+                                        message.text === null ?
+                                        React.createElement('p', {
+                                            className: 'small' },
+                                            '[empty message]') :
+                                        React.createElement('p', {
+                                            className: 'small' },
+                                            message.text.length > 119 ?
+                                                message.text.replace(/\.\.\./g, '')
+                                                .substring(0, 120) + '...' :
+                                            message.text
+                                        )
+                                    );
+                                }
+                            })
+                        ),
+                        state.hasMore ? React.createElement('div', {
+                            className: 'text-center col-xs-12 btn-more' },
+                            React.createElement('button', {
+                                className: 'btn btn-primary btn-xs',
+                                onClick: this.loadMoreMessages,
+                                disabled: state.searching },
+                                'More...'
+                            )
+                        ) : ''
                     );
                 },
                 getInitialState: function() {
@@ -163,16 +177,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             React.createElement('div', {
                                 id: "directs", className: "tab-pane" },
                                 'Directs and campaigns here...')
-                        ),
-                        state.hasMore ? React.createElement('div', {
-                            className: 'text-center col-xs-12 btn-more' },
-                            React.createElement('button', {
-                                className: 'btn btn-primary btn-xs',
-                                onClick: this.loadMoreMessages,
-                                disabled: state.searching },
-                                'More...'
-                            )
-                        ) : ''
+                        )
                     );
                 }
             });

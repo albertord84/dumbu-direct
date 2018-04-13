@@ -16,6 +16,7 @@ $route['search'] = 'search/index';
 $route['send/direct'] = 'direct/index';
 $route['direct/inbox'] = 'direct/inbox';
 $route['direct/messages'] = 'direct/messages';
+$route['directs'] = 'direct/directs';
 
 $route['compose/message'] = 'compose';
 $route['compose'] = 'compose';

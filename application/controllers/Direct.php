@@ -91,5 +91,32 @@ class Direct extends CI_Controller {
         }
     }
 
+    public function directs() {
+        $this->load->database();
+        if ($this->is_logged($this->session)) {
+            $user_id = $this->user_id($this->session->pk);
+            $this->db->where('user_id', $user_id);
+            $directs = $this->db->get('directs')->result();
+            $result = array_map(function($direct) {
+                $direct->ref_profs = [];
+                $this->db->where('direct_id', $direct->id);
+                $directs_data = $this->db->get('direct_data')->result();
+                $closure = function($direct_data) use($direct) {
+                    $direct->ref_profs = array_merge($direct->ref_profs, [ $direct_data ]);
+                };
+                array_map($closure, $directs_data);
+                return $direct;
+            }, $directs);
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'success'   => true,
+                    'directs'   => $result,
+                ], JSON_PRETTY_PRINT));
+        } else {
+            $this->load->view('login_form');
+        }
+    }
+
     
 }
