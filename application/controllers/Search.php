@@ -17,7 +17,40 @@ class Search extends CI_Controller {
         }
     }
 
+    private function search_profiles($query) {
+        $ch = curl_init("https://www.instagram.com/");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, FALSE);
+        curl_setopt($ch, CURLOPT_URL, "https://www.instagram.com/web/search/topsearch/?context=blended&query=$query");
+        $html = curl_exec($ch);
+        $content = json_decode($html);
+        curl_close($ch);
+        if (is_object($content) && $content->status === 'ok') {
+            $users = $content->users;
+            if (is_array($users)) {
+            	$result = array_map(function($user) {
+            		return $user->user;
+            	}, $users);
+                return $this->output->set_content_type('application/json')
+					->set_status_header(200)
+					->set_output(json_encode($result));
+            }
+        }
+        else {
+            return $this->output->set_content_type('application/json')
+				->set_status_header(500)
+				->set_output(json_encode([
+					'success' => false,
+					'message' => 'Something happened with your query. ' .
+						'Contact system administration.'
+				]));
+        }
+    }
+
     public function followers($query) {
+    	// Buscar sin autenticar en Instagram
+    	if (true) return $this->search_profiles($query);
+
 		if ($this->session->username !== NULL) {
 			$user = $this->get_user_data($this->session->username);
 			$instagram = new \InstagramAPI\Instagram(FALSE, TRUE);
