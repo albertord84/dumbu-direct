@@ -374,8 +374,10 @@ div.inbox ul.nav li.active {
   font-weight: bold;
 }
 
-div.inbox div.tab-content {
-  margin-top: 20px;
+div.inbox ul.list-group li.list-group-item:first-child {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-top: none;
 }
 
 /* load progress */
