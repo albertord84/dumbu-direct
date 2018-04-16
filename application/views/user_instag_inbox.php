@@ -134,6 +134,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ) : ''
                     );
                 },
+                getCampaignList: function() {
+                    var state = this.state;
+                    var messages = state.messages;
+                    return React.createElement('ul', { className: 'list-group' },
+                        state.campaigns.map(function(campaign){
+                            return React.createElement('li', {
+                                className: 'list-group-item' },
+                                campaign.msg_text
+                            );
+                        })
+                    );
+                },
                 getInitialState: function() {
                     return initialState;
                 },
@@ -141,10 +153,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     self = this;
                     setTimeout(function(){
                         self.loadMessages(self.state.cursor, self.state.hasMore);
+                        self.loadCampaigns();
                     }, 500);
                 },
-                showDirectsList: function() {
-
+                loadCampaigns: function() {
+                    var self = this;
+                    self.setState({ searching: true });
+                    $.post(Dumbu.siteUrl + '/direct/campaigns', {
+                    }, function(data, textStatus, jqXHR) {
+                        setTimeout(function() {
+                            self.setState({ campaigns:  data.campaigns });
+                        }, 700);
+                    });
                 },
                 render: function() {
                     var state = this.state;
@@ -158,16 +178,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 className: 'glyphicon glyphicon-refresh'
                             })
                         ),
-                        React.createElement('ul', { className: "nav nav-tabs" },
+                        React.createElement('ul', { className: "nav nav-tabs small" },
                             React.createElement('li', { className: "active" },
                                 React.createElement('a', { href: "#inbox",
-                                className: 'small', 'data-toggle': "tab" },
+                                'data-toggle': "tab" },
                                 'Inbox')
                             ),
                             React.createElement('li', null,
                                 React.createElement('a', { href: "#directs",
-                                className: 'small', 'data-toggle': "tab" },
-                                    'Directs/Campaigns')
+                                'data-toggle': "tab" },
+                                    'Campaigns')
                             )
                         ),
                         React.createElement('div', { className: "tab-content" },
@@ -176,7 +196,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 this.getMessageList()),
                             React.createElement('div', {
                                 id: "directs", className: "tab-pane" },
-                                'Directs and campaigns here...')
+                                this.getCampaignList())
                         )
                     );
                 }

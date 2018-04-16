@@ -91,12 +91,12 @@ class Direct extends CI_Controller {
         }
     }
 
-    public function directs() {
+    public function campaigns() {
         $this->load->database();
         if ($this->is_logged($this->session)) {
             $user_id = $this->user_id($this->session->pk);
             $this->db->where('user_id', $user_id);
-            $directs = $this->db->get('directs')->result();
+            $campaigns = $this->db->get('directs')->result();
             $result = array_map(function($direct) {
                 $direct->ref_profs = [];
                 $this->db->where('direct_id', $direct->id);
@@ -106,12 +106,12 @@ class Direct extends CI_Controller {
                 };
                 array_map($closure, $directs_data);
                 return $direct;
-            }, $directs);
+            }, $campaigns);
             return $this->output->set_content_type('application/json')
                 ->set_status_header(200)
                 ->set_output(json_encode([
                     'success'   => true,
-                    'directs'   => $result,
+                    'campaigns'   => $result,
                 ], JSON_PRETTY_PRINT));
         } else {
             $this->load->view('login_form');
