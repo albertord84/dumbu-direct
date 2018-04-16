@@ -418,3 +418,21 @@ div.inbox ul.list-group li.list-group-item:first-child {
     33.3333% {left: 0; width: 100%;z-index: 10;}
     to {left: 0; width: 100%;}
 }
+
+/* another loading bar */
+
+.is-loading-app .loading-bar {
+  display: block;
+  animation: shift-rightwards 1s ease-in-out infinite;
+  animation-delay: .8s;
+}
+.loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 800;
+  background: #34e79a;
+  transform: translateX(100%);
+}
