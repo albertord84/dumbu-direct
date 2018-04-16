@@ -45,7 +45,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 hasMore: true,
                 searching: true,
                 campaigns: [],
-                moreCampaigns: false
+                moreCampaigns: false,
+                campaignStatus: null
             };
             var ProgressBar = createReactClass({
                 render: function() {
@@ -53,6 +54,90 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         React.createElement('div', { className: "bar" }),
                         React.createElement('div', { className: "bar" }),
                         React.createElement('div', { className: "bar" }),
+                    );
+                }
+            });
+            var Message = createReactClass({
+                render: function() {
+                    var message = this.props.message;
+                    var shortText = message.text.replace(/\.\.\./g, '')
+                        .substring(0, 120) + '...';
+                    return React.createElement('li', { className: 'list-group-item thread' },
+                        React.createElement('h4', { className: 'text-muted bold sender' },
+                            message.username
+                        ),
+                        React.createElement('span', { className: 'badge small datetime' },
+                            moment(message.timestamp*1000).fromNow()
+                        ),
+                        message.text === null ?
+                            React.createElement('p', { className: 'small' },
+                                '[empty message]') :
+                            React.createElement('p', { className: 'small' },
+                                message.text.length > 119 ? shortText : message.text
+                            )
+                    );
+                }
+            });
+            var Campaign = createReactClass({
+                render: function() {
+                    var campaign = this.props.campaign;
+                    return React.createElement('li', { className: 'list-group-item' },
+                        campaign.msg_text,
+                        React.createElement('span', { className: 'badge' },
+                            React.createElement('small', null,
+                                'Status: ' + campaign.status
+                            )
+                        )
+                    );
+                }
+            });
+            var MoreMsgButton = createReactClass({
+                render: function() {
+                    return React.createElement('div', {
+                        className: 'text-center col-xs-12 btn-more' },
+                        React.createElement('button', {
+                            className: 'btn btn-primary btn-xs',
+                            onClick: this.props.loadMoreMessages,
+                            disabled: this.props.searching }, 'More...'
+                        )
+                    )
+                }
+            })
+            var RefreshMsgListButton = createReactClass({
+                render: function() {
+                    return React.createElement('a', {
+                        className: 'btn btn-default btn-xs btn-refresh',
+                        onClick: this.props.refreshMessageList,
+                        title: 'Refresh the message list' },
+                        React.createElement('span', {
+                            className: 'glyphicon glyphicon-refresh'
+                        })
+                    );
+                }
+            });
+            var TabPane = createReactClass({
+                render: function() {
+                    return React.createElement('div', null,
+                        React.createElement('ul', { className: "nav nav-tabs small" },
+                            React.createElement('li', { className: "active" },
+                                React.createElement('a', { href: "#inbox",
+                                'data-toggle': "tab" },
+                                'Inbox')
+                            ),
+                            React.createElement('li', null,
+                                React.createElement('a', { href: "#directs",
+                                'data-toggle': "tab" },
+                                    'Campaigns')
+                            )
+                        ),
+                        React.createElement('div', { className: "tab-content" },
+                            React.createElement('div', {
+                                id: "inbox", className: "tab-pane active" },
+                                this.props.messageList()),
+                            React.createElement('div', {
+                                id: "directs", className: "tab-pane" },
+                                this.props.campaignList())
+                        )
                     );
                 }
             });
@@ -99,39 +184,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         React.createElement('ul', { className: 'list-group' },
                             messages.map(function(message){
                                 if (message !== null) {
-                                    return React.createElement('li', {
-                                        className: 'list-group-item thread' },
-                                        React.createElement('h4', {
-                                            className: 'text-muted bold sender' },
-                                            message.username),
-                                        React.createElement('span', {
-                                            className: 'badge small datetime' },
-                                            moment(message.timestamp*1000).fromNow()
-                                        ),
-                                        message.text === null ?
-                                        React.createElement('p', {
-                                            className: 'small' },
-                                            '[empty message]') :
-                                        React.createElement('p', {
-                                            className: 'small' },
-                                            message.text.length > 119 ?
-                                                message.text.replace(/\.\.\./g, '')
-                                                .substring(0, 120) + '...' :
-                                            message.text
-                                        )
-                                    );
+                                    return React.createElement(Message, { message: message });
                                 }
                             })
                         ),
-                        state.hasMore ? React.createElement('div', {
-                            className: 'text-center col-xs-12 btn-more' },
-                            React.createElement('button', {
-                                className: 'btn btn-primary btn-xs',
-                                onClick: this.loadMoreMessages,
-                                disabled: state.searching },
-                                'More...'
-                            )
-                        ) : ''
+                        state.hasMore ? React.createElement(MoreMsgButton, {
+                            loadMoreMessages: this.loadMoreMessages,
+                            searching: state.searching }, 'More...') : ''
                     );
                 },
                 getCampaignList: function() {
@@ -139,10 +198,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var messages = state.messages;
                     return React.createElement('ul', { className: 'list-group' },
                         state.campaigns.map(function(campaign){
-                            return React.createElement('li', {
-                                className: 'list-group-item' },
-                                campaign.msg_text
-                            );
+                            return React.createElement(Campaign, { campaign: campaign });
                         })
                     );
                 },
@@ -170,34 +226,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var state = this.state;
                     return React.createElement('div', null,
                         state.searching ? React.createElement(ProgressBar) : '',
-                        state.searching ? '' : React.createElement('a', {
-                            className: 'btn btn-default btn-xs btn-refresh',
-                            onClick: this.refreshMessageList,
-                            title: 'Refresh the message list' },
-                            React.createElement('span', {
-                                className: 'glyphicon glyphicon-refresh'
-                            })
-                        ),
-                        React.createElement('ul', { className: "nav nav-tabs small" },
-                            React.createElement('li', { className: "active" },
-                                React.createElement('a', { href: "#inbox",
-                                'data-toggle': "tab" },
-                                'Inbox')
-                            ),
-                            React.createElement('li', null,
-                                React.createElement('a', { href: "#directs",
-                                'data-toggle': "tab" },
-                                    'Campaigns')
-                            )
-                        ),
-                        React.createElement('div', { className: "tab-content" },
-                            React.createElement('div', {
-                                id: "inbox", className: "tab-pane active" },
-                                this.getMessageList()),
-                            React.createElement('div', {
-                                id: "directs", className: "tab-pane" },
-                                this.getCampaignList())
-                        )
+                        state.searching ? '' : React.createElement(RefreshMsgListButton, {refreshMessageList: this.refreshMessageList }),
+                        React.createElement(TabPane, {
+                            messageList: this.getMessageList,
+                            campaignList: this.getCampaignList
+                        })
                     );
                 }
             });
