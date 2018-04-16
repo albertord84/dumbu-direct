@@ -346,6 +346,7 @@ div.inbox .thread .datetime {
   color: #888;
   font-size: 10px;
   background-color: #7772;
+  margin-top: -30px;
 }
 
 div.inbox a.btn-refresh {

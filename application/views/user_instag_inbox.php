@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </head>
     <body>
         <div class="container">
-            <div class="text-center inbox-header">
+            <div id="logo" class="text-center inbox-header">
                 <h1>DUMBU</h1>
                 <p class="text-muted small"><b>See your progress here...</b></p>
             </div>
@@ -60,8 +60,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var Message = createReactClass({
                 render: function() {
                     var message = this.props.message;
-                    var shortText = message.text.replace(/\.\.\./g, '')
-                        .substring(0, 120) + '...';
+                    var textNull = message.text === null;
+                    var text = textNull ? '[empty message]' :
+                        (message.text.length > 119 ?
+                            message.text.replace(/\.\.\./g, '').substring(0, 120) +
+                            '...' :
+                        message.text);
                     return React.createElement('li', { className: 'list-group-item thread' },
                         React.createElement('h4', { className: 'text-muted bold sender' },
                             message.username
@@ -69,12 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         React.createElement('span', { className: 'badge small datetime' },
                             moment(message.timestamp*1000).fromNow()
                         ),
-                        message.text === null ?
-                            React.createElement('p', { className: 'small' },
-                                '[empty message]') :
-                            React.createElement('p', { className: 'small' },
-                                message.text.length > 119 ? shortText : message.text
-                            )
+                        React.createElement('p', { className: 'small' }, text)
                     );
                 }
             });
