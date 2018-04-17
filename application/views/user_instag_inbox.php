@@ -165,11 +165,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             });
                         }, 700);
                     }).fail(function(jqXHR, textStatus, errorThrown) {
+                        log(jqXHR);
                         self.setState({
                             messages:   [],
                             searching:  false,
                             hasMore: false,
-                            messagesError: jqXHR.statusText + ': ' + jqXHR.responseJSON.message
+                            messagesError: jqXHR.statusText + ': ' + errorThrown
                         });
                     });
                 },
