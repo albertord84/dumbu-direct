@@ -380,6 +380,10 @@ div.inbox ul.list-group li.list-group-item:first-child {
   border-top: none;
 }
 
+div.inbox .alert {
+  margin-top: 20px;
+}
+
 /* load progress */
 
 .load-bar {

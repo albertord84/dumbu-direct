@@ -143,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
             var ErrorMsg = createReactClass({
                 render: function() {
-                    return React.createElement('div', { className: 'alert alert-danger' },
+                    return React.createElement('div', { className: 'alert alert-danger small' },
                         this.props.message
                     );
                 }
@@ -170,13 +170,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             messages:   [],
                             searching:  false,
                             hasMore: false,
-                            messagesError: jqXHR.statusText + ': ' + errorThrown
+                            messagesError: errorThrown
                         });
                     });
                 },
                 loadMoreMessages: function() {
                     var self = this;
-                    self.setState({ searching: true });
+                    self.setState({ searching: true, messagesError: null });
                     $.post(Dumbu.siteUrl + '/direct/messages', {
                         cursor: self.state.cursor,
                         hasMore: self.state.hasMore
@@ -196,7 +196,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var state = this.state;
                     var messages = state.messages;
                     return React.createElement('div', null,
-                        state.messagesError !== '' ? React.createElement(ErrorMsg, {
+                        state.messagesError !== null ? React.createElement(ErrorMsg, {
                             message: state.messagesError
                         }) : '',
                         React.createElement('ul', { className: 'list-group' },
