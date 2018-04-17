@@ -152,7 +152,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 loadMessages: function(cursor, hasMore) {
                     var self = this;
                     self.setState({ searching: true, messagesError: null });
-                    $.post(Dumbu.siteUrl + '/direct/messages', {
+                    $.post(Dumbu.siteUrl + '/messages', {
                         cursor: cursor,
                         hasMore: hasMore
                     }, function(data, textStatus, jqXHR) {
@@ -177,7 +177,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 loadMoreMessages: function() {
                     var self = this;
                     self.setState({ searching: true, messagesError: null });
-                    $.post(Dumbu.siteUrl + '/direct/messages', {
+                    $.post(Dumbu.siteUrl + '/messages', {
                         cursor: self.state.cursor,
                         hasMore: self.state.hasMore
                     }, function(data, textStatus, jqXHR) {
@@ -233,7 +233,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 loadCampaigns: function() {
                     var self = this;
                     self.setState({ searching: true });
-                    $.post(Dumbu.siteUrl + '/direct/campaigns', {
+                    $.post(Dumbu.siteUrl + '/campaigns', {
                     }, function(data, textStatus, jqXHR) {
                         setTimeout(function() {
                             self.setState({ campaigns:  data.campaigns });
