@@ -151,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             var UserInbox = createReactClass({
                 loadMessages: function(cursor, hasMore) {
                     var self = this;
-                    self.setState({ searching: true });
+                    self.setState({ searching: true, messagesError: null });
                     $.post(Dumbu.siteUrl + '/direct/messages', {
                         cursor: cursor,
                         hasMore: hasMore
