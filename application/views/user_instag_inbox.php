@@ -41,6 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script type="text/javascript">
             var initialState = {
                 messages: [],
+                messagesError: null,
                 cursor: null,
                 hasMore: true,
                 searching: true,
@@ -140,6 +141,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     );
                 }
             });
+            var ErrorMsg = createReactClass({
+                render: function() {
+                    return React.createElement('div', { className: 'alert alert-danger' },
+                        this.props.message
+                    );
+                }
+            });
             var UserInbox = createReactClass({
                 loadMessages: function(cursor, hasMore) {
                     var self = this;
@@ -156,6 +164,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 searching:  false
                             });
                         }, 700);
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        self.setState({
+                            messages:   [],
+                            searching:  false,
+                            hasMore: false,
+                            messagesError: jqXHR.statusText + ': ' + jqXHR.responseJSON.message
+                        });
                     });
                 },
                 loadMoreMessages: function() {
@@ -180,6 +195,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var state = this.state;
                     var messages = state.messages;
                     return React.createElement('div', null,
+                        state.messagesError !== '' ? React.createElement(ErrorMsg, {
+                            message: state.messagesError
+                        }) : '',
                         React.createElement('ul', { className: 'list-group' },
                             messages.map(function(message){
                                 if (message !== null) {
