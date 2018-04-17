@@ -170,7 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             messages:   [],
                             searching:  false,
                             hasMore: false,
-                            messagesError: errorThrown
+                            messagesError: 'Error trying to access your inbox: ' + errorThrown
                         });
                     });
                 },
