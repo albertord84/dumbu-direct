@@ -1,0 +1,20 @@
+#app .form-login {
+  min-width: 260px;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media only screen and (min-width: 480px) {
+  #app .form-login {
+    min-width: 300px;
+  }
+}
+
+#app .form-login div.submit button {
+  min-width: 200px;
+}
+
+#app #navbar li.tools div.dropdown-menu {
+  left: -77px;
+}

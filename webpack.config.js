@@ -4,7 +4,7 @@ const CleanWebPackPlugin = require('clean-webpack-plugin');
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const path = require('path');
 
-const publicPath = path.resolve('../public');
+const publicPath = path.resolve('./public');
 
 module.exports = {
     entry: {
@@ -16,7 +16,7 @@ module.exports = {
     },
     plugins: [
         new CleanWebPackPlugin([publicPath], { allowExternal: true }),
-        new HtmlWebPackPlugin({ template: 'index.html' }),
+        new HtmlWebPackPlugin({ template: './src/index.html' }),
         new CleanObsoleteChunks(),
         new CopyWebpackPlugin([
             {

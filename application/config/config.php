@@ -23,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = trim(file_get_contents(ROOT_DIR . '/etc/base_url'));
+$config['base_url'] = '//' . str_replace(basename($_SERVER['SCRIPT_NAME']),
+    "", $_SERVER['SCRIPT_NAME']) . '/public/';
+// $config['base_url'] = trim(file_get_contents(ROOT_DIR . '/etc/base_url'));
 
 /*
 |--------------------------------------------------------------------------
