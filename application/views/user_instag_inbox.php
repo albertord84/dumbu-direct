@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
     <head>
-        <title>DUMBU ::: Instagram Inbox</title>
+        <title>DUMBU ::: Inbox</title>
         <meta charset='utf-8'>
         <meta content='IE=edge' http-equiv='X-UA-Compatible'>
         <meta content='width=device-width,initial-scale=1' name='viewport'>
@@ -51,10 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             };
             var ProgressBar = createReactClass({
                 render: function() {
-                    return React.createElement('div', { className: "load-bar" },
-                        React.createElement('div', { className: "bar" }),
-                        React.createElement('div', { className: "bar" }),
-                        React.createElement('div', { className: "bar" }),
+                    return createElement('div', { className: "load-bar" },
+                        createElement('div', { className: "bar" }),
+                        createElement('div', { className: "bar" }),
+                        createElement('div', { className: "bar" }),
                     );
                 }
             });
@@ -67,24 +67,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             message.text.replace(/\.\.\./g, '').substring(0, 120) +
                             '...' :
                         message.text);
-                    return React.createElement('li', { className: 'list-group-item thread' },
-                        React.createElement('h4', { className: 'text-muted bold sender' },
+                    return createElement('li', { className: 'list-group-item thread' },
+                        createElement('h4', { className: 'text-muted bold sender' },
                             message.username
                         ),
-                        React.createElement('span', { className: 'badge small datetime' },
+                        createElement('span', { className: 'badge small datetime' },
                             moment(message.timestamp*1000).fromNow()
                         ),
-                        React.createElement('p', { className: 'small' }, text)
+                        createElement('p', { className: 'small' }, text)
                     );
                 }
             });
             var Campaign = createReactClass({
                 render: function() {
                     var campaign = this.props.campaign;
-                    return React.createElement('li', { className: 'list-group-item' },
+                    return createElement('li', { className: 'list-group-item' },
                         campaign.msg_text,
-                        React.createElement('span', { className: 'badge' },
-                            React.createElement('small', null,
+                        createElement('span', { className: 'badge' },
+                            createElement('small', null,
                                 'Status: ' + campaign.status
                             )
                         )
@@ -93,9 +93,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
             var MoreMsgButton = createReactClass({
                 render: function() {
-                    return React.createElement('div', {
+                    return createElement('div', {
                         className: 'text-center col-xs-12 btn-more' },
-                        React.createElement('button', {
+                        createElement('button', {
                             className: 'btn btn-primary btn-xs',
                             onClick: this.props.loadMoreMessages,
                             disabled: this.props.searching }, 'More...'
@@ -105,11 +105,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             })
             var RefreshMsgListButton = createReactClass({
                 render: function() {
-                    return React.createElement('a', {
+                    return createElement('a', {
                         className: 'btn btn-default btn-xs btn-refresh',
                         onClick: this.props.refreshMessageList,
                         title: 'Refresh the message list' },
-                        React.createElement('span', {
+                        createElement('span', {
                             className: 'glyphicon glyphicon-refresh'
                         })
                     );
@@ -117,24 +117,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
             var TabPane = createReactClass({
                 render: function() {
-                    return React.createElement('div', null,
-                        React.createElement('ul', { className: "nav nav-tabs small" },
-                            React.createElement('li', { className: "active" },
-                                React.createElement('a', { href: "#inbox",
+                    return createElement('div', null,
+                        createElement('ul', { className: "nav nav-tabs small" },
+                            createElement('li', { className: "active" },
+                                createElement('a', { href: "#inbox",
                                 'data-toggle': "tab" },
                                 'Inbox')
                             ),
-                            React.createElement('li', null,
-                                React.createElement('a', { href: "#directs",
+                            createElement('li', null,
+                                createElement('a', { href: "#directs",
                                 'data-toggle': "tab" },
                                     'Campaigns')
                             )
                         ),
-                        React.createElement('div', { className: "tab-content" },
-                            React.createElement('div', {
+                        createElement('div', { className: "tab-content" },
+                            createElement('div', {
                                 id: "inbox", className: "tab-pane active" },
                                 this.props.messageList()),
-                            React.createElement('div', {
+                            createElement('div', {
                                 id: "directs", className: "tab-pane" },
                                 this.props.campaignList())
                         )
@@ -143,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             });
             var ErrorMsg = createReactClass({
                 render: function() {
-                    return React.createElement('div', { className: 'alert alert-danger small' },
+                    return createElement('div', { className: 'alert alert-danger small' },
                         this.props.message
                     );
                 }
@@ -195,18 +195,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 getMessageList: function() {
                     var state = this.state;
                     var messages = state.messages;
-                    return React.createElement('div', null,
-                        state.messagesError !== null ? React.createElement(ErrorMsg, {
+                    return createElement('div', null,
+                        state.messagesError !== null ? createElement(ErrorMsg, {
                             message: state.messagesError
                         }) : '',
-                        React.createElement('ul', { className: 'list-group' },
+                        createElement('ul', { className: 'list-group' },
                             messages.map(function(message){
                                 if (message !== null) {
-                                    return React.createElement(Message, { message: message });
+                                    return createElement(Message, { message: message });
                                 }
                             })
                         ),
-                        state.hasMore ? React.createElement(MoreMsgButton, {
+                        state.hasMore ? createElement(MoreMsgButton, {
                             loadMoreMessages: this.loadMoreMessages,
                             searching: state.searching }, 'More...') : ''
                     );
@@ -214,9 +214,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 getCampaignList: function() {
                     var state = this.state;
                     var messages = state.messages;
-                    return React.createElement('ul', { className: 'list-group' },
+                    return createElement('ul', { className: 'list-group' },
                         state.campaigns.map(function(campaign){
-                            return React.createElement(Campaign, { campaign: campaign });
+                            return createElement(Campaign, { campaign: campaign });
                         })
                     );
                 },
@@ -242,10 +242,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 },
                 render: function() {
                     var state = this.state;
-                    return React.createElement('div', null,
-                        state.searching ? React.createElement(ProgressBar) : '',
-                        state.searching ? '' : React.createElement(RefreshMsgListButton, {refreshMessageList: this.refreshMessageList }),
-                        React.createElement(TabPane, {
+                    return createElement('div', null,
+                        state.searching ? createElement(ProgressBar) : '',
+                        state.searching ? '' : createElement(RefreshMsgListButton, {refreshMessageList: this.refreshMessageList }),
+                        createElement(TabPane, {
                             messageList: this.getMessageList,
                             campaignList: this.getCampaignList
                         })
