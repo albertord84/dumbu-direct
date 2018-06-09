@@ -3,6 +3,7 @@ const initialState = {
   password: '',
   isLogged: false,
   logging: false,
+  searching: false,
   loginError: '',
   isAdmin: false,
   session: {

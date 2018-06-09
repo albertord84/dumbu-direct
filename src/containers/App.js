@@ -6,6 +6,8 @@ import ToolBar from '../components/ToolBar';
 import LoginForm from '../containers/LoginForm';
 import Home from '../containers/Home';
 
+import { isLogged, getDirectList, isLogging } from "../selectors";
+
 class App extends Component {
 
   constructor(props) {
@@ -23,6 +25,16 @@ class App extends Component {
         </div>
       </HashRouter>
     )
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isLogged() || isLogging()) {
+      return true;
+    }
+    if (getDirectList().length > 0) {
+      return true;
+    }
+    return false;
   }
 
 }

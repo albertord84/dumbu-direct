@@ -18,3 +18,13 @@
 #app #navbar li.tools div.dropdown-menu {
   left: -77px;
 }
+
+#app .direct-list {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#app .direct-list .direct {
+  cursor: pointer;
+}

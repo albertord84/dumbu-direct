@@ -6,6 +6,10 @@ export const notLoggedAction = () => {
   return { type: 'SET_IS_LOGGED', payload: false };
 }
 
+export const isSearchingAction = (isSearching) => {
+  return { type: 'SET_IS_SEARCHING', payload: isSearching };
+}
+
 export const isLoggingAction = () => {
   return { type: 'SET_IS_LOGGING', payload: true };
 }

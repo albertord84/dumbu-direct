@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class Direct extends CI_Controller {
 
   private function params() {
     $input = file_get_contents('php://input');
@@ -29,24 +29,12 @@ class User extends CI_Controller {
       ->set_output(json_encode($data));
   }
 
-  public function index() {
-    echo 'Nothing to show...';
-  }
-
-  public function auth() {
+  public function list() {
     $params = $this->params();
-    $this->db->where([
-      'username' => $params->username,
-      'password' => $params->password,
+    $messages = $this->db->get('directs')->result();
+    return $this->success(true, [
+      'directs' => $messages
     ]);
-    $users = $this->db->get('client')->result();
-    if (count($users) === 1) {
-      $user = current($users);
-      return $this->success(true, [
-        'isAdmin' => $user->priv == 1 ? true : false,
-      ]);
-    }
-    else $this->error('Not allowed to access this time. Verify your username/password.');
   }
 
 }
