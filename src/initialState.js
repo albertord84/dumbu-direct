@@ -4,12 +4,14 @@ const initialState = {
   isLogged: false,
   logging: false,
   loginError: '',
+  isAdmin: false,
   session: {
     cookies: []
   },
   direct: {
     follower: null,
-    text: ''
+    text: '',
+    list: []
   }
 }
 

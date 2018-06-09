@@ -19,7 +19,34 @@ const reducer = (state = initialState, action) => {
   
     case 'SET_SESSION_COOKIES':
       const cookies = [].concat(action.payload);
-      return Object.assign(state, { session: { cookies: cookies } });
+      const session = state.session;
+      return Object.assign(state, {
+        session: Object.assign(session, { cookies: cookies })
+      });
+  
+    case 'SET_USER_IS_ADMIN':
+      return Object.assign(state, { isAdmin: action.payload });
+  
+    case 'SET_DIRECT_LIST':
+      const direct = state.direct;
+      return Object.assign(state, {
+        direct: Object.assign(direct, { list: action.payload })
+      });
+  
+    case 'REMOVE_DIRECT_FROM_LIST':
+      const direct = state.direct;
+      const list = direct.list.filter(d => d.id !== action.payload.id);
+      return Object.assign(state, {
+        direct: Object.assign(direct, { list: list })
+      });
+  
+    case 'ADD_DIRECT_TO_LIST':
+      const direct = state.direct;
+      return Object.assign(state, {
+        direct: Object.assign(direct, {
+          list: direct.list.concat(action.payload)
+        })
+      });
   
     default:
       return state;

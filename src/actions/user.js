@@ -6,11 +6,11 @@ export const notLoggedAction = () => {
   return { type: 'SET_IS_LOGGED', payload: false };
 }
 
-export const isLogginAction = () => {
+export const isLoggingAction = () => {
   return { type: 'SET_IS_LOGGING', payload: true };
 }
 
-export const notLogginAction = () => {
+export const notLoggingAction = () => {
   return { type: 'SET_IS_LOGGING', payload: false };
 }
 
@@ -24,4 +24,8 @@ export const setUserNameAction = (username) => {
 
 export const setPasswordAction = (password) => {
   return { type: 'SET_PASSWORD', payload: password };
+}
+
+export const setUserIsAdminAction = (isAdmin) => {
+  return { type: 'SET_USER_IS_ADMIN', payload: isAdmin };
 }

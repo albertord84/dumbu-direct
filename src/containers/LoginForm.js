@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 import { isLogging, getLoginError } from "../selectors";
 import { getPassword, getUserName } from "../selectors";
 
-import { notLogginAction, isLogginAction, isLoggedAction } from '../actions/user';
+import { notLoggingAction, isLoggingAction, isLoggedAction } from '../actions/user';
+import { setUserIsAdminAction } from '../actions/user';
 import { setUserNameAction, setPasswordAction } from '../actions/user';
 import { loginErrorAction } from '../actions/user';
 
@@ -36,9 +37,10 @@ export default class LoginForm extends Component {
 
   loginSuccess(res) {
     setTimeout(() => {
-      store.dispatch(notLogginAction());
+      store.dispatch(notLoggingAction());
       if (res.data.success) {
         store.dispatch(isLoggedAction());
+        store.dispatch(setUserIsAdminAction(res.data.isAdmin));
         console.log(`redirecting the user ${getUserName()}...`);
         window.location.href = '#/home';
       }
@@ -51,18 +53,18 @@ export default class LoginForm extends Component {
 
   loginError(reason) {
     setTimeout(() => {
-      store.dispatch(notLogginAction());
+      store.dispatch(notLoggingAction());
       store.dispatch(loginErrorAction(reason.response.data.error));
     }, 1000);
   }
 
   onSubmit(ev) {
     ev.preventDefault();
-    store.dispatch(isLogginAction());
+    store.dispatch(isLoggingAction());
     if (getUserName().trim() === '' || getPassword().trim() === '') {
       store.dispatch(loginErrorAction('User name and/or password must not be empty'));
       setTimeout(() => {
-        store.dispatch(notLogginAction());
+        store.dispatch(notLoggingAction());
       }, 1000);
       return;
     }

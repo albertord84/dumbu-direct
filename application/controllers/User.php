@@ -39,9 +39,12 @@ class User extends CI_Controller {
       'username' => $params->username,
       'password' => $params->password,
     ]);
-    $records = $this->db->get('client')->result();
-    if (count($records) === 1) {
-      return $this->success(true);
+    $users = $this->db->get('client')->result();
+    if (count($users) === 1) {
+      $user = current($users);
+      return $this->success(true, [
+        'isAdmin' => $user->priv === 1 ? true : false
+      ]);
     }
     else $this->error('Not allowed to access this time. Verify your username/password.');
   }
