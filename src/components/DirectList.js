@@ -7,7 +7,8 @@ const DirectList = (props) => {
   const list = () => {
     const list = getDirectList();
     return list.map(i => {
-      return <Direct key={i.id} text={i.msg_text} />
+      return <Direct key={i.id} text={i.msg_text}
+                     sentAt={i.sent_at} />
     });
   }
   return (

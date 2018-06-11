@@ -31,7 +31,7 @@ class Direct extends CI_Controller {
 
   public function list() {
     $params = $this->params();
-    $messages = $this->db->get('directs')->result();
+    $messages = $this->db->get('message')->result();
     return $this->success(true, [
       'directs' => $messages
     ]);
