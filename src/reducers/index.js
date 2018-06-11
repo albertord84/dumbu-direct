@@ -54,6 +54,14 @@ const reducer = (state = initialState, action) => {
         })
       });
     }
+
+    case 'MODIFYING_DIRECT': {
+
+    }
+
+    case 'MODIFY_DIRECT_TEXT': {
+      
+    }
   
     default:
       return state;

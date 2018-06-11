@@ -22,4 +22,22 @@ export class Direct {
     .catch(Direct.directListError);
   }
 
+  static directDeleteSuccess(id) {
+    setTimeout(() => {
+      console.log(`deleted the direct message ${id}...`);
+    }, 1000);
+  }
+
+  static directDeleteError(reason) {
+    setTimeout(() => {
+      console.error(`unable to delete direct message...`);
+    }, 1000);
+  }
+
+  static deleteDirect(id) {
+    axios.get('../index.php/direct/delete/' + id)
+    .then(Direct.directDeleteSuccess)
+    .catch(Direct.directDeleteError);
+  }
+
 }

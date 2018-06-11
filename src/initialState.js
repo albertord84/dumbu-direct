@@ -10,6 +10,7 @@ const initialState = {
     cookies: []
   },
   direct: {
+    modifying: false,
     follower: null,
     text: '',
     list: []
