@@ -15,15 +15,18 @@ const ToolBar = (props) => {
         <li className="nav-item">
           <a className="nav-link" href="#location">@location</a>
         </li>
-        <li className="nav-item dropdown tools">
-          <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tools</a>
-          <div className="dropdown-menu">
-            <a className="dropdown-item" href="#one">Stats</a>
-            <a className="dropdown-item" href="#two">Manage</a>
-            <div role="separator" className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#three">Account</a>
-          </div>
-        </li>
+        {
+          isLogged() ?
+          <li className="nav-item dropdown tools">
+            <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tools</a>
+            <div className="dropdown-menu">
+              <a className="dropdown-item" href="#one">Stats</a>
+              <a className="dropdown-item" href="#two">Manage</a>
+              <div role="separator" className="dropdown-divider"></div>
+              <a className="dropdown-item" href="#three">Account</a>
+            </div>
+          </li> : ''
+        }
       </ul>
     </nav>
   )

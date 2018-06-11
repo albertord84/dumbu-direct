@@ -7,7 +7,6 @@ import { isLogging, getLoginError } from "../selectors";
 import { getPassword, getUserName } from "../selectors";
 
 import { notLoggingAction, isLoggingAction, isLoggedAction } from '../actions/user';
-import { setUserIsAdminAction } from '../actions/user';
 import { setUserNameAction, setPasswordAction } from '../actions/user';
 import { loginErrorAction } from '../actions/user';
 
@@ -19,8 +18,6 @@ export default class LoginForm extends Component {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
     this.inputChange = this.inputChange.bind(this);
-    this.loginSuccess = this.loginSuccess.bind(this);
-    this.loginError = this.loginError.bind(this);
   }
 
   inputChange(ev) {
@@ -35,29 +32,6 @@ export default class LoginForm extends Component {
     }
   }
 
-  loginSuccess(res) {
-    setTimeout(() => {
-      store.dispatch(notLoggingAction());
-      if (res.data.success) {
-        store.dispatch(isLoggedAction());
-        store.dispatch(setUserIsAdminAction(res.data.isAdmin));
-        console.log(`redirecting the user ${getUserName()}...`);
-        window.location.href = '#/home';
-      }
-      else {
-        console.log(res.data);
-        store.dispatch(loginErrorAction('Something went wrong... You are not logged in.'));
-      }
-    }, 1000);
-  }
-
-  loginError(reason) {
-    setTimeout(() => {
-      store.dispatch(notLoggingAction());
-      store.dispatch(loginErrorAction(reason.response.data.error));
-    }, 1000);
-  }
-
   onSubmit(ev) {
     ev.preventDefault();
     store.dispatch(isLoggingAction());
@@ -68,7 +42,7 @@ export default class LoginForm extends Component {
       }, 1000);
       return;
     }
-    User.auth(getUserName(), getPassword(), this.loginSuccess, this.loginError);
+    User.auth();
   }
 
   render() {

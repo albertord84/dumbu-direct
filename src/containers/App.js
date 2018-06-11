@@ -7,6 +7,7 @@ import LoginForm from '../containers/LoginForm';
 import Home from '../containers/Home';
 
 import { isLogged, getDirectList, isLogging } from "../selectors";
+import { getLoginError, getUserName } from "../selectors";
 
 class App extends Component {
 
@@ -28,7 +29,9 @@ class App extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (isLogged() || isLogging()) {
+    if (isLogged() || isLogging() || getLoginError() !== '' ||
+        getUserName() !== '')
+    {
       return true;
     }
     if (getDirectList().length > 0) {

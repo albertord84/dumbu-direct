@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
-import { getIsAdmin, isLogged, getDirectList } from "../selectors";
-import { loginErrorAction } from '../actions/user';
+import { getIsAdmin, isLogged } from "../selectors";
 
-import store from "../store";
-import { setDirectListAction } from '../actions/direct';
 import DirectList from "../components/DirectList";
 import { Direct } from "../services/Direct";
+import { User } from "../services/User";
 
 export default class Home extends Component {
 
@@ -14,27 +12,12 @@ export default class Home extends Component {
     super(props);
   }
 
-  directListSuccess(res) {
-    setTimeout(() => {
-      store.dispatch(setDirectListAction(res.data.directs));
-      console.log(`fetched ${res.data.directs.length} direct messages...`);
-    }, 1000);
-  }
-
-  directListError(reason) {
-    setTimeout(() => {
-      console.error(`unable to get directs list...`);
-    }, 1000);
-  }
-
   componentDidMount() {
     if (isLogged() === false) {
-      console.error('security issue: you must login first...');
-      store.dispatch(loginErrorAction('You must login first...'));
-      window.location.href = '#/login';
+      User.mustLogIn();
       return;
     }
-    Direct.list(this.directListSuccess, this.directListError);
+    Direct.fetchList();
   }
 
   render() {
