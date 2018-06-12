@@ -1,11 +1,11 @@
 const initialState = {
   username: '',
   password: '',
-  isLogged: false,
+  isLogged: true,
   logging: false,
   searching: false,
   loginError: '',
-  isAdmin: false,
+  isAdmin: true,
   session: {
     cookies: []
   },
@@ -13,6 +13,7 @@ const initialState = {
     modifying: false,
     follower: null,
     text: '',
+    selected: null,
     list: []
   }
 }

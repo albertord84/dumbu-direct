@@ -28,3 +28,10 @@
 #app .direct-list .direct {
   cursor: pointer;
 }
+
+#app .direct-list .direct .card-body .btn-group {
+  position: absolute;
+  left: 10px;
+  bottom: 13px;
+  display: none;
+}

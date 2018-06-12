@@ -28,7 +28,7 @@ class App extends Component {
     )
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  /*shouldComponentUpdate(nextProps, nextState) {
     if (isLogged() || isLogging() || getLoginError() !== '' ||
         getUserName() !== '')
     {
@@ -38,7 +38,7 @@ class App extends Component {
       return true;
     }
     return false;
-  }
+  }*/
 
 }
 
