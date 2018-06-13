@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { getSelectedDirectMessage } from "../selectors";
+import { getSelectedDirectText } from "../selectors";
 
 const jq = jQuery;
 const dlg = '#edit-direct-modal';
 
 const shownHandler = (ev) => {
   const textArea = jq(dlg).find('textarea');
-  textArea.val(getSelectedDirectMessage().text);
+  textArea.val(getSelectedDirectText());
   textArea.focus();
 }
 
@@ -26,7 +26,7 @@ const EditDirectDialog = (props) => {
             <textarea className="form-control" rows="5"></textarea>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="button" className="btn btn-primary">Save changes</button>
           </div>
         </div>

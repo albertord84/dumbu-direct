@@ -29,16 +29,19 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, { isAdmin: action.payload });
   
     case 'SET_DIRECT_LIST': {
-      return _.merge({}, state, { direct: { list: action.payload } });
+      const direct = _.set({}, 'direct.list', action.payload);
+      return _.merge({}, state, direct);
     }
   
     case 'REMOVE_DIRECT_FROM_LIST': {
       const list = state.direct.list;
+      const id = action.payload.id;
       const condition = (d) => {
-        return d.id !== action.payload.id;
+        return d.id !== id;
       }
       const newList = list.filter(condition);
-      return _.merge({}, state, { direct: { list: newList } });
+      const direct = _.set({}, 'direct.list', newList);
+      return _.merge({}, state, direct);
     }
   
     case 'ADD_DIRECT_TO_LIST': {

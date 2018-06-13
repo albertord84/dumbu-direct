@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { getIsAdmin, isLogged } from "../selectors";
-import store from "../store";
+import { getIsAdmin, isLogged, getSelectedDirectId } from "../selectors";
 
 import DirectList from "../containers/DirectList";
 import EditDirectDialog from "../components/EditDirectDialog";
+import RemoveDirectDialog from "../components/RemoveDirectDialog";
 
 import { Direct } from "../services/Direct";
 import { User } from "../services/User";
@@ -26,17 +26,21 @@ export default class Home extends Component {
     Direct.selectDirectMessage(id);
   }
 
-  storeSubscription() {
-
-  }
-
   componentDidMount() {
     if (isLogged() === false) {
       User.mustLogIn();
       return;
     }
     Direct.fetchList();
-    store.subscribe(this.storeSubscription);
+  }
+
+  updateDirectTextHandler() {
+
+  }
+
+  removeDirectMessage(ev) {
+    Direct.isModifyingDirectMessage();
+    Direct.removeDirectFromDb(getSelectedDirectId());
   }
 
   render() {
@@ -48,7 +52,8 @@ export default class Home extends Component {
             <div>
               <DirectList editDialog={this.editDirectDialog}
                           removeDialog={this.removeDirectDialog} />
-              <EditDirectDialog />
+              <EditDirectDialog updateTextHandler={this.updateDirectTextHandler} />
+              <RemoveDirectDialog removeHandler={this.removeDirectMessage} />
             </div> : ''
           }
         </div>

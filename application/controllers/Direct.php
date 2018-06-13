@@ -58,6 +58,8 @@ class Direct extends CI_Controller {
   public function delete($id) {
     $this->db->where('id', $id);
     $this->db->delete('message');
+    $this->db->where('msg_id', $id);
+    $this->db->delete('stat');
     return $this->success(true);
   }
 

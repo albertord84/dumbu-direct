@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { getDirectList } from "../selectors";
+import { getDirectList, isModifyingDirectMessage } from "../selectors";
 import { Utils } from "../services/Utils";
 
 const bts = '.direct-actions';
@@ -16,6 +16,7 @@ const hideControls = (ev) => {
 }
 
 const showControls = (ev) => {
+  if (isModifyingDirectMessage()) return;
   const target = ev.target;
   const jq = jQuery;
   if (jq(target).hasClass('direct')) {
@@ -45,6 +46,7 @@ const DirectList = (props) => {
                   <i className="fa fa-pencil" />
                 </button>
                 <button type="button" className="btn btn-sm btn-danger"
+                        data-toggle="modal" data-target="#remove-direct-modal"
                         onClick={ () => { props.removeDialog(direct.id) } }>
                   <i className="fa fa-trash" />
                 </button>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { setDirectListAction, setSelectedDirectAction } from '../actions/direct';
-import { modifyingDirectAction } from '../actions/direct';
-import { getDirectList } from "../selectors";
+import { modifyingDirectAction, removeDirectAction } from '../actions/direct';
+import { getDirectList, getSelectedDirectId, getSelectedDirectMessage } from "../selectors";
 import store from "../store";
 
 export class Direct {
@@ -43,12 +43,41 @@ export class Direct {
     .catch(Direct.directDeleteError);
   }
 
+  static isModifyingDirectMessage(modifying = true) {
+    store.dispatch(modifyingDirectAction(modifying));
+  }
+
   static selectDirectMessage(id) {
     const predicate = (o) => {
       return o.id === id;
     }
     const selected = _.find(getDirectList(), predicate);
     store.dispatch(setSelectedDirectAction(selected));
+  }
+
+  static removeDirectSuccess() {
+    const jq = jQuery;
+    setTimeout(() => {
+      Direct.isModifyingDirectMessage(false);
+      const direct = getSelectedDirectMessage();
+      store.dispatch(removeDirectAction(direct));
+      console.log(`message ${getSelectedDirectId()} successfully deleted...`);
+      jq('#remove-direct-modal').modal('hide');
+    }, 1000);
+  }
+
+  static removeDirectError() {
+    const id = getSelectedDirectId();
+    setTimeout(() => {
+      Direct.isModifyingDirectMessage(false);
+      console.error(`error deleting the direct message ${id}...`);
+    }, 1000);
+  }
+
+  static removeDirectFromDb(id) {
+    axios.get(`../index.php/direct/delete/${id}`)
+    .then(Direct.removeDirectSuccess)
+    .catch(Direct.removeDirectError);
   }
 
 }
