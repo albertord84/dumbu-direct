@@ -1,5 +1,8 @@
 import axios from "axios";
-import { setDirectListAction } from '../actions/direct';
+import { setDirectListAction, setSelectedDirectAction } from '../actions/direct';
+import { modifyingDirectAction } from '../actions/direct';
+import { getDirectList } from "../selectors";
+import store from "../store";
 
 export class Direct {
 
@@ -38,6 +41,14 @@ export class Direct {
     axios.get('../index.php/direct/delete/' + id)
     .then(Direct.directDeleteSuccess)
     .catch(Direct.directDeleteError);
+  }
+
+  static selectDirectMessage(id) {
+    const predicate = (o) => {
+      return o.id === id;
+    }
+    const selected = _.find(getDirectList(), predicate);
+    store.dispatch(setSelectedDirectAction(selected));
   }
 
 }

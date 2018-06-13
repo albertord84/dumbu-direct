@@ -2,8 +2,8 @@ export const setDirectListAction = (list) => {
   return { type: 'SET_DIRECT_LIST', payload: list };
 }
 
-export const setSelectedDirectAction = (id) => {
-  return { type: 'SET_SELECTED_DIRECT', payload: id };
+export const setSelectedDirectAction = (direct) => {
+  return { type: 'SET_SELECTED_DIRECT', payload: direct };
 }
 
 export const removeDirectAction = (direct) => {

@@ -3,60 +3,59 @@ import React, { Component } from 'react';
 import { getDirectList } from "../selectors";
 import { Utils } from "../services/Utils";
 
-export default class DirectList extends Component {
+const bts = '.direct-actions';
+const jq = jQuery;
 
-  constructor(props) {
-    super(props);
+const hideControls = (ev) => {
+  const target = ev.target;
+  if (jq(target).hasClass('direct')) {
+    jq(target).find(bts).fadeOut(100);
+    return;
   }
-
-  showControls(ev) {
-    const target = jQuery(ev.target);
-    if (target.hasClass('direct') || target.hasClass('card-body')) {
-      target.find('.btn-group').fadeIn(200);
-    }
-    else if (target.hasClass('card-header') || target.hasClass('card-title')) {
-      const parent = target.parents('.direct');
-      parent.find('.btn-group').fadeIn(200);
-    }
-  }
-
-  hideControls(ev) {
-    jQuery('.btn-group').fadeOut(100);
-  }
-
-  render() {
-    const props = this.props;
-    const self = this;
-    const list = getDirectList();
-    return (
-      <div className="direct-list row mb-3">
-        {
-          list.map(direct =>
-            <div className="direct bg-light w-100 mt-3 card"
-                onMouseEnter={self.showControls}
-                onMouseLeave={self.hideControls}
-                key={direct.id}>
-              <div className="card-header">
-                <div className="card-title">{Utils.shortText(direct.msg_text)}</div>
-              </div>
-              <div className="card-body small text-muted text-right">
-                <div className="btn-group float-left">
-                  <button type="button" className="btn btn-sm btn-success"
-                          onClick={() => props.showEditDialog(direct.id)}>
-                    <i className="fa fa-pencil" />
-                  </button>
-                  <button type="button" className="btn btn-sm btn-danger"
-                          onClick={() => props.showRemoveDialog(direct.id)}>
-                    <i className="fa fa-trash" />
-                  </button>
-                </div>
-                { Utils.fromTs(direct.sent_at) }
-              </div>
-            </div>
-          )
-        }
-      </div>
-    )
-  }
-
+  jq(target).parents('.direct').find(bts).fadeOut(100);
 }
+
+const showControls = (ev) => {
+  const target = ev.target;
+  const jq = jQuery;
+  if (jq(target).hasClass('direct')) {
+    jq(target).find(bts).fadeIn(200);
+    return;
+  }
+  jq(target).parents('.direct').find(bts).fadeIn(200);
+}
+
+const DirectList = (props) => {
+  const list = getDirectList();
+  return (
+    <div className="direct-list row mb-3">
+      {
+        list.map(direct =>
+          <div className="direct bg-light w-100 mt-3 card"
+              onMouseEnter={showControls} onMouseLeave={hideControls}
+              key={direct.id}>
+            <div className="card-header">
+              <div className="card-title">{Utils.shortText(direct.text)}</div>
+            </div>
+            <div className="card-body small text-muted text-right">
+              <div className="btn-group float-left direct-actions">
+                <button type="button" className="btn btn-sm btn-success"
+                        data-toggle="modal" data-target="#edit-direct-modal"
+                        onClick={ () => { props.editDialog(direct.id) } }>
+                  <i className="fa fa-pencil" />
+                </button>
+                <button type="button" className="btn btn-sm btn-danger"
+                        onClick={ () => { props.removeDialog(direct.id) } }>
+                  <i className="fa fa-trash" />
+                </button>
+              </div>
+              { Utils.fromNow(direct.sentAt) }
+            </div>
+          </div>
+        )
+      }
+    </div>
+  )
+}
+
+export default DirectList;

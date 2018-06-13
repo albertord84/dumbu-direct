@@ -15,12 +15,15 @@ export default class Home extends Component {
     super(props);
   }
 
-  showEditDirectDialog(id) {
+  editDirectDialog(id) {
     console.log(`editing the direct message ${id}`);
+    Direct.selectDirectMessage(id);
+    
   }
 
-  showRemoveDirectDialog(id) {
+  removeDirectDialog(id) {
     console.log(`removing the direct message ${id}`);
+    Direct.selectDirectMessage(id);
   }
 
   storeSubscription() {
@@ -43,8 +46,8 @@ export default class Home extends Component {
           {
             getIsAdmin() ? 
             <div>
-              <DirectList showEditDialog={this.showEditDirectDialog}
-                          showRemoveDialog={this.showRemoveDirectDialog} />
+              <DirectList editDialog={this.editDirectDialog}
+                          removeDialog={this.removeDirectDialog} />
               <EditDirectDialog />
             </div> : ''
           }

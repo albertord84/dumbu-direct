@@ -29,11 +29,29 @@ class Direct extends CI_Controller {
       ->set_output(json_encode($data));
   }
 
+  private function propsToCamelCase(array $messages) {
+    return array_map(function($direct) {
+      $mapped = new \stdClass();
+      $mapped->id         = $direct->id;
+      $mapped->userId     = $direct->user_id;
+      $mapped->text       = $direct->msg_text;
+      $mapped->sent       = $direct->sent;
+      $mapped->processing = $direct->processing;
+      $mapped->promo      = $direct->promo;
+      $mapped->sentAt     = $direct->sent_at;
+      $mapped->failed     = $direct->failed;
+      $mapped->backup     = $direct->backup;
+      $mapped->hours      = $direct->hours;
+      return $mapped;
+    }, $messages);
+  }
+
   public function list() {
     $params = $this->params();
     $messages = $this->db->get('message')->result();
+    $mappedItems = $this->propsToCamelCase($messages);
     return $this->success(true, [
-      'directs' => $messages
+      'directs' => $mappedItems
     ]);
   }
 

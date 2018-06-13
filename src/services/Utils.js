@@ -16,7 +16,7 @@ export class Utils {
     else return text;
   }
 
-  static fromTs(timestamp) {
+  static fromNow(timestamp) {
     return moment(timestamp * 1000).fromNow();
   }
 
