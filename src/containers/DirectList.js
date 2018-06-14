@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 import { getDirectList } from "../selectors";
 import { Utils } from "../services/Utils";
@@ -14,31 +13,19 @@ export default class DirectList extends Component {
 
   showControls(ev) {
     let node = ev.target;
-    let bts;
-    const className = node.getAttribute('class').toString().split(' ');
-    if (className.includes('direct') === false) {
-      let cl;
-      do {
-        node = node.parentElement;
-        cl = node.getAttribute('class').toString().split(' ');
-      } while (cl.includes('direct') === false)
+    if (Utils.hasClass(node, 'direct') === false) {
+      node = Utils.parent(node, 'direct');
     }
-    bts = _.toArray(node.getElementsByClassName('btn-group'))[0];
+    let bts = _.toArray(node.getElementsByClassName('btn-group'))[0];
     bts.style.display = 'inherit';
   }
 
   hideControls(ev) {
     let node = ev.target;
-    let bts;
-    const className = node.getAttribute('class').toString().split(' ');
-    if (className.includes('direct') === false) {
-      let cl;
-      do {
-        node = node.parentElement;
-        cl = node.getAttribute('class').toString().split(' ');
-      } while (cl.includes('direct') === false)
+    if (Utils.hasClass(node, 'direct') === false) {
+      node = Utils.parent(node, 'direct');
     }
-    bts = _.toArray(node.getElementsByClassName('btn-group'))[0];
+    let bts = _.toArray(node.getElementsByClassName('btn-group'))[0];
     bts.style.display = 'none';
   }
 

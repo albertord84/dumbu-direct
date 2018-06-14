@@ -20,4 +20,14 @@ export class Utils {
     return moment(timestamp * 1000).fromNow();
   }
 
+  static hasClass(el, cl) {
+    return el.getAttribute('class').toString().split(' ').includes(cl);
+  }
+
+  static parent(fromEl, parentClassName) {
+    if (Utils.hasClass(fromEl.parentElement, parentClassName)) {
+      return fromEl.parentElement
+    }
+    return Utils.parent(fromEl.parentElement, parentClassName)
+  }
 }
