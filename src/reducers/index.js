@@ -26,39 +26,49 @@ const reducer = (state = initialState, action) => {
     }
   
     case 'SET_USER_IS_ADMIN':
-      return Object.assign({}, state, { isAdmin: action.payload });
+      return _.assign({}, state, { isAdmin: action.payload });
   
     case 'SET_DIRECT_LIST': {
-      const direct = _.set({}, 'direct.list', action.payload);
-      return _.merge({}, state, direct);
+      let newState = _.assign({}, state);
+      newState.direct.list = action.payload;
+      return newState;
     }
   
     case 'REMOVE_DIRECT_FROM_LIST': {
-      const list = state.direct.list;
+      let newState = _.assign({}, state);
+      const list = newState.direct.list;
       const id = action.payload.id;
       const condition = (d) => {
         return d.id !== id;
       }
       const newList = list.filter(condition);
-      const direct = _.set({}, 'direct.list', newList);
-      return _.merge({}, state, direct);
+      newState.direct.list = newList;
+      return newState;
     }
   
     case 'ADD_DIRECT_TO_LIST': {
-      const newList = _.concat(state.direct.list, action.payload);
-      return _.merge({}, state, { direct: { list: newList } });
+      let newState = _.assign({}, state);
+      const newList = _.concat(newState.direct.list, action.payload);
+      newState.direct.list = newList;
+      return newState;
     }
 
     case 'SET_SELECTED_DIRECT': {
-      return _.merge({}, state, { direct: { selected: action.payload } });
+      let newState = _.assign({}, state);
+      newState.direct.selected = action.payload;
+      return newState;
     }
 
     case 'MODIFYING_DIRECT': {
-      return _.merge({}, state, { direct: { modifying: action.payload } });
+      let newState = _.assign({}, state);
+      newState.direct.modifying = action.payload;
+      return newState;
     }
 
     case 'SET_DIRECT_TEXT': {
-      return _.merge({}, state, { direct: { text: action.payload } });
+      let newState = _.assign({}, state);
+      newState.direct.text = action.payload;
+      return newState;
     }
   
     default:
