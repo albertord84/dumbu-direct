@@ -3,72 +3,72 @@ import * as _ from "lodash";
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_USERNAME':
+    case 'SET_USERNAME': {
       return _.assign({}, state, { username: action.payload });
-  
-    case 'SET_PASSWORD':
-      return _.assign({}, state, { password: action.payload });
-
-    case 'SET_IS_LOGGING':
-      return _.assign({}, state, { logging: action.payload });
-
-    case 'SET_IS_SEARCHING':
-      return _.assign({}, state, { searching: action.payload });
-
-    case 'SET_LOGIN_ERROR':
-      return _.assign({}, state, { loginError: action.payload });
-  
-    case 'SET_IS_LOGGED':
-      return _.assign({}, state, { isLogged: action.payload });
-  
-    case 'SET_SESSION_COOKIES': {
-      return _.merge({}, state, { session: { cookies: action.payload } });
     }
   
-    case 'SET_USER_IS_ADMIN':
+    case 'SET_PASSWORD': {
+      return _.assign({}, state, { password: action.payload });
+    }
+
+    case 'SET_IS_LOGGING': {
+      return _.assign({}, state, { logging: action.payload });
+    }
+
+    case 'SET_IS_SEARCHING': {
+      return _.assign({}, state, { searching: action.payload });
+    }
+
+    case 'SET_LOGIN_ERROR': {
+      return _.assign({}, state, { loginError: action.payload });
+    }
+  
+    case 'SET_IS_LOGGED': {
+      return _.assign({}, state, { isLogged: action.payload });
+    }
+  
+    case 'SET_SESSION_COOKIES': {
+      const session = _.assign({}, state.session, { cookies: action.payload });
+      return _.assign({}, state, { session: session });
+    }
+  
+    case 'SET_USER_IS_ADMIN': {
       return _.assign({}, state, { isAdmin: action.payload });
+    }
   
     case 'SET_DIRECT_LIST': {
-      let newState = _.assign({}, state);
-      newState.direct.list = action.payload;
-      return newState;
+      const direct = _.assign({}, state.direct, { list: action.payload });
+      return _.assign({}, state, { direct: direct });
     }
   
     case 'REMOVE_DIRECT_FROM_LIST': {
-      let newState = _.assign({}, state);
-      const list = newState.direct.list;
+      const list = state.direct.list;
       const id = action.payload.id;
-      const condition = (d) => {
-        return d.id !== id;
-      }
-      const newList = list.filter(condition);
-      newState.direct.list = newList;
-      return newState;
+      const condition = (direct) => direct.id !== id;
+      const filtered = list.filter(condition);
+      const direct = _.assign({}, state.direct, { list: filtered });
+      return _.assign({}, state, { direct: direct });
     }
   
     case 'ADD_DIRECT_TO_LIST': {
-      let newState = _.assign({}, state);
-      const newList = _.concat(newState.direct.list, action.payload);
-      newState.direct.list = newList;
-      return newState;
+      const augmented = _.concat(state.direct.list, action.payload);
+      const direct = _.assign({}, state.direct, { list: augmented });
+      return _.assign({}, state, { direct: direct });
     }
 
     case 'SET_SELECTED_DIRECT': {
-      let newState = _.assign({}, state);
-      newState.direct.selected = action.payload;
-      return newState;
+      const direct = _.assign({}, state.direct, { selected: action.payload });
+      return _.assign({}, state, { direct: direct });
     }
 
     case 'MODIFYING_DIRECT': {
-      let newState = _.assign({}, state);
-      newState.direct.modifying = action.payload;
-      return newState;
+      const direct = _.assign({}, state.direct, { modifying: action.payload });
+      return _.assign({}, state, { direct: direct });
     }
 
     case 'SET_DIRECT_TEXT': {
-      let newState = _.assign({}, state);
-      newState.direct.text = action.payload;
-      return newState;
+      const direct = _.assign({}, state.direct, { text: action.payload });
+      return _.assign({}, state, { direct: direct });
     }
   
     default:

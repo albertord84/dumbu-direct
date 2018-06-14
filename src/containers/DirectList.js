@@ -7,8 +7,6 @@ export default class DirectList extends Component {
 
   constructor(props) {
     super(props);
-    this.showControls = this.showControls.bind(this);
-    this.hideControls = this.hideControls.bind(this);
   }
 
   showControls(ev) {

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { isModifyingDirectMessage } from "../selectors";
+
 const RemoveDirectDialog = (props) => {
   const text = `Are you sure about deleting this message...`;
   return (
@@ -14,8 +16,11 @@ const RemoveDirectDialog = (props) => {
           </div>
           <div className="modal-body">{text}</div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" className="btn btn-secondary"
+                    data-dismiss="modal"
+                    disabled={isModifyingDirectMessage()}>Cancel</button>
             <button type="button" className="btn btn-danger"
+                    disabled={isModifyingDirectMessage()}
                     onClick={props.removeHandler}>Delete It!</button>
           </div>
         </div>

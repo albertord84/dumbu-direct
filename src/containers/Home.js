@@ -17,13 +17,13 @@ export default class Home extends Component {
 
   editDirectDialog(id) {
     console.log(`editing the direct message ${id}`);
-    Direct.selectDirectMessage(id);
+    Direct.select(id);
     
   }
 
   removeDirectDialog(id) {
     console.log(`removing the direct message ${id}`);
-    Direct.selectDirectMessage(id);
+    Direct.select(id);
   }
 
   componentDidMount() {
@@ -39,8 +39,8 @@ export default class Home extends Component {
   }
 
   removeDirectMessage(ev) {
-    Direct.isModifyingDirectMessage();
-    Direct.removeDirectFromDb(getSelectedDirectId());
+    Direct.isModifying();
+    Direct.remove(getSelectedDirectId());
   }
 
   render() {
