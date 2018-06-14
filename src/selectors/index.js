@@ -7,6 +7,7 @@ export const isLogging = () => store.getState().logging;
 export const getLoginError = () => store.getState().loginError;
 export const getIsAdmin = () => store.getState().isAdmin;
 export const getDirectList = () => store.getState().direct.list;
+export const hasDirectMessages = () => store.getState().direct.list.length !== 0;
 export const getSelectedDirectId = () => store.getState().direct.selected.id;
 export const getSelectedDirectText = () => store.getState().direct.selected.text;
 export const getSelectedDirectMessage = () => store.getState().direct.selected;
